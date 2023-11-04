@@ -66,7 +66,7 @@ void GotoXY(int x, int y);
 void horizon(int column, int width, char middle, char out1, char out2);
 void vertical(int row, int height, int x, int y);
 void DrawBoard(int row, int column, int x, int y);
-void Draw_txt(const char* file);
-void Draw_txt_(std::string file);
+int Draw_txt(const char* file);
+void Draw_txt_noeffect(const char* file);
 
 #endif

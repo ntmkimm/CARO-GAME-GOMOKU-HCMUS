@@ -14,18 +14,17 @@ int main()
 	Menu menu[COL][MAX_ROW];
 	PLAYER PLAYER1;
 	PLAYER PLAYER2;
-	int running = 1;
 	X1 = x_center_console - 1;
 	Y1 = y_center_console;
 	_COMMAND = -1;
 	_TURN = 1;
 	_X = 0; 
 	_Y = 0;
-	
+	std::string running = "";
 	while (true)
 	{
 		running = MAINMENU_run(A, menu, PLAYER1, PLAYER2, MAIN_menu(menu));
-		if (running == 0)
+		if (running == "running_false")
 			break;
 	}
 

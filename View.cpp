@@ -83,17 +83,20 @@ void DrawBoard(int row, int column, int x, int y)
 	}
 }
 
-void Draw_txt(const char* file)
+int Draw_txt(const char* file)
 {
-	FILE* f;
+	FILE* f ;
 	int c, hex = 1;
 	errno_t err;
 	system("cls");
 	while (1)
 	{
-		int h = 0;
 		if (_kbhit())
 		{
+			int h = _getch();
+			if (h == 13)
+				return 0;
+			return 0;
 			break;
 		}
 		SET_COLOR(7);
@@ -102,31 +105,38 @@ void Draw_txt(const char* file)
 		for (int i = 1; i <= 17; i++)
 			for (int j = 1; j <= 121; j++)
 			{
-				c = fgetc(f);
+				c = getc(f);
 				if (c == '.')
 					SET_COLOR(0);
 				else if (hex % 2 == 1)
 					SET_COLOR(7);
 				else
 					SET_COLOR(hex);
-				printf("%c", c);
+				std::cout << (char)c;
 			}
 		hex++;
-		Sleep(10);
-		system("cls");
 		fclose(f);
 	}
 }
-void Draw_txt_(std::string file)
+void Draw_txt_noeffect(const char* file)
 {
-	std::string str;
-	std::fstream File;
-
-	File.open(file, std::ios::in);
-
-	std::getline(File, str);
-
-	File.close();
+	FILE* h;
+	int c;
+	errno_t err;
+	int printting = true;
+	GotoXY(0, 5);
+	err = fopen_s(&h, file, "r");
+	while (printting) 
+	{
+		SET_COLOR(240);
+		c = fgetc(h);
+		std::cout << (char)c;
+		if (feof(h))
+			printting = false;
+	}
+	fclose(h);
 }
+
+
 
 
