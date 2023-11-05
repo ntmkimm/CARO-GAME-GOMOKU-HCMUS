@@ -107,6 +107,7 @@ bool EXIST_file(std::string file)
 
 void MoveDown1(Menu menu[COL][MAX_ROW], int option)
 {
+	showcursor();
 	if (Y1 < menu[0][option - 1].y)
 	{
 		Y1 += 2;
@@ -115,6 +116,7 @@ void MoveDown1(Menu menu[COL][MAX_ROW], int option)
 }
 void MoveUp1(Menu menu[COL][MAX_ROW], int option)
 {
+	showcursor();
 	if (Y1 > menu[0][0].y) {
 		Y1 -= 2;
 		GotoXY(X1, Y1);
@@ -123,6 +125,7 @@ void MoveUp1(Menu menu[COL][MAX_ROW], int option)
 
 int YESNO_CHOOSE(Menu menu[COL][MAX_ROW])
 {
+
 	menu[0][0].c = "YES";
 	menu[0][1].c = "NO";
 	for (int i = 0; i < 2; i++)
@@ -173,68 +176,6 @@ int LOAD_menu(Menu menu[COL][MAX_ROW])
 			for (int i = 0; i < (int)LOAD_files.size(); i++)
 				if (X1 == menu[0][i].x - 1 && Y1 == menu[0][i].y)
 					return i;
-		}
-	}
-}
-int ESC_menu(Menu menu[COL][MAX_ROW])
-{
-	menu[0][0].c = "Continue";
-	menu[0][1].c = "Save Game";
-	menu[0][2].c = "Exit";
-	//menu[0][3].c = "Settings";
-
-	for (int i = 0; i < 3; i++)
-	{
-		menu[0][i].y = 2 * i + menu[0][0].y; //set coord y for ech option in menu
-		GotoXY(menu[0][i].x, menu[0][i].y);
-		std::cout << menu[0][i].c << std::endl;
-	}
-
-	GotoXY(X1, Y1);
-	while (true)
-	{
-		_COMMAND = toupper(_getch());
-		if (_COMMAND == 's' or _COMMAND == arrow_down)
-			MoveDown1(menu, 3);
-		else if (_COMMAND == 'w' or _COMMAND == arrow_up)
-			MoveUp1(menu, 3);
-		else if (_COMMAND == enter_char)
-		{
-			if (X1 == menu[0][0].x - 1 && Y1 == menu[0][0].y)
-				return 1;
-			else if (X1 == menu[0][1].x - 1 && Y1 == menu[0][1].y)
-				return 2;
-			else if (X1 == menu[0][2].x - 1 && Y1 == menu[0][2].y)
-				return 3;
-		}
-	}
-}
-int ESC_menuLoad(Menu menu[COL][MAX_ROW])
-{
-	menu[0][0].c = "Continue";
-	menu[0][1].c = "Exit & Save";
-
-	for (int i = 0; i < 2; i++)
-	{
-		menu[0][i].y = 2 * i + menu[0][0].y; //set coord y for ech option in menu
-		GotoXY(menu[0][i].x, menu[0][i].y);
-		std::cout << menu[0][i].c << std::endl;
-	}
-
-	GotoXY(X1, Y1);
-	while (true)
-	{
-		_COMMAND = toupper(_getch());
-		if (_COMMAND == 's' or _COMMAND == arrow_down)
-			MoveDown1(menu, 2);
-		else if (_COMMAND == 'w' or _COMMAND == arrow_up)
-			MoveUp1(menu, 2);
-		else if (_COMMAND == enter_char)
-		{
-			if (X1 == menu[0][0].x - 1 && Y1 == menu[0][0].y)
-				return 1;
-			else if (X1 == menu[0][1].x - 1 && Y1 == menu[0][1].y)
-				return 2;
 		}
 	}
 }

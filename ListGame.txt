@@ -1,4 +1,1 @@
 hihi.txt
-hihi(1).txt
-?.txt
-hel.txt

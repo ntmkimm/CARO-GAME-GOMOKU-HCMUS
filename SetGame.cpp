@@ -2,6 +2,7 @@
 
 void StartGame(_POINT A[BOARD_SIZE][BOARD_SIZE])
 {
+	showcursor();
 	system("cls");
 	ResetData(A);
 	TextColor(240);
@@ -10,6 +11,7 @@ void StartGame(_POINT A[BOARD_SIZE][BOARD_SIZE])
 }
 void SAVE_game(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER PLAYER1, PLAYER PLAYER2)
 {
+	showcursor();
 	bool run = true;
 	std::string file;
 	int count = 1;
@@ -43,6 +45,7 @@ void SAVE_game(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER
 }
 void LOAD_game(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER& PLAYER1, PLAYER& PLAYER2, std::string file)
 {
+	showcursor();
 	system("cls");
 	LOAD_data(A, PLAYER1, PLAYER2, file);
 	DrawBoard(BOARD_SIZE, BOARD_SIZE, 3, 1);
@@ -50,39 +53,109 @@ void LOAD_game(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER& PLAYER1, PLAYER& PLAYER
 }
 
 std::string LOADMENU_run(int option)
-{
+{	
 	std::string NAME_file;
 	std::vector<std::string> File;
 	File = LOAD_file();
 	NAME_file = File[option];
 	return NAME_file;
 }
-void ESCMENU_run(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER PLAYER1, PLAYER PLAYER2, int option)
+int ESC_menu(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER PLAYER1, PLAYER PLAYER2)
 {
-	switch (option)
+	menu[0][0].c = "Continue";
+	menu[0][1].c = "Save Game";
+	menu[0][2].c = "Exit";
+	bool running = true;
+	int ret;
+	for (int i = 0; i < 3; i++)
 	{
-	case 1:
-		system("cls");
-		DrawBoard(BOARD_SIZE, BOARD_SIZE, 3, 1);
-		break;
-	case 2:
-		SAVE_game(A, menu, PLAYER1, PLAYER2);
-		break;
-	case 3:
-		break;
+		menu[0][i].y = 2 * i + menu[0][0].y; //set coord y for ech option in menu
+		GotoXY(menu[0][i].x, menu[0][i].y);
+		std::cout << menu[0][i].c << std::endl;
 	}
+	do
+	{
+		GotoXY(X1, Y1);
+		_COMMAND = toupper(_getch());
+		if (_COMMAND == 's' or _COMMAND == arrow_down)
+			MoveDown1(menu, 3);
+		else if (_COMMAND == 'w' or _COMMAND == arrow_up)
+			MoveUp1(menu, 3);
+		else if (_COMMAND == enter_char)
+		{
+			if (X1 == menu[0][0].x - 1 && Y1 == menu[0][0].y)
+			{
+				running = false;
+				ret = 1;
+			}
+			else if (X1 == menu[0][1].x - 1 && Y1 == menu[0][1].y)
+			{
+				SAVE_game(A, menu, PLAYER1, PLAYER2);
+				ret = 0;
+				break;
+			}
+			else if (X1 == menu[0][2].x - 1 && Y1 == menu[0][2].y)
+			{
+				system("cls");
+				ret = 0;
+				break;
+			}
+		}
+	} while (running);
+	for (int i = 0; i < 3; i++)
+	{
+		TextColor(255);
+		menu[0][i].y = 2 * i + menu[0][0].y; //set coord y for ech option in menu
+		GotoXY(menu[0][i].x, menu[0][i].y);
+		std::cout << menu[0][i].c << std::endl;
+	}
+	GotoXY(_X, _Y);
+	return ret;
 }
-void ESCMENU_runLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER PLAYER1, PLAYER PLAYER2, int option)
+int ESC_menuLoad(Menu menu[COL][MAX_ROW])
 {
-	switch (option)
+	menu[0][0].c = "Continue";
+	menu[0][1].c = "Exit & Save";
+	bool running = true;
+	int ret;
+	for (int i = 0; i < 2; i++)
 	{
-	case 1:
-		system("cls");
-		DrawBoard(BOARD_SIZE, BOARD_SIZE, 3, 1);
-		break;
-	case 2:
-		break;
+		menu[0][i].y = 2 * i + menu[0][0].y; //set coord y for ech option in menu
+		GotoXY(menu[0][i].x, menu[0][i].y);
+		std::cout << menu[0][i].c << std::endl;
 	}
+	do
+	{
+		GotoXY(X1, Y1);
+		_COMMAND = toupper(_getch());
+		if (_COMMAND == 's' or _COMMAND == arrow_down)
+			MoveDown1(menu, 2);
+		else if (_COMMAND == 'w' or _COMMAND == arrow_up)
+			MoveUp1(menu, 2);
+		else if (_COMMAND == enter_char)
+		{
+			if (X1 == menu[0][0].x - 1 && Y1 == menu[0][0].y)
+			{
+				running = false;
+				ret = 1;
+			}
+			else if (X1 == menu[0][1].x - 1 && Y1 == menu[0][1].y)
+			{
+				system("cls");
+				ret = 0;
+				break;
+			}
+		}
+	} while (running);
+	for (int i = 0; i < 2; i++)
+	{
+		TextColor(255);
+		menu[0][i].y = 2 * i + menu[0][0].y; //set coord y for ech option in menu
+		GotoXY(menu[0][i].x, menu[0][i].y);
+		std::cout << menu[0][i].c << std::endl;
+	}
+	GotoXY(_X, _Y);
+	return ret;
 }
 
 void SETNAME_player(PLAYER& PLAYER1, PLAYER& PLAYER2) //CREATE NAME'S PLAYER FOR GAME
@@ -111,9 +184,7 @@ int NewGame(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& P
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == esc_char)
 		{
-			ESCMENU_run(A,menu, PLAYER1, PLAYER2, ESC_menu(menu));
-			system("cls");
-			return 0;
+			running = ESC_menu(A, menu, PLAYER1, PLAYER2);
 		}
 		else
 		{
@@ -188,9 +259,7 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == esc_char)
 		{
-			ESCMENU_runLoad(A, menu, PLAYER1, PLAYER2, ESC_menuLoad(menu));
-			system("cls");
-			return 0;
+			running = ESC_menuLoad(menu);
 		}
 		else
 		{

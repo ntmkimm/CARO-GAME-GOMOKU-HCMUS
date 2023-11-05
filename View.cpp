@@ -12,7 +12,7 @@ void showcursor()
 {
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_CURSOR_INFO info;
-	info.dwSize = 100;
+	info.dwSize = 5;
 	info.bVisible = TRUE;
 	SetConsoleCursorInfo(consoleHandle, &info);
 }
