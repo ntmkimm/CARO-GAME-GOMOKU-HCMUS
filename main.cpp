@@ -20,11 +20,12 @@ int main()
 	_TURN = 1;
 	_X = 0; 
 	_Y = 0;
-	std::string running = "";
+	int running = 1;
 	while (true)
-	{
+	{	
+		showcursor();
 		running = MAINMENU_run(A, menu, PLAYER1, PLAYER2, MAIN_menu(menu));
-		if (running == "running_false")
+		if (running == 0)
 			break;
 	}
 

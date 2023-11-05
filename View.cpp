@@ -1,5 +1,21 @@
 #include "View.h"
 
+void hidecursor()
+{
+	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_CURSOR_INFO info;
+	info.dwSize = 100;
+	info.bVisible = FALSE;
+	SetConsoleCursorInfo(consoleHandle, &info);
+}
+void showcursor()
+{
+	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_CURSOR_INFO info;
+	info.dwSize = 100;
+	info.bVisible = TRUE;
+	SetConsoleCursorInfo(consoleHandle, &info);
+}
 void SET_COLOR(int color)
 {
 	WORD wColor;
@@ -91,6 +107,7 @@ int Draw_txt(const char* file)
 	system("cls");
 	while (1)
 	{
+		hidecursor();
 		if (_kbhit())
 		{
 			int h = _getch();
@@ -128,6 +145,7 @@ void Draw_txt_noeffect(const char* file)
 	err = fopen_s(&h, file, "r");
 	while (printting) 
 	{
+		hidecursor();
 		SET_COLOR(240);
 		c = fgetc(h);
 		std::cout << (char)c;

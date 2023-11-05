@@ -58,6 +58,8 @@ struct PLAYER
 
 };
 
+void hidecursor();
+void showcursor();
 void SET_COLOR(int color);
 void CreateConsoleWindow();
 void FixConsoleWindow();

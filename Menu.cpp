@@ -121,33 +121,6 @@ void MoveUp1(Menu menu[COL][MAX_ROW], int option)
 	}
 }
 
-int SaveOption_CHOOSE(Menu menu[COL][MAX_ROW])
-{
-	menu[0][0].c = "SAVE GAME";
-	menu[0][1].c = "SAVE AS NEW FILE";
-	for (int i = 0; i < 2; i++)
-	{
-		menu[0][i].y = 2 * i + menu[0][0].y; //set coord y for ech option in menu
-		GotoXY(menu[0][i].x, menu[0][i].y);
-		std::cout << menu[0][i].c << std::endl;
-	}
-	GotoXY(menu[0][0].x - 1, menu[0][0].y);
-	while (1)
-	{
-		_COMMAND = toupper(_getch());
-		if (_COMMAND == 'w' or _COMMAND == arrow_up)
-			MoveUp1(menu, 2);
-		else if (_COMMAND == 's' or _COMMAND == arrow_down)
-			MoveDown1(menu, 2);
-		if (_COMMAND == enter_char)
-		{
-			if (X1 == menu[0][0].x - 1 && Y1 == menu[0][0].y)
-				return 1;
-			else if (X1 == menu[0][1].x - 1 && Y1 == menu[0][1].y)
-				return 2;
-		}
-	}
-}
 int YESNO_CHOOSE(Menu menu[COL][MAX_ROW])
 {
 	menu[0][0].c = "YES";
@@ -233,6 +206,35 @@ int ESC_menu(Menu menu[COL][MAX_ROW])
 				return 2;
 			else if (X1 == menu[0][2].x - 1 && Y1 == menu[0][2].y)
 				return 3;
+		}
+	}
+}
+int ESC_menuLoad(Menu menu[COL][MAX_ROW])
+{
+	menu[0][0].c = "Continue";
+	menu[0][1].c = "Exit & Save";
+
+	for (int i = 0; i < 2; i++)
+	{
+		menu[0][i].y = 2 * i + menu[0][0].y; //set coord y for ech option in menu
+		GotoXY(menu[0][i].x, menu[0][i].y);
+		std::cout << menu[0][i].c << std::endl;
+	}
+
+	GotoXY(X1, Y1);
+	while (true)
+	{
+		_COMMAND = toupper(_getch());
+		if (_COMMAND == 's' or _COMMAND == arrow_down)
+			MoveDown1(menu, 2);
+		else if (_COMMAND == 'w' or _COMMAND == arrow_up)
+			MoveUp1(menu, 2);
+		else if (_COMMAND == enter_char)
+		{
+			if (X1 == menu[0][0].x - 1 && Y1 == menu[0][0].y)
+				return 1;
+			else if (X1 == menu[0][1].x - 1 && Y1 == menu[0][1].y)
+				return 2;
 		}
 	}
 }
