@@ -7,9 +7,12 @@
 #include <Windows.h>
 #include <string>
 #include <fstream>
+#include <mmsystem.h>
+
+#pragma comment(lib,"winmm.lib")
 
 enum { BOARD_SIZE = 12 };
-enum { COL = 1 };
+enum { COL = 2 };
 enum { MAX_ROW = 10 };
 enum { x_center_console = 70 };
 enum { y_center_console = 17 };
@@ -40,6 +43,9 @@ extern int Y1;
 extern int _COMMAND;
 extern bool _TURN;
 extern int _X, _Y;
+extern int S1, S2;
+extern int Color_X, Color_O;
+
 
 struct _POINT { int x, y, c; };
 
@@ -70,5 +76,6 @@ void vertical(int row, int height, int x, int y);
 void DrawBoard(int row, int column, int x, int y);
 int Draw_txt(const char* file);
 void Draw_txt_noeffect(const char* file);
+void Sound2(int S2);
 
 #endif

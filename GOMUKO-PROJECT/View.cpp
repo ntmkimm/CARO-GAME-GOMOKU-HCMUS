@@ -1,5 +1,6 @@
 #include "View.h"
 
+
 void hidecursor()
 {
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -99,9 +100,10 @@ void DrawBoard(int row, int column, int x, int y)
 	}
 }
 
+
 int Draw_txt(const char* file)
 {
-	FILE* f ;
+	FILE* f;
 	int c, hex = 1;
 	errno_t err;
 	system("cls");
@@ -116,7 +118,7 @@ int Draw_txt(const char* file)
 			return 0;
 			break;
 		}
-		SET_COLOR(7);
+		SET_COLOR(0);
 		GotoXY(0, 5);
 		err = fopen_s(&f, file, "r");
 		for (int i = 1; i <= 17; i++)
@@ -143,7 +145,7 @@ void Draw_txt_noeffect(const char* file)
 	int printting = true;
 	GotoXY(0, 5);
 	err = fopen_s(&h, file, "r");
-	while (printting) 
+	while (printting)
 	{
 		hidecursor();
 		SET_COLOR(240);
@@ -155,6 +157,9 @@ void Draw_txt_noeffect(const char* file)
 	fclose(h);
 }
 
-
+void Sound2(int S2) {
+	if (S2 == 1)
+		PlaySound(TEXT("Sound2.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+}
 
 

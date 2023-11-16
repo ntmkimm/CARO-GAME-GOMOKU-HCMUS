@@ -2,6 +2,7 @@
                                                                           -----------
 
 
+<<<<<<< HEAD
                                                             23122040               Nguyen Thi My Kim
 
                                                             23122026               Tran Chan Hiep
@@ -9,3 +10,20 @@
                                                             23122003               Nguyen Van Linh
  
                                                             23122022               Tran Hoang Gia Bao
+=======
+							================================================
+
+                                                        |   23122040               Nguyen Thi My Kim   |
+
+                                                        |   23122026               Tran Chan Hiep      |
+
+                                                        |   23122003               Nguyen Van Linh     |
+ 
+                                                        |   23122022               Tran Hoang Gia Bao  |
+				
+							================================================
+
+							               ________.________
+							         
+							          Intructor: Truong Toan Thinh
+>>>>>>> TranBao-edit

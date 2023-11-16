@@ -18,6 +18,10 @@ void MoveRight(_POINT A[BOARD_SIZE][BOARD_SIZE]);
 void MoveLeft(_POINT A[BOARD_SIZE][BOARD_SIZE]);
 void MoveDown(_POINT A[BOARD_SIZE][BOARD_SIZE]);
 void MoveUp(_POINT A[BOARD_SIZE][BOARD_SIZE]);
+void draw(int a, int k, int _y, int mau, int _x, int loop);
+void Draw(int a, int mau);
+int cl(int mau);
+void title(int a);
 
 #endif
 
