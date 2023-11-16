@@ -13,23 +13,23 @@
 
 enum { BOARD_SIZE = 12 };
 enum { COL = 2 };
-enum { MAX_ROW = 10 };
+enum { MAX_ROW = 7 };
 enum { x_center_console = 70 };
 enum { y_center_console = 17 };
 
 #define LEFT 3
 #define TOP 1
-#define TOP_LEFT (char)218
-#define BOTTOM_LEFT (char)192
-#define TOP_RIGHT (char)191
-#define BOTTOM_RIGHT (char)217
-#define TOP_CROSS (char)194
-#define BOTTOM_CROSS (char)193
-#define CROSS (char)197
-#define	LEFT_CROSS (char)195
-#define RIGHT_CROSS (char)180
-#define HORIZONTAL_LINE (char)196
-#define VERTICAL_LINE (char)179
+#define TOP_LEFT (char)201
+#define BOTTOM_LEFT (char)200
+#define TOP_RIGHT (char)187
+#define BOTTOM_RIGHT (char)188
+#define TOP_CROSS (char)203
+#define BOTTOM_CROSS (char)202
+#define CROSS (char)206
+#define	LEFT_CROSS (char)204
+#define RIGHT_CROSS (char)185
+#define HORIZONTAL_LINE (char)205
+#define VERTICAL_LINE (char) 186
 
 #define arrow_up (char) 72
 #define arrow_down (char) 80
@@ -37,6 +37,7 @@ enum { y_center_console = 17 };
 #define arrow_right (char) 77
 #define enter_char (char) 13
 #define esc_char (char) 27
+#define cursor_char (char) 16
 
 extern int X1;
 extern int Y1;
@@ -73,7 +74,7 @@ void TextColor(int x);
 void GotoXY(int x, int y);
 void horizon(int column, int width, char middle, char out1, char out2);
 void vertical(int row, int height, int x, int y);
-void DrawBoard(int row, int column, int x, int y);
+void DrawBoard(int row, int column, int x, int y, int width, int height);
 int Draw_txt(const char* file);
 void Draw_txt_noeffect(const char* file);
 void Sound2(int S2);

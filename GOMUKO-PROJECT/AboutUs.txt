@@ -1,16 +1,8 @@
-                                                                            Group 6
+ 
+
+                                                                           Group 6
                                                                           -----------
 
-
-<<<<<<< HEAD
-                                                            23122040               Nguyen Thi My Kim
-
-                                                            23122026               Tran Chan Hiep
-
-                                                            23122003               Nguyen Van Linh
- 
-                                                            23122022               Tran Hoang Gia Bao
-=======
 							================================================
 
                                                         |   23122040               Nguyen Thi My Kim   |
@@ -26,4 +18,3 @@
 							               ________.________
 							         
 							          Intructor: Truong Toan Thinh
->>>>>>> TranBao-edit

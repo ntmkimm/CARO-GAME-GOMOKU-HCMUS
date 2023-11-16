@@ -9,19 +9,10 @@ void hidecursor()
 	info.bVisible = FALSE;
 	SetConsoleCursorInfo(consoleHandle, &info);
 }
-void showcursor()
-{
-	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
-	CONSOLE_CURSOR_INFO info;
-	info.dwSize = 5;
-	info.bVisible = TRUE;
-	SetConsoleCursorInfo(consoleHandle, &info);
-}
+
 void SET_COLOR(int color)
 {
 	WORD wColor;
-
-
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
 	if (GetConsoleScreenBufferInfo(hStdOut, &csbi))
@@ -30,6 +21,17 @@ void SET_COLOR(int color)
 		SetConsoleTextAttribute(hStdOut, wColor);
 	}
 }
+
+void showcursor()
+{
+	SET_COLOR(16);
+	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_CURSOR_INFO info;
+	info.dwSize = 5;
+	info.bVisible = TRUE;
+	SetConsoleCursorInfo(consoleHandle, &info);
+}
+
 void CreateConsoleWindow()
 {
 	HWND consoleWindow = GetConsoleWindow();
@@ -40,6 +42,7 @@ void CreateConsoleWindow()
 	SetConsoleTextAttribute(hConsole, 240); //240 for the white background (wowww)
 	GetWindowRect(consoleWindow, &r);
 	MoveWindow(consoleWindow, 0, 0, 1320, 700, 1);
+	ShowScrollBar(consoleWindow, SB_BOTH, FALSE);
 }
 void FixConsoleWindow()
 {
@@ -83,9 +86,9 @@ void vertical(int row, int height, int x, int y)
 		std::cout << VERTICAL_LINE;
 	}
 }
-void DrawBoard(int row, int column, int x, int y)
+void DrawBoard(int row, int column, int x, int y, int width, int height)
 {
-	int width = 3, height = 2;
+	//width = 3; height = 2;
 	for (int i = 0; i <= column; i++)
 		vertical(row, height, x + i * (width + 1), y);
 	for (int i = 0; i <= row; i++)

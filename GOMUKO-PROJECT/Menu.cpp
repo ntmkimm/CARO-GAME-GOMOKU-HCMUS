@@ -117,16 +117,16 @@ void MoveDown1(Menu menu[COL][MAX_ROW], int option)
 void MoveUp1(Menu menu[COL][MAX_ROW], int option)
 {
 	showcursor();
-	if (Y1 > menu[0][0].y) {
+	if (Y1 > menu[0][0].y) 
+	{
 		Y1 -= 2;
 		GotoXY(X1, Y1);
 	}
-
 }
 
 int YESNO_CHOOSE(Menu menu[COL][MAX_ROW])
 {
-
+	DrawBoard(1, 1, x_center_console - 15, y_center_console - 6, 29, 10);
 	menu[0][0].c = "YES";
 	menu[0][1].c = "NO";
 	for (int i = 0; i < 2; i++)
@@ -156,8 +156,13 @@ int LOAD_menu(Menu menu[COL][MAX_ROW])
 {
 	std::string NAME_file;
 	std::vector<std::string> LOAD_files = LOAD_file();
-
-	for (int i = 0; i < LOAD_files.size(); i++)
+	GotoXY(x_center_console - 1, y_center_console - 4);
+	std::cout << "SAVED GAMES";
+	DrawBoard(1, 1, x_center_console - 30, y_center_console - 2, 68, 16);
+//////////////////////////////////////////////////////////////////////////	
+	int size = LOAD_files.size();
+	if (size > MAX_ROW) size = MAX_ROW;
+	for (int i = 0; i < size; i++)
 	{
 		menu[0][i].y = 2 * i + menu[0][0].y; //set coord y for ech option in menu
 		GotoXY(menu[0][i].x, menu[0][i].y);
@@ -169,12 +174,12 @@ int LOAD_menu(Menu menu[COL][MAX_ROW])
 	{
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 's' || _COMMAND == arrow_down)
-			MoveDown1(menu, (int)LOAD_files.size());
+			MoveDown1(menu, (int)size);
 		else if (_COMMAND == 'w' || _COMMAND == arrow_up)
-			MoveUp1(menu, (int)LOAD_files.size());
+			MoveUp1(menu, (int)size);
 		else if (_COMMAND == enter_char)
 		{
-			for (int i = 0; i < (int)LOAD_files.size(); i++)
+			for (int i = 0; i < (int)size; i++)
 				if (X1 == menu[0][i].x - 1 && Y1 == menu[0][i].y)
 					return i;
 		}
@@ -182,7 +187,6 @@ int LOAD_menu(Menu menu[COL][MAX_ROW])
 }
 int MAIN_menu(Menu menu[COL][MAX_ROW])
 {
-
 	CreateConsoleWindow();
 	FixConsoleWindow();
 	system("cls");
@@ -194,6 +198,7 @@ int MAIN_menu(Menu menu[COL][MAX_ROW])
 	title(4);
 	Draw(3, 0);
 
+	DrawBoard(1, 1, x_center_console - 10, y_center_console - 1, 25, 10);
 	menu[0][0].c = "New game";
 	menu[0][1].c = "Load game";
 	menu[0][2].c = "About Us";
