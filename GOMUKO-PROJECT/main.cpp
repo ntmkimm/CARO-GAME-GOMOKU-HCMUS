@@ -35,5 +35,4 @@ int main()
 		if (running == 0)
 			break;
 	}
-
 }

@@ -329,7 +329,7 @@ int NewGame(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& P
 					case -1: case 1: case 0:
 						system("cls");
 						TextColor(240);
-						GotoXY(menu[0][0].x - 12, menu[0][0].y - 3);
+						GotoXY(menu[0][0].x - 11, menu[0][0].y - 3);
 						std::cout << "DO YOU WANT TO PLAY AGAIN?";
 						if (YESNO_CHOOSE(menu) == 1)
 						{
@@ -341,7 +341,7 @@ int NewGame(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& P
 						{
 							system("cls");
 							TextColor(241);
-							GotoXY(menu[0][0].x - 12, menu[0][0].y - 3);
+							GotoXY(menu[0][0].x - 11, menu[0][0].y - 3);
 							std::cout << "DO YOU WANT TO SAVE GAME?";
 							if (YESNO_CHOOSE(menu) == 1)
 								SAVE_game(A, menu, PLAYER1, PLAYER2);
@@ -411,7 +411,7 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 					case -1: case 1: case 0:
 						system("cls");
 						TextColor(240);
-						GotoXY(menu[0][0].x - 12, menu[0][0].y - 3);
+						GotoXY(menu[0][0].x - 11, menu[0][0].y - 3);
 						std::cout << "DO YOU WANT TO PLAY AGAIN?";
 						if (YESNO_CHOOSE(menu) == 1)
 						{

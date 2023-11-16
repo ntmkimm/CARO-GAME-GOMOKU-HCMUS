@@ -126,7 +126,7 @@ void MoveUp1(Menu menu[COL][MAX_ROW], int option)
 
 int YESNO_CHOOSE(Menu menu[COL][MAX_ROW])
 {
-	DrawBoard(1, 1, x_center_console - 15, y_center_console - 6, 29, 10);
+	DrawBoard(1, 1, x_center_console - 14, y_center_console - 5, 29, 9);
 	menu[0][0].c = "YES";
 	menu[0][1].c = "NO";
 	for (int i = 0; i < 2; i++)

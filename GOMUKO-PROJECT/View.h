@@ -77,6 +77,11 @@ void vertical(int row, int height, int x, int y);
 void DrawBoard(int row, int column, int x, int y, int width, int height);
 int Draw_txt(const char* file);
 void Draw_txt_noeffect(const char* file);
+void draw(int a, int k, int _y, int mau, int _x, int loop);
+void Draw(int a, int mau);
+int cl(int mau);
+void title(int a);
+void SoundWin();
 void Sound2(int S2);
 
 #endif
