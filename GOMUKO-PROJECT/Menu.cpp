@@ -23,6 +23,12 @@ void LOAD_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER& PLAYER1, PLAYER& PLAYER
 	std::getline(LOAD_file, PLAYER1.name);
 	std::getline(LOAD_file, PLAYER2.name);
 
+	LOAD_file >> PLAYER1.win;
+	LOAD_file >> PLAYER2.win;
+
+	LOAD_file >> PLAYER1.win;
+	LOAD_file >> PLAYER2.win;
+
 	LOAD_file >> _TURN; //pass _turn of loadfile to _turn variable
 	std::string line;
 	for (int i = 0; i < BOARD_SIZE; i++)
@@ -64,6 +70,12 @@ void SAVE_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER PLAYER1, PLAYER PLAYER2,
 
 	SAVE_file << PLAYER1.name << std::endl;
 	SAVE_file << PLAYER2.name << std::endl;
+
+	SAVE_file << PLAYER1.win << std::endl;
+	SAVE_file << PLAYER2.win << std::endl;
+
+	SAVE_file << PLAYER1.draw << std::endl;
+	SAVE_file << PLAYER2.draw << std::endl;
 
 	SAVE_file << _TURN << std::endl;
 

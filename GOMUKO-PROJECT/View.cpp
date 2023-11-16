@@ -335,7 +335,18 @@ void Draw(int a, int mau) {
 		SetConsoleTextAttribute(console_color, P);
 	}
 }
-
+void DrawX_Turn()
+{
+	Draw(1, 3);
+	Draw(2, 2);
+	Draw(0, 2);
+}
+void DrawO_Turn()
+{
+	Draw(2, 3);
+	Draw(1, 1);
+	Draw(0, 1);
+}
 void title(int a) {
 	switch (a) {
 	case 1:

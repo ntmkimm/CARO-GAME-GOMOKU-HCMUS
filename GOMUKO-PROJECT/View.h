@@ -55,7 +55,8 @@ struct Menu { int x = x_center_console, y = y_center_console; std::string c; }; 
 struct PLAYER
 {
 	std::string name;
-
+	int win = 0;
+	int draw = 0;
 	inline bool operator==(PLAYER& other) const //use this operator to check player's existence, if false return true, inline for not trigger linker error
 	{
 		if (this->name == other.name)
@@ -81,6 +82,8 @@ void draw(int a, int k, int _y, int mau, int _x, int loop);
 void Draw(int a, int mau);
 int cl(int mau);
 void title(int a);
+void DrawX_Turn();
+void DrawO_Turn();
 void SoundWin();
 void Sound2(int S2);
 

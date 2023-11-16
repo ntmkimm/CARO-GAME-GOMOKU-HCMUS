@@ -132,23 +132,27 @@ int TestBoard(_POINT A[BOARD_SIZE][BOARD_SIZE])
 		return 2;
 }
 
-int ProcessFinish(_POINT A[BOARD_SIZE][BOARD_SIZE], int pWhoWin)
+int ProcessFinish(_POINT A[BOARD_SIZE][BOARD_SIZE], int pWhoWin, PLAYER& PLAYER1, PLAYER& PLAYER2)
 {
 	GotoXY(0, A[BOARD_SIZE - 1][BOARD_SIZE - 1].y + 2);
 	switch (pWhoWin)
 	{
 		GotoXY(5, 5);
 	case -1:
+		PLAYER1.win++;
 		PlaySound(0, 0, 0);
 		Draw(3, 0);
 		Draw_txt("WinX.txt");
 		break;
 	case 1:
+		PLAYER2.win++;
 		PlaySound(0, 0, 0);
 		Draw(3, 0);
 		Draw_txt("WinO.txt");
 		break;
 	case 0:
+		PLAYER1.draw++;
+		PLAYER2.draw++;
 		PlaySound(0, 0, 0);
 		Draw(3, 0);
 		Draw_txt("Draw.txt");

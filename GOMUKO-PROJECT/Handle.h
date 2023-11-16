@@ -12,8 +12,7 @@ int diag2(_POINT A[BOARD_SIZE][BOARD_SIZE]);
 int wingame(_POINT A[BOARD_SIZE][BOARD_SIZE]);
 int matrixfull(_POINT A[BOARD_SIZE][BOARD_SIZE]);
 int TestBoard(_POINT A[BOARD_SIZE][BOARD_SIZE]);
-int ProcessFinish(_POINT A[BOARD_SIZE][BOARD_SIZE], int pWhoWin);
-
+int ProcessFinish(_POINT A[BOARD_SIZE][BOARD_SIZE], int pWhoWin, PLAYER& PLAYER1, PLAYER& PLAYER2);
 void MoveRight(_POINT A[BOARD_SIZE][BOARD_SIZE]);
 void MoveLeft(_POINT A[BOARD_SIZE][BOARD_SIZE]);
 void MoveDown(_POINT A[BOARD_SIZE][BOARD_SIZE]);

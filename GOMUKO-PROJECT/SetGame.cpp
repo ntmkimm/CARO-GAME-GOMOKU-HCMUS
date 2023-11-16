@@ -283,6 +283,7 @@ int NewGame(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& P
 {
 	bool validEnter = true;
 	bool running = true;
+	DrawX_Turn();
 	GotoXY(_X, _Y);
 	while (running)
 	{
@@ -312,19 +313,12 @@ int NewGame(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& P
 				}
 				if (validEnter == true)
 				{
+					GotoXY(menu[0][0].x + 10, menu[0][0].y - 5);
 					if (_TURN == 1)
-					{
-						Draw(2, 3);
-						Draw(1, 1);
-						Draw(0, 1);
-					}
+						DrawO_Turn();
 					else
-					{
-						Draw(1, 3);
-						Draw(2, 2);
-						Draw(0, 2);
-					}
-					switch (ProcessFinish(A, TestBoard(A)))
+						DrawX_Turn();
+					switch (ProcessFinish(A, TestBoard(A), PLAYER1, PLAYER2))
 					{
 					case -1: case 1: case 0:
 						system("cls");
@@ -361,10 +355,14 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 {
 	bool validEnter = true;
 	bool running = true;
-	GotoXY(_X, _Y);
 	HANDLE console_color;
 	console_color = GetStdHandle(
 		STD_OUTPUT_HANDLE);
+	if (_TURN == 1)
+		DrawX_Turn();
+	else
+		DrawO_Turn();
+	GotoXY(_X, _Y);
 	while (running)
 	{
 		_COMMAND = toupper(_getch());
@@ -393,20 +391,11 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 				}
 				if (validEnter == true)
 				{
-					GotoXY(menu[0][0].x - 5, menu[0][0].y - 5);
 					if (_TURN == 1)
-					{
-						Draw(2, 3);
-						Draw(1, 1);
-						Draw(0, 1);
-					}
+						DrawO_Turn();
 					else
-					{
-						Draw(1, 3);
-						Draw(2, 2);
-						Draw(0, 2);
-					}
-					switch (ProcessFinish(A, TestBoard(A)))
+						DrawX_Turn();
+					switch (ProcessFinish(A, TestBoard(A), PLAYER1, PLAYER2))
 					{
 					case -1: case 1: case 0:
 						system("cls");
