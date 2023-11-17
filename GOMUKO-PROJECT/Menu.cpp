@@ -23,6 +23,12 @@ void LOAD_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER& PLAYER1, PLAYER& PLAYER
 	std::getline(LOAD_file, PLAYER1.name);
 	std::getline(LOAD_file, PLAYER2.name);
 
+	LOAD_file >> PLAYER1.win;
+	LOAD_file >> PLAYER2.win;
+
+	LOAD_file >> PLAYER1.win;
+	LOAD_file >> PLAYER2.win;
+
 	LOAD_file >> _TURN; //pass _turn of loadfile to _turn variable
 	std::string line;
 	for (int i = 0; i < BOARD_SIZE; i++)
@@ -64,6 +70,12 @@ void SAVE_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER PLAYER1, PLAYER PLAYER2,
 
 	SAVE_file << PLAYER1.name << std::endl;
 	SAVE_file << PLAYER2.name << std::endl;
+
+	SAVE_file << PLAYER1.win << std::endl;
+	SAVE_file << PLAYER2.win << std::endl;
+
+	SAVE_file << PLAYER1.draw << std::endl;
+	SAVE_file << PLAYER2.draw << std::endl;
 
 	SAVE_file << _TURN << std::endl;
 
@@ -117,7 +129,8 @@ void MoveDown1(Menu menu[COL][MAX_ROW], int option)
 void MoveUp1(Menu menu[COL][MAX_ROW], int option)
 {
 	showcursor();
-	if (Y1 > menu[0][0].y) {
+	if (Y1 > menu[0][0].y) 
+	{
 		Y1 -= 2;
 		GotoXY(X1, Y1);
 	}
@@ -125,7 +138,7 @@ void MoveUp1(Menu menu[COL][MAX_ROW], int option)
 
 int YESNO_CHOOSE(Menu menu[COL][MAX_ROW])
 {
-
+	DrawBoard(1, 1, x_center_console - 14, y_center_console - 5, 29, 9);
 	menu[0][0].c = "YES";
 	menu[0][1].c = "NO";
 	for (int i = 0; i < 2; i++)
@@ -155,8 +168,13 @@ int LOAD_menu(Menu menu[COL][MAX_ROW])
 {
 	std::string NAME_file;
 	std::vector<std::string> LOAD_files = LOAD_file();
-
-	for (int i = 0; i < LOAD_files.size(); i++)
+	GotoXY(x_center_console - 1, y_center_console - 4);
+	std::cout << "SAVED GAMES";
+	DrawBoard(1, 1, x_center_console - 30, y_center_console - 2, 68, 16);
+//////////////////////////////////////////////////////////////////////////	
+	int size = LOAD_files.size();
+	if (size > MAX_ROW) size = MAX_ROW;
+	for (int i = 0; i < size; i++)
 	{
 		menu[0][i].y = 2 * i + menu[0][0].y; //set coord y for ech option in menu
 		GotoXY(menu[0][i].x, menu[0][i].y);
@@ -168,12 +186,12 @@ int LOAD_menu(Menu menu[COL][MAX_ROW])
 	{
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 's' || _COMMAND == arrow_down)
-			MoveDown1(menu, (int)LOAD_files.size());
+			MoveDown1(menu, (int)size);
 		else if (_COMMAND == 'w' || _COMMAND == arrow_up)
-			MoveUp1(menu, (int)LOAD_files.size());
+			MoveUp1(menu, (int)size);
 		else if (_COMMAND == enter_char)
 		{
-			for (int i = 0; i < (int)LOAD_files.size(); i++)
+			for (int i = 0; i < (int)size; i++)
 				if (X1 == menu[0][i].x - 1 && Y1 == menu[0][i].y)
 					return i;
 		}
@@ -185,12 +203,21 @@ int MAIN_menu(Menu menu[COL][MAX_ROW])
 	FixConsoleWindow();
 	system("cls");
 
+
+	title(1);
+	title(2);
+	title(3);
+	title(4);
+	Draw(3, 0);
+
+	DrawBoard(1, 1, x_center_console - 10, y_center_console - 1, 25, 10);
 	menu[0][0].c = "New game";
 	menu[0][1].c = "Load game";
 	menu[0][2].c = "About Us";
 	menu[0][3].c = "Exit";
+	menu[0][4].c = "Settings";
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		menu[0][i].y = 2 * i + menu[0][0].y; //set coord y for ech option in menu
 		GotoXY(menu[0][i].x, menu[0][i].y);
@@ -202,9 +229,9 @@ int MAIN_menu(Menu menu[COL][MAX_ROW])
 	{
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 's' or _COMMAND == arrow_down)
-			MoveDown1(menu, 4);
+			MoveDown1(menu, 5);
 		else if (_COMMAND == 'w' or _COMMAND == arrow_up)
-			MoveUp1(menu, 4);
+			MoveUp1(menu, 5);
 		else if (_COMMAND == enter_char)
 		{
 			if (X1 == menu[0][0].x - 1 && Y1 == menu[0][0].y)
@@ -215,6 +242,8 @@ int MAIN_menu(Menu menu[COL][MAX_ROW])
 				return 3;
 			else if (X1 == menu[0][3].x - 1 && Y1 == menu[0][3].y)
 				return 4;
+			else if (X1 == menu[0][4].x - 1 && Y1 == menu[0][4].y)
+				return 5;
 		}
 	}
 }

@@ -45,4 +45,40 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="AboutUs.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Draw.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="ListGame.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="WinO.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="WinX.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitattributes">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include=".gitignore">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="README.md">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Sound2.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="Untitled video - Made with Clipchamp.mp4">
+      <Filter>Resource Files</Filter>
+    </Media>
+  </ItemGroup>
 </Project>
