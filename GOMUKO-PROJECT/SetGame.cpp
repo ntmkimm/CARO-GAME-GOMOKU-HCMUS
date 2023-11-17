@@ -197,7 +197,9 @@ void ShowPlayerInfo(PLAYER& PLAYER1, PLAYER& PLAYER2)
 	DrawBoard(1, 1, x_center_console + 24, y_center_console - 7, 47, 24);
 	using std::setw;
 	GotoXY(113, 14);
+	TextColor(116);
 	std::cout << "PLAYER INFO";
+	TextColor(240);
 	GotoXY(100, 19);
 	std::cout << setw(7) << "NAME" << setw(16) << "COUNT MOVE" << setw(13) << "WIN";
 	GotoXY(100, 23);
@@ -215,7 +217,9 @@ int Settings(Menu menu[COL][MAX_ROW]) {
 	system("cls");
 	DrawBoard(1, 1, x_center_console - 40, y_center_console - 3, 90, 8);
 	GotoXY(x_center_console - 25, y_center_console + 1);
+	TextColor(116);
 	std::cout << "SETTINGS";
+	TextColor(240);
 	menu[0][0].c = "Color   X   _   O  :";
 	menu[0][1].c = "Background Music   :";
 
@@ -389,14 +393,15 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 		ShowPlayerInfo(PLAYER1, PLAYER2);
 		if (TestBoard(A) != 2 && count == 0)
 		{
-			GotoXY(x_center_console - 5, y_center_console - 12);
-			TextColor(207); // white text with background red
+			GotoXY(x_center_console - 2, y_center_console - 12);
+			TextColor(116); // white text with background red
 			std::cout << "THIS GAME IS OVER, PRESS 'CONTINUE' TO PLAY AGAIN, OR 'EXIT AND SAVE'";
 			int option = ESC_menuLoad(menu);
 			if (option == 1)
 			{
-				system("cls");
 				StartGame(A);
+				ShowGuide();
+				ShowPlayerInfo(PLAYER1, PLAYER2);
 			}
 			else
 				break;

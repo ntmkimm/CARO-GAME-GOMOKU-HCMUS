@@ -167,9 +167,10 @@ int LOAD_menu(Menu menu[COL][MAX_ROW])
 	std::string NAME_file;
 	std::vector<std::string> LOAD_files = LOAD_file();
 	GotoXY(x_center_console - 1, y_center_console - 4);
+	TextColor(116);
 	std::cout << "SAVED GAMES";
-	DrawBoard(1, 1, x_center_console - 30, y_center_console - 2, 68, 16);
-//////////////////////////////////////////////////////////////////////////	
+	TextColor(240);
+	DrawBoard(1, 1, x_center_console - 30, y_center_console - 6, 68, 22);
 	int size = LOAD_files.size();
 	if (size > MAX_ROW) size = MAX_ROW;
 	for (int i = 0; i < size; i++)
