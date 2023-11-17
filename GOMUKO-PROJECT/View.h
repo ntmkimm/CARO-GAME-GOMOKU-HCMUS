@@ -9,6 +9,7 @@
 #include <fstream>
 #include <mmsystem.h>
 #include <iomanip>
+#include <vector>
 
 #pragma comment(lib,"winmm.lib")
 
@@ -18,6 +19,7 @@ enum { MAX_ROW = 7 };
 enum { x_center_console = 70 };
 enum { y_center_console = 17 };
 
+#define SIZE 12
 #define LEFT 3
 #define TOP 1
 #define TOP_LEFT (char)201
@@ -57,13 +59,6 @@ struct PLAYER
 {
 	std::string name;
 	int win = 0;
-	inline bool operator==(PLAYER& other) const //use this operator to check player's existence, if false return true, inline for not trigger linker error
-	{
-		if (this->name == other.name)
-			return true;
-		return false; //make comparation of this player name with other players' name in the File
-	}
-
 };
 
 void hidecursor();

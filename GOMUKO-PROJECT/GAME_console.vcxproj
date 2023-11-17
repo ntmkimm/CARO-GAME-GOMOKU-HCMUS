@@ -127,12 +127,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AI.h" />
     <ClInclude Include="Handle.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="SetGame.h" />
     <ClInclude Include="View.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AI.cpp" />
     <ClCompile Include="Handle.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />

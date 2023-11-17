@@ -202,21 +202,21 @@ int MAIN_menu(Menu menu[COL][MAX_ROW])
 	FixConsoleWindow();
 	system("cls");
 
-
 	title(1);
 	title(2);
 	title(3);
 	title(4);
 	Draw(3, 0, 15);
 
-	DrawBoard(1, 1, x_center_console - 10, y_center_console - 1, 25, 10);
+	DrawBoard(1, 1, x_center_console - 10, y_center_console - 1, 25, 13);
 	menu[0][0].c = "New game";
-	menu[0][1].c = "Load game";
-	menu[0][2].c = "About Us";
-	menu[0][3].c = "Exit";
-	menu[0][4].c = "Settings";
+	menu[0][1].c = "Play BOT";
+	menu[0][2].c = "Load game";
+	menu[0][3].c = "About Us";
+	menu[0][4].c = "Exit";
+	menu[0][5].c = "Settings";
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		menu[0][i].y = 2 * i + menu[0][0].y; //set coord y for ech option in menu
 		GotoXY(menu[0][i].x, menu[0][i].y);
@@ -228,9 +228,9 @@ int MAIN_menu(Menu menu[COL][MAX_ROW])
 	{
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 's' or _COMMAND == arrow_down)
-			MoveDown1(menu, 5);
+			MoveDown1(menu, 6);
 		else if (_COMMAND == 'w' or _COMMAND == arrow_up)
-			MoveUp1(menu, 5);
+			MoveUp1(menu, 6);
 		else if (_COMMAND == enter_char)
 		{
 			if (X1 == menu[0][0].x - 1 && Y1 == menu[0][0].y)
@@ -243,6 +243,8 @@ int MAIN_menu(Menu menu[COL][MAX_ROW])
 				return 4;
 			else if (X1 == menu[0][4].x - 1 && Y1 == menu[0][4].y)
 				return 5;
+			else if (X1 == menu[0][5].x - 1 && Y1 == menu[0][5].y)
+				return 6;
 		}
 	}
 }

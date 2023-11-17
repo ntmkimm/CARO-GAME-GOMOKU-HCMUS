@@ -1,4 +1,5 @@
 #include "SetGame.h"
+#include "AI.h"
 
 void StartGame(_POINT A[BOARD_SIZE][BOARD_SIZE])
 {
@@ -488,12 +489,17 @@ int MAINMENU_run(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAY
 		break;
 	case 2:
 		system("cls");
+		StartGame(A);
+		Playwithcomputer(A, menu, PLAYER1, PLAYER2);
+		break;
+	case 3:
+		system("cls");
 		file_chosen = LOADMENU_run(LOAD_menu(menu));
 		LOAD_game(A, PLAYER1, PLAYER2, file_chosen);
 		NewGameLoad(A, menu, PLAYER1, PLAYER2);
 		SAVE_data(A, PLAYER1, PLAYER2, file_chosen);
 		break;
-	case 3:
+	case 4:
 		system("cls");
 		while (true)
 		{
@@ -509,11 +515,11 @@ int MAINMENU_run(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAY
 			}
 		}
 		break;
-	case 4:
+	case 5:
 		system("cls");
 		ret = 0;
 		break;
-	case 5:
+	case 6:
 		Settings(menu);
 		GotoXY(0, 0);
 		break;
@@ -521,5 +527,68 @@ int MAINMENU_run(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAY
 	return ret;
 }
 
-
+int Playwithcomputer(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& PLAYER1, PLAYER& PLAYER2)
+{
+	PLAYER1.name = "YOU";
+	PLAYER2.name = "BOT";
+	int t = 2;
+	bool validEnter = true;
+	bool running = true;
+	GotoXY(_X, _Y);
+	bool turn = true;
+	while (t == 2) {
+		if (turn) {
+			while (running)
+			{
+				DrawX();
+				DrawO();
+				ShowGuide();
+				ShowPlayerInfo(PLAYER1, PLAYER2);
+				_COMMAND = toupper(_getch());
+				if (_COMMAND == esc_char)
+				{
+					//running = ESC_menu(A, menu, PLAYER1, PLAYER2);
+				}
+				else
+				{
+					if (_COMMAND == arrow_left) MoveLeft(A);
+					else if (_COMMAND == arrow_up) MoveUp(A);
+					else if (_COMMAND == arrow_down) MoveDown(A);
+					else if (_COMMAND == arrow_right) MoveRight(A);
+					else if (_COMMAND == enter_char)
+					{
+						switch (CheckBoard(A, _X, _Y))
+						{
+						case -1:
+							CountMoveP1++;
+							TextColor(Color_X);
+							std::cout << "x"; break;
+						}
+						turn = !turn; break;
+					}
+					t = TestBoard(A);
+					_TURN = !_TURN;
+				}
+			}
+		}
+		else
+		{
+			Move bestMove = findfirstBestmove(A);
+			A[bestMove.x][bestMove.y].c = 1;
+			GotoXY(A[bestMove.x][bestMove.y].x, A[bestMove.x][bestMove.y].y);
+			Sleep(500);
+			CountMoveP2++;
+			TextColor(Color_O);
+			std::cout << "o";
+			turn = !turn;
+		}
+		t = TestBoard(A);
+		_TURN = !_TURN;
+	}
+	ProcessFinish(A, t, PLAYER1, PLAYER2);
+	Sleep(2500);
+	system("cls");
+	TextColor(240);
+	return 1;
+}
 

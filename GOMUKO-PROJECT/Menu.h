@@ -2,9 +2,6 @@
 #ifndef _MENU_
 #define _MENU_
 
-#include <vector>
-#include <string>
-#include <fstream>
 #include "View.h"
 #include "Handle.h"
 
