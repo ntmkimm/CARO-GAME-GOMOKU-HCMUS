@@ -1,4 +1,4 @@
-#include "View.h"
+﻿#include "View.h"
 
 
 void hidecursor()
@@ -102,7 +102,19 @@ void DrawBoard(int row, int column, int x, int y, int width, int height)
 			horizon(column, width, CROSS, LEFT_CROSS, RIGHT_CROSS);
 	}
 }
-
+void ShowGuide()
+{
+	hidecursor();
+	TextColor(240);
+	DrawBoard(1, 1, 3, 27, 47, 7);
+	using std::setw;
+	GotoXY(5, 29);
+	std::cout << setw(7) << "[KEY]" << setw(10) << char(27) << char(24) << char(25) << char(26) << setw(10) << "ENTER" << setw(10) << "ESC";
+	GotoXY(5, 32);
+	std::cout << setw(7) << "[FUNCTION]" << setw(10) << "MOVE" << setw(10) << "CHOOSE" << setw(10) << "PAUSE";
+	GotoXY(_X, _Y);
+	showcursor();
+}
 int Draw_txt(const char* file)
 {
 	FILE* f;
@@ -115,7 +127,6 @@ int Draw_txt(const char* file)
 		if (_kbhit())
 		{
 			int h = _getch();
-			SoundWin();
 			if (h == 13)
 				return 0;
 			return 0;
@@ -169,7 +180,7 @@ int cl(int mau) {
 		return 187;
 }
 
-void draw(int a, int k, int _y, int mau, int _x, int loop) {
+void draw(int a, int k, int _y, int mau, int _x, int loop, int K) {
 	HANDLE console_color;
 	console_color = GetStdHandle(STD_OUTPUT_HANDLE);
 	int P, n = 10;
@@ -178,14 +189,14 @@ void draw(int a, int k, int _y, int mau, int _x, int loop) {
 		P = mau;
 		SetConsoleTextAttribute(console_color, P);
 		for (int i = 0; i <= 4; i++) {
-			GotoXY(x_center_console + 2 + _y + 4 * k, y_center_console - n - i);
+			GotoXY(x_center_console + 2 + _y + 4 * k + K, y_center_console - n - i);
 			printf(" ");
 		}
 		break;
 	case 2:
 		P = mau;
 		SetConsoleTextAttribute(console_color, P);
-		GotoXY(x_center_console + 2 + 4 * k, y_center_console - n - 3 + _y);
+		GotoXY(x_center_console + 2 + 4 * k + K, y_center_console - n - 3 + _y);
 		printf("   ");
 		break;
 	case 4:
@@ -193,7 +204,7 @@ void draw(int a, int k, int _y, int mau, int _x, int loop) {
 		SetConsoleTextAttribute(console_color, P);
 		for (int j = 0; j < loop; j++) {
 			for (int i = 0; i < 2; i++) {
-				GotoXY(x_center_console - 17 + 11 * (k - 1) + _x, y_center_console - 5 - _y - i - 2 * j);
+				GotoXY(x_center_console - 17 + 11 * (k - 1) + _x + K, y_center_console - 5 - _y - i - 2 * j);
 				printf(" ");
 			}
 		}
@@ -203,7 +214,7 @@ void draw(int a, int k, int _y, int mau, int _x, int loop) {
 		SetConsoleTextAttribute(console_color, P);
 		for (int j = 0; j < loop; j++) {
 			for (int i = 0; i < 3; i++) {
-				GotoXY(x_center_console - 17 + 11 * (k - 1) + _x, y_center_console - 5 - _y - i - 3 * j);
+				GotoXY(x_center_console - 17 + 11 * (k - 1) + _x + K, y_center_console - 5 - _y - i - 3 * j);
 				printf(" ");
 			}
 		}
@@ -211,7 +222,7 @@ void draw(int a, int k, int _y, int mau, int _x, int loop) {
 	case 6:
 		P = cl(mau);
 		SetConsoleTextAttribute(console_color, P);
-		GotoXY(x_center_console - 17 + 11 * (k - 1) + _x, y_center_console - 5 - _y);
+		GotoXY(x_center_console - 17 + 11 * (k - 1) + _x + K, y_center_console - 5 - _y);
 		printf(" ");
 		break;
 	case 7:
@@ -220,16 +231,16 @@ void draw(int a, int k, int _y, int mau, int _x, int loop) {
 		int b = 0;
 		if (_y == -1)
 			b = 1;
-		GotoXY(x_center_console + 2 + 4 * k + b, y_center_console - n - 3 + _y);
+		GotoXY(x_center_console + 2 + 4 * k + b + K, y_center_console - n - 3 + _y);
 		printf("  ");
 		break;
 	}
 }
-void Draw(int a, int mau) {
+void Draw(int a, int mau, int K) {
 	HANDLE console_color;
 	console_color = GetStdHandle(STD_OUTPUT_HANDLE);
 	int P, n = 10, h = 0;
-	GotoXY(x_center_console, y_center_console - n);
+	GotoXY(x_center_console + K, y_center_console - n);
 	if (Color_X == 241)
 	{
 		if (mau == 1)
@@ -253,44 +264,44 @@ void Draw(int a, int mau) {
 	}
 	switch (a) {
 	case 0:
-		GotoXY(x_center_console + 2, y_center_console - n - 5);
+		GotoXY(x_center_console + 2 + K, y_center_console - n - 5);
 		for (int i = 0; i <= 6; i++) {
 			switch (i) {
 			case 0:
 				SetConsoleTextAttribute(console_color, P);
 				printf("  ");
-				GotoXY(x_center_console + 3, y_center_console - 4 - n);
+				GotoXY(x_center_console + 3 + K, y_center_console - 4 - n);
 				printf(" ");
 				break;
 			case 1:
-				draw(7, i, -1, P, 0, 0);
-				draw(7, i, 3, P, 0, 0);
-				GotoXY(x_center_console + 6, y_center_console - 13);
+				draw(7, i, -1, P, 0, 0, K);
+				draw(7, i, 3, P, 0, 0, K);
+				GotoXY(x_center_console + 6 + K, y_center_console - 13);
 				printf(" ");
-				GotoXY(x_center_console + 7, y_center_console - 12);
+				GotoXY(x_center_console + 7 + K, y_center_console - 12);
 				printf(" ");
-				GotoXY(x_center_console + 8, y_center_console - 11);
+				GotoXY(x_center_console + 8 + K, y_center_console - 11);
 				printf(" ");
 				break;
 			case 3:
-				draw(1, i, 1, P, 0, 0);
-				draw(2, i, -1, P, 0, 0);
+				draw(1, i, 1, P, 0, 0, K);
+				draw(2, i, -1, P, 0, 0, K);
 				break;
 			case 4:
-				draw(1, i, 0, P, 0, 0);
-				draw(2, i, 3, P, 0, 0);
-				draw(1, i, 2, P, 0, 0);
+				draw(1, i, 0, P, 0, 0, K);
+				draw(2, i, 3, P, 0, 0, K);
+				draw(1, i, 2, P, 0, 0, K);
 				break;
 			case 5:
-				draw(1, i, 0, P, 0, 0);
-				draw(2, i, -1, P, 0, 0);
-				GotoXY(x_center_console + 24, y_center_console - 13);
+				draw(1, i, 0, P, 0, 0, K);
+				draw(2, i, -1, P, 0, 0, K);
+				GotoXY(x_center_console + 24 + K, y_center_console - 13);
 				printf(" ");
 				break;
 			case 6:
-				draw(1, i, 0, P, 0, 0);
-				draw(2, i, -1, P, 0, 0);
-				draw(1, i, 2, P, 0, 0);
+				draw(1, i, 0, P, 0, 0, K);
+				draw(2, i, -1, P, 0, 0, K);
+				draw(1, i, 2, P, 0, 0, K);
 				break;
 			case 7:
 
@@ -303,7 +314,7 @@ void Draw(int a, int mau) {
 			P = 255;
 		for (int i = 0; i <= 1; i++) {
 			int t = 1;
-			GotoXY(x_center_console + h - 4, y_center_console - n);
+			GotoXY(x_center_console + h - 4 + K, y_center_console - n);
 			for (int j = 1; j <= 6; j++) {
 				int k = j;
 				if (j >= 3) {
@@ -312,7 +323,7 @@ void Draw(int a, int mau) {
 				}
 				SetConsoleTextAttribute(console_color, P);
 				printf("  ");
-				GotoXY(x_center_console - pow(-1, i) * k + h - 4, y_center_console - j - n);
+				GotoXY(x_center_console - pow(-1, i) * k + h - 4 + K, y_center_console - j - n);
 			}
 			h = 2;
 		}
@@ -321,11 +332,11 @@ void Draw(int a, int mau) {
 		if (mau == 3)
 			P = 255;
 		for (int i = 0; i <= 1; i++) {
-			GotoXY(x_center_console + h - 1, y_center_console - n);
+			GotoXY(x_center_console + h - 1 + K, y_center_console - n);
 			for (int j = 1; j <= 6; j++) {
 				SetConsoleTextAttribute(console_color, P);
 				printf("  ");
-				GotoXY(x_center_console - pow(-1, i) * j + h - 1, y_center_console - j - n);
+				GotoXY(x_center_console - pow(-1, i) * j + h - 1 + K, y_center_console - j - n);
 			}
 			h = -5;
 		}
@@ -337,116 +348,124 @@ void Draw(int a, int mau) {
 }
 void DrawX_Turn()
 {
-	Draw(1, 3);
-	Draw(2, 2);
-	Draw(0, 2);
+	hidecursor();
+	HANDLE console_color;
+	console_color = GetStdHandle(STD_OUTPUT_HANDLE);
+	Draw(1, 3, 36);
+	Draw(2, 2, 36);
+	Draw(0, 2, 36);
+	showcursor();
 }
 void DrawO_Turn()
 {
-	Draw(2, 3);
-	Draw(1, 1);
-	Draw(0, 1);
+	hidecursor();
+	HANDLE console_color;
+	console_color = GetStdHandle(STD_OUTPUT_HANDLE);
+	Draw(2, 3, 36);
+	Draw(1, 1, 36);
+	Draw(0, 1, 36);
+	showcursor();
 }
 void title(int a) {
 	switch (a) {
 	case 1:
-		draw(5, a, 2, 3, -1, 1);
-		draw(4, a, 5, 3, -1, 1);
-		draw(6, a, 1, 3, 0, 1);
-		draw(6, a, 7, 3, 0, 1);
-		draw(5, a, 2, 1, 0, 1);
-		draw(4, a, 5, 1, 0, 1);
-		draw(6, a, 0, 3, 1, 1);
-		draw(6, a, 8, 3, 1, 1);
-		draw(5, a, 1, 1, 1, 1);
-		draw(4, a, 4, 1, 1, 2);
-		draw(5, a, 0, 1, 2, 1);
-		draw(5, a, 6, 1, 2, 1);
-		draw(5, a, 3, 2, 2, 1);
+		draw(5, a, 2, 3, -1, 1, 0);
+		draw(4, a, 5, 3, -1, 1, 0);
+		draw(6, a, 1, 3, 0, 1, 0);
+		draw(6, a, 7, 3, 0, 1, 0);
+		draw(5, a, 2, 1, 0, 1, 0);
+		draw(4, a, 5, 1, 0, 1, 0);
+		draw(6, a, 0, 3, 1, 1, 0);
+		draw(6, a, 8, 3, 1, 1, 0);
+		draw(5, a, 1, 1, 1, 1, 0);
+		draw(4, a, 4, 1, 1, 2, 0);
+		draw(5, a, 0, 1, 2, 1, 0);
+		draw(5, a, 6, 1, 2, 1, 0);
+		draw(5, a, 3, 2, 2, 1, 0);
 		for (int i = 3; i < 6; i++) {
-			draw(4, a, 0, 1, i, 1);
-			draw(4, a, 7, 1, i, 1);
+			draw(4, a, 0, 1, i, 1, 0);
+			draw(4, a, 7, 1, i, 1, 0);
 		}
-		draw(6, a, 2, 2, 3, 1);
-		draw(6, a, 6, 2, 3, 1);
-		draw(6, a, 2, 2, 4, 1);
-		draw(6, a, 6, 2, 4, 1);
-		draw(6, a, 2, 3, 5, 1);
-		draw(6, a, 6, 3, 5, 1);
-		draw(4, a, 0, 1, 6, 1);
-		draw(5, a, 6, 1, 6, 1);
-		draw(6, a, 2, 3, 6, 1);
-		draw(6, a, 5, 3, 6, 1);
-		draw(4, a, 1, 1, 7, 1);
-		draw(5, a, 5, 1, 7, 1);
-		draw(6, a, 0, 2, 7, 1);
-		draw(6, a, 8, 2, 7, 1);
-		draw(4, a, 1, 2, 8, 1);
-		draw(5, a, 5, 2, 8, 1);
+		draw(6, a, 2, 2, 3, 1, 0);
+		draw(6, a, 6, 2, 3, 1, 0);
+		draw(6, a, 2, 2, 4, 1, 0);
+		draw(6, a, 6, 2, 4, 1, 0);
+		draw(6, a, 2, 3, 5, 1, 0);
+		draw(6, a, 6, 3, 5, 1, 0);
+		draw(4, a, 0, 1, 6, 1, 0);
+		draw(5, a, 6, 1, 6, 1, 0);
+		draw(6, a, 2, 3, 6, 1, 0);
+		draw(6, a, 5, 3, 6, 1, 0);
+		draw(4, a, 1, 1, 7, 1, 0);
+		draw(5, a, 5, 1, 7, 1, 0);
+		draw(6, a, 0, 2, 7, 1, 0);
+		draw(6, a, 8, 2, 7, 1, 0);
+		draw(4, a, 1, 2, 8, 1, 0);
+		draw(5, a, 5, 2, 8, 1, 0);
 		break;
 	case 2:
 		for (int i = 0; i <= 1; i++) {
-			draw(4, a, 0, 1, pow(-1, i) * 0 + 6 * i, 1);
-			draw(4, a, 0, 1, pow(-1, i) * 1 + 6 * i, 3);
-			draw(4, a, 2, 1, pow(-1, i) * 2 + 6 * i, 3);
-			draw(4, a, 0, 3 - i * 1, pow(-1, i) * (-1) + 6 * i, 1);
-			draw(4, a, 2, 3 - i * 1, pow(-1, i) * 0 + 6 * i, 2);
-			draw(4, a, 6, 3 - i * 1, pow(-1, i) * 1 + 6 * i, 1);
-			draw(6, a, 8, 3 - i * 1, pow(-1, i) * 2 + 6 * i, 1);
-			draw(4, a, 0, 2 + i * 1, pow(-1, i) * 2 + 6 * i, 1);
+			draw(4, a, 0, 1, pow(-1, i) * 0 + 6 * i, 1, 0);
+			draw(4, a, 0, 1, pow(-1, i) * 1 + 6 * i, 3, 0);
+			draw(4, a, 2, 1, pow(-1, i) * 2 + 6 * i, 3, 0);
+			draw(4, a, 0, 3 - i * 1, pow(-1, i) * (-1) + 6 * i, 1, 0);
+			draw(4, a, 2, 3 - i * 1, pow(-1, i) * 0 + 6 * i, 2, 0);
+			draw(4, a, 6, 3 - i * 1, pow(-1, i) * 1 + 6 * i, 1, 0);
+			draw(6, a, 8, 3 - i * 1, pow(-1, i) * 2 + 6 * i, 1, 0);
+			draw(4, a, 0, 2 + i * 1, pow(-1, i) * 2 + 6 * i, 1, 0);
 		}
-		draw(4, a, 7, 1, 3, 1);
-		draw(6, a, 3, 1, 3, 1);
+		draw(4, a, 7, 1, 3, 1, 0);
+		draw(6, a, 3, 1, 3, 1, 0);
 		break;
 	case 3:
-		draw(6, a, 0, 3, -1, 1);
-		draw(6, a, 0, 1, 0, 1);
-		draw(4, a, 1, 3, 0, 4);
+		draw(6, a, 0, 3, -1, 1, 0);
+		draw(6, a, 0, 1, 0, 1, 0);
+		draw(4, a, 1, 3, 0, 4, 0);
 		for (int i = 1; i <= 2; i++) {
-			draw(4, a, 0, 1, i, 4);
-			draw(5, a, 6, 1, i, 1);
+			draw(4, a, 0, 1, i, 4, 0);
+			draw(5, a, 6, 1, i, 1, 0);
 		}
 		for (int i = 3; i <= 4; i++) {
-			draw(6, a, 3, 1, i, 1);
-			draw(6, a, 8, 1, i, 1);
+			draw(6, a, 3, 1, i, 1, 0);
+			draw(6, a, 8, 1, i, 1, 0);
 		}
-		draw(5, a, 0, 2, 3, 1);
-		draw(4, a, 4, 2, 3, 2);
-		draw(6, a, 2, 3, 4, 1);
-		draw(6, a, 7, 3, 4, 1);
-		draw(5, a, 2, 1, 5, 1);
-		draw(4, a, 7, 1, 5, 1);
-		draw(4, a, 0, 3, 5, 1);
-		draw(4, a, 5, 3, 5, 1);
-		draw(5, a, 0, 1, 6, 1);
-		draw(4, a, 4, 1, 6, 2);
-		draw(6, a, 3, 2, 6, 1);
-		draw(6, a, 8, 2, 6, 1);
-		draw(6, a, 0, 1, 7, 1);
-		draw(4, a, 1, 2, 7, 1);
-		draw(4, a, 4, 2, 7, 2);
-		draw(6, a, 0, 2, 8, 1);
+		draw(5, a, 0, 2, 3, 1, 0);
+		draw(4, a, 4, 2, 3, 2, 0);
+		draw(6, a, 2, 3, 4, 1, 0);
+		draw(6, a, 7, 3, 4, 1, 0);
+		draw(5, a, 2, 1, 5, 1, 0);
+		draw(4, a, 7, 1, 5, 1, 0);
+		draw(4, a, 0, 3, 5, 1, 0);
+		draw(4, a, 5, 3, 5, 1, 0);
+		draw(5, a, 0, 1, 6, 1, 0);
+		draw(4, a, 4, 1, 6, 2, 0);
+		draw(6, a, 3, 2, 6, 1, 0);
+		draw(6, a, 8, 2, 6, 1, 0);
+		draw(6, a, 0, 1, 7, 1, 0);
+		draw(4, a, 1, 2, 7, 1, 0);
+		draw(4, a, 4, 2, 7, 2, 0);
+		draw(6, a, 0, 2, 8, 1, 0);
 		break;
 	case 4:
 		for (int i = 0; i <= 1; i++) {
-			draw(5, a, 2, 1, pow(-1, i) * 0 + 7 * i, 1);
-			draw(4, a, 5, 1, pow(-1, i) * 0 + 7 * i, 1);
-			draw(4, a, 1, 1, pow(-1, i) * 1 + 7 * i, 2);
-			draw(5, a, 5, 1, pow(-1, i) * 1 + 7 * i, 1);
-			draw(5, a, 0, 1, pow(-1, i) * 2 + 7 * i, 1);
-			draw(5, a, 6, 1, pow(-1, i) * 2 + 7 * i, 1);
-			draw(4, a, 0, 1, pow(-1, i) * 3 + 7 * i, 1);
-			draw(4, a, 7, 1, pow(-1, i) * 3 + 7 * i, 1);
+			draw(5, a, 2, 1, pow(-1, i) * 0 + 7 * i, 1, 0);
+			draw(4, a, 5, 1, pow(-1, i) * 0 + 7 * i, 1, 0);
+			draw(4, a, 1, 1, pow(-1, i) * 1 + 7 * i, 2, 0);
+			draw(5, a, 5, 1, pow(-1, i) * 1 + 7 * i, 1, 0);
+			draw(5, a, 0, 1, pow(-1, i) * 2 + 7 * i, 1, 0);
+			draw(5, a, 6, 1, pow(-1, i) * 2 + 7 * i, 1, 0);
+			draw(4, a, 0, 1, pow(-1, i) * 3 + 7 * i, 1, 0);
+			draw(4, a, 7, 1, pow(-1, i) * 3 + 7 * i, 1, 0);
 
-			draw(5, a, 2, 3 - 1 * i, pow(-1, i) * (-1) + 7 * i, 1);
-			draw(4, a, 5, 3 - 1 * i, pow(-1, i) * (-1) + 7 * i, 1);
-			draw(6, a, 1, 3 - 1 * i, pow(-1, i) * 0 + 7 * i, 1);
-			draw(6, a, 7, 3 - 1 * i, pow(-1, i) * 0 + 7 * i, 1);
-			draw(6, a, 0, 3 - 1 * i, pow(-1, i) * 1 + 7 * i, 1);
-			draw(6, a, 8, 3 - 1 * i, pow(-1, i) * 2 + 7 * i, 1);
-			draw(5, a, 3, 3 - 1 * i, pow(-1, i) * 2 + 7 * i, 1);
-			draw(6, a, 2, 3 - 1 * i, pow(-1, i) * 3 + 7 * i, 1);
-			draw(6, a, 6, 3 - 1 * i, pow(-1, i) * 3 + 7 * i, 1);
+			draw(5, a, 2, 3 - 1 * i, pow(-1, i) * (-1) + 7 * i, 1, 0);
+			draw(4, a, 5, 3 - 1 * i, pow(-1, i) * (-1) + 7 * i, 1, 0);
+			draw(6, a, 1, 3 - 1 * i, pow(-1, i) * 0 + 7 * i, 1, 0);
+			draw(6, a, 7, 3 - 1 * i, pow(-1, i) * 0 + 7 * i, 1, 0);
+			draw(6, a, 0, 3 - 1 * i, pow(-1, i) * 1 + 7 * i, 1, 0);
+			draw(6, a, 8, 3 - 1 * i, pow(-1, i) * 2 + 7 * i, 1, 0);
+			draw(5, a, 3, 3 - 1 * i, pow(-1, i) * 2 + 7 * i, 1, 0);
+			draw(6, a, 2, 3 - 1 * i, pow(-1, i) * 3 + 7 * i, 1, 0);
+			draw(6, a, 6, 3 - 1 * i, pow(-1, i) * 3 + 7 * i, 1, 0);
 		}
 		break;
 	}

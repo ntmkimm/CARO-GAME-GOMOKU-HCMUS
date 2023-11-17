@@ -8,6 +8,7 @@
 #include <string>
 #include <fstream>
 #include <mmsystem.h>
+#include <iomanip>
 
 #pragma comment(lib,"winmm.lib")
 
@@ -46,7 +47,7 @@ extern bool _TURN;
 extern int _X, _Y;
 extern int S1, S2;
 extern int Color_X, Color_O;
-
+extern int CountMoveP1, CountMoveP2;
 
 struct _POINT { int x, y, c; };
 
@@ -56,7 +57,6 @@ struct PLAYER
 {
 	std::string name;
 	int win = 0;
-	int draw = 0;
 	inline bool operator==(PLAYER& other) const //use this operator to check player's existence, if false return true, inline for not trigger linker error
 	{
 		if (this->name == other.name)
@@ -76,10 +76,11 @@ void GotoXY(int x, int y);
 void horizon(int column, int width, char middle, char out1, char out2);
 void vertical(int row, int height, int x, int y);
 void DrawBoard(int row, int column, int x, int y, int width, int height);
+void ShowGuide();
 int Draw_txt(const char* file);
 void Draw_txt_noeffect(const char* file);
-void draw(int a, int k, int _y, int mau, int _x, int loop);
-void Draw(int a, int mau);
+void draw(int a, int k, int _y, int mau, int _x, int loop, int K);
+void Draw(int a, int mau, int K);
 int cl(int mau);
 void title(int a);
 void DrawX_Turn();

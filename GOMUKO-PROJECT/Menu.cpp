@@ -12,6 +12,8 @@ void ResetData(_POINT A[BOARD_SIZE][BOARD_SIZE])
 			A[i][j].c = 0;
 		}
 
+	CountMoveP1 = 0;
+	CountMoveP2 = 0;
 	_TURN = true; _COMMAND = -1;
 	_X = A[0][0].x; _Y = A[0][0].y;
 }
@@ -22,9 +24,6 @@ void LOAD_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER& PLAYER1, PLAYER& PLAYER
 
 	std::getline(LOAD_file, PLAYER1.name);
 	std::getline(LOAD_file, PLAYER2.name);
-
-	LOAD_file >> PLAYER1.win;
-	LOAD_file >> PLAYER2.win;
 
 	LOAD_file >> PLAYER1.win;
 	LOAD_file >> PLAYER2.win;
@@ -47,12 +46,14 @@ void LOAD_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER& PLAYER1, PLAYER& PLAYER
 			{
 			case 0: break;
 			case -1:
-				TextColor(241);
+				CountMoveP1++;
+				TextColor(Color_X);
 				std::cout << "X";
 				TextColor(240);
 				break;
 			case 1:
-				TextColor(244);
+				CountMoveP2++;
+				TextColor(Color_O);
 				std::cout << "O";
 				TextColor(240);
 				break;
@@ -73,9 +74,6 @@ void SAVE_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER PLAYER1, PLAYER PLAYER2,
 
 	SAVE_file << PLAYER1.win << std::endl;
 	SAVE_file << PLAYER2.win << std::endl;
-
-	SAVE_file << PLAYER1.draw << std::endl;
-	SAVE_file << PLAYER2.draw << std::endl;
 
 	SAVE_file << _TURN << std::endl;
 
@@ -208,7 +206,7 @@ int MAIN_menu(Menu menu[COL][MAX_ROW])
 	title(2);
 	title(3);
 	title(4);
-	Draw(3, 0);
+	Draw(3, 0, 15);
 
 	DrawBoard(1, 1, x_center_console - 10, y_center_console - 1, 25, 10);
 	menu[0][0].c = "New game";
