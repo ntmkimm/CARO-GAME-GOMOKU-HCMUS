@@ -9,6 +9,7 @@ bool _TURN;
 int _X, _Y;
 int S1, S2;
 int Color_X, Color_O;
+int CountMoveP1, CountMoveP2;
 int main()
 {
 	_POINT A[BOARD_SIZE][BOARD_SIZE];
@@ -25,6 +26,8 @@ int main()
 	S2 = 1;
 	Color_X = 241;
 	Color_O = 244;
+	CountMoveP1 = 0;
+	CountMoveP2 = 0;
 
 	int running = 1;
 	while (true)

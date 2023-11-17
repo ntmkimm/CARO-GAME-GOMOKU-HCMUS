@@ -141,21 +141,22 @@ int ProcessFinish(_POINT A[BOARD_SIZE][BOARD_SIZE], int pWhoWin, PLAYER& PLAYER1
 	case -1:
 		PLAYER1.win++;
 		PlaySound(0, 0, 0);
-		Draw(3, 0);
+		Draw(3, 0, 30);
 		Draw_txt("WinX.txt");
+		SoundWin();
 		break;
 	case 1:
 		PLAYER2.win++;
 		PlaySound(0, 0, 0);
-		Draw(3, 0);
+		Draw(3, 0, 30);
 		Draw_txt("WinO.txt");
+		SoundWin();
 		break;
 	case 0:
-		PLAYER1.draw++;
-		PLAYER2.draw++;
 		PlaySound(0, 0, 0);
-		Draw(3, 0);
+		Draw(3, 0, 30);
 		Draw_txt("Draw.txt");
+		SoundWin();
 		break;
 	case 2:
 		_TURN = !_TURN;

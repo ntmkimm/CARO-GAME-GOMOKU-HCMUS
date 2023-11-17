@@ -7,6 +7,7 @@ void StartGame(_POINT A[BOARD_SIZE][BOARD_SIZE])
 	ResetData(A);
 	TextColor(240);
 	DrawBoard(BOARD_SIZE, BOARD_SIZE, 3, 1, 3, 2);
+	DrawX_Turn();
 	GotoXY(_X, _Y);
 }
 void SAVE_game(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER PLAYER1, PLAYER PLAYER2)
@@ -27,7 +28,7 @@ void SAVE_game(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER
 		std::getline(std::cin >> std::ws, file);
 		//erase the whitespace between filename's characters(if existed)
 		file.erase(std::remove_if(file.begin(), file.end(), [](char c) { return (c == ' ' || c == '\n' || c == '\r' || c == '\t' || c == '\v' || c == '\f'); }), file.end());
-	} while (file.length() < 1 || file.length() > 15);
+	} while (file.length() < 1 || file.length() > 10);
 	while (EXIST_file(file + ".txt"))
 	{
 		std::string str_count = std::to_string(count);
@@ -65,7 +66,7 @@ std::string LOADMENU_run(int option)
 }
 int ESC_menu(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER PLAYER1, PLAYER PLAYER2)
 {
-	Draw(3, 0);
+	Draw(3, 0, 36);
 	menu[0][0].c = "Continue";
 	menu[0][1].c = "Save Game";
 	menu[0][2].c = "Exit";
@@ -121,7 +122,7 @@ int ESC_menu(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER P
 }
 int ESC_menuLoad(Menu menu[COL][MAX_ROW])
 {
-	Draw(3, 0);
+	Draw(3, 0, 36);
 	DrawBoard(1, 1, x_center_console - 5, y_center_console - 1, 18, 5);
 	menu[0][0].c = "Continue";
 	menu[0][1].c = "Exit & Save";
@@ -175,22 +176,46 @@ void SETNAME_player(PLAYER& PLAYER1, PLAYER& PLAYER2) //CREATE NAME'S PLAYER FOR
 	DrawBoard(1, 1, x_center_console - 30, y_center_console - 3, 80, 8);
 	do {
 		GotoXY(x_center_console - 10, y_center_console);
+		TextColor(Color_X);
 		std::cout << "Enter First PLayer's name: ";
 		std::getline(std::cin >> std::ws, PLAYER1.name);
-	} while (PLAYER1.name.length() < 2 || PLAYER1.name.length() > 15);
+	} while (PLAYER1.name.length() < 2 || PLAYER1.name.length() > 10);
 
 	do {
 		GotoXY(x_center_console - 10, y_center_console + 2);
+		TextColor(Color_O);
 		std::cout << "Enter Second PLayer's name: ";
 		std::getline(std::cin >> std::ws, PLAYER2.name);
-	} while (PLAYER1.name.length() < 2 || PLAYER1.name.length() > 15);
+	} while (PLAYER1.name.length() < 2 || PLAYER1.name.length() > 10);
 
 }
 
-
+void ShowPlayerInfo(PLAYER& PLAYER1, PLAYER& PLAYER2)
+{
+	hidecursor();
+	TextColor(240);
+	DrawBoard(1, 1, x_center_console + 24, y_center_console - 7, 47, 24);
+	using std::setw;
+	GotoXY(113, 14);
+	std::cout << "PLAYER INFO";
+	GotoXY(100, 19);
+	std::cout << setw(7) << "NAME" << setw(16) << "COUNT MOVE" << setw(13) << "WIN";
+	GotoXY(100, 23);
+	TextColor(Color_X);
+	std::cout << setw(7) << PLAYER1.name << setw(16) << CountMoveP1 << setw(13) << PLAYER1.win;
+	GotoXY(100, 27);
+	TextColor(Color_O);
+	std::cout << setw(7) << PLAYER2.name << setw(16) << CountMoveP2 << setw(13) << PLAYER2.win;
+	TextColor(240);
+	GotoXY(_X, _Y);
+	showcursor();
+}
 
 int Settings(Menu menu[COL][MAX_ROW]) {
 	system("cls");
+	DrawBoard(1, 1, x_center_console - 40, y_center_console - 3, 90, 8);
+	GotoXY(x_center_console - 25, y_center_console + 1);
+	std::cout << "SETTINGS";
 	menu[0][0].c = "Color   X   _   O  :";
 	menu[0][1].c = "Background Music   :";
 
@@ -278,15 +303,15 @@ int Settings(Menu menu[COL][MAX_ROW]) {
 	return 0;
 }
 
-
 int NewGame(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& PLAYER1, PLAYER& PLAYER2)
 {
 	bool validEnter = true;
 	bool running = true;
-	DrawX_Turn();
 	GotoXY(_X, _Y);
 	while (running)
 	{
+		ShowGuide();
+		ShowPlayerInfo(PLAYER1, PLAYER2);
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == esc_char)
 		{
@@ -303,17 +328,18 @@ int NewGame(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& P
 				switch (CheckBoard(A, _X, _Y))
 				{
 				case -1:
+					CountMoveP1++;
 					TextColor(Color_X);// 4 to 241
 					std::cout << "X"; break;
 
 				case 1:
+					CountMoveP2++;
 					TextColor(Color_O);// 9 to 244
 					std::cout << "O"; break;
 				case 0: validEnter = false;
 				}
 				if (validEnter == true)
 				{
-					GotoXY(menu[0][0].x + 10, menu[0][0].y - 5);
 					if (_TURN == 1)
 						DrawO_Turn();
 					else
@@ -329,6 +355,7 @@ int NewGame(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& P
 						{
 							Sound2(1);
 							StartGame(A);
+							DrawX_Turn();
 							break;
 						}
 						else
@@ -355,16 +382,34 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 {
 	bool validEnter = true;
 	bool running = true;
-	HANDLE console_color;
-	console_color = GetStdHandle(
-		STD_OUTPUT_HANDLE);
-	if (_TURN == 1)
-		DrawX_Turn();
-	else
-		DrawO_Turn();
-	GotoXY(_X, _Y);
+	int count = 0;
 	while (running)
 	{
+		ShowGuide();
+		ShowPlayerInfo(PLAYER1, PLAYER2);
+		if (TestBoard(A) != 2 && count == 0)
+		{
+			GotoXY(x_center_console - 5, y_center_console - 12);
+			TextColor(207); // white text with background red
+			std::cout << "THIS GAME IS OVER, PRESS 'CONTINUE' TO PLAY AGAIN, OR 'EXIT AND SAVE'";
+			int option = ESC_menuLoad(menu);
+			if (option == 1)
+			{
+				system("cls");
+				StartGame(A);
+			}
+			else
+				break;
+			++count;
+		}
+		else
+		{
+			if (_TURN == 1)
+				DrawX_Turn();
+			else
+				DrawO_Turn();
+		}
+		GotoXY(_X, _Y);
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == esc_char)
 		{
@@ -381,20 +426,19 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 				switch (CheckBoard(A, _X, _Y))
 				{
 				case -1:
-					TextColor(241);// 4 to 241
+					TextColor(Color_X);
 					std::cout << "X"; break;
-
 				case 1:
-					TextColor(244);// 9 to 244
+					TextColor(Color_O);
 					std::cout << "O"; break;
 				case 0: validEnter = false;
 				}
 				if (validEnter == true)
 				{
 					if (_TURN == 1)
-						DrawO_Turn();
-					else
 						DrawX_Turn();
+					else
+						DrawO_Turn();
 					switch (ProcessFinish(A, TestBoard(A), PLAYER1, PLAYER2))
 					{
 					case -1: case 1: case 0:
@@ -419,6 +463,7 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 	}
 	return 1;
 }
+
 int MAINMENU_run(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& PLAYER1, PLAYER& PLAYER2, int option)
 {
 	int ret = 1;
