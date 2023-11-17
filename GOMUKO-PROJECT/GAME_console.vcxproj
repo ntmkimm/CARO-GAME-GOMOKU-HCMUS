@@ -139,6 +139,22 @@
     <ClCompile Include="SetGame.cpp" />
     <ClCompile Include="View.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="AboutUs.txt" />
+    <Text Include="Draw.txt" />
+    <Text Include="ListGame.txt" />
+    <Text Include="WinO.txt" />
+    <Text Include="WinX.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitattributes" />
+    <None Include=".gitignore" />
+    <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Sound2.wav" />
+    <Media Include="Untitled video - Made with Clipchamp.mp4" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
