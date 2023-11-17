@@ -336,12 +336,12 @@ int NewGame(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& P
 				case -1:
 					CountMoveP1++;
 					TextColor(Color_X);// 4 to 241
-					std::cout << "X"; break;
+					std::cout << "x"; break;
 
 				case 1:
 					CountMoveP2++;
 					TextColor(Color_O);// 9 to 244
-					std::cout << "O"; break;
+					std::cout << "o"; break;
 				case 0: validEnter = false;
 				}
 				if (validEnter == true)
@@ -438,10 +438,10 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 				{
 				case -1:
 					TextColor(Color_X);
-					std::cout << "X"; break;
+					std::cout << "x"; break;
 				case 1:
 					TextColor(Color_O);
-					std::cout << "O"; break;
+					std::cout << "o"; break;
 				case 0: validEnter = false;
 				}
 				if (validEnter == true)

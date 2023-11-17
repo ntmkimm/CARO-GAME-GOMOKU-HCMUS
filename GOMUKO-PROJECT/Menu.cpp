@@ -48,13 +48,13 @@ void LOAD_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER& PLAYER1, PLAYER& PLAYER
 			case -1:
 				CountMoveP1++;
 				TextColor(Color_X);
-				std::cout << "X";
+				std::cout << "x";
 				TextColor(240);
 				break;
 			case 1:
 				CountMoveP2++;
 				TextColor(Color_O);
-				std::cout << "O";
+				std::cout << "o";
 				TextColor(240);
 				break;
 			}
