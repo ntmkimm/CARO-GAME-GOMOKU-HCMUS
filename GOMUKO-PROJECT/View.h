@@ -85,6 +85,8 @@ int cl(int mau);
 void title(int a);
 void DrawX_Turn();
 void DrawO_Turn();
+void DrawX();
+void DrawO();
 void SoundWin();
 void Sound2(int S2);
 

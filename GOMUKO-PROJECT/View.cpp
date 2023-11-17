@@ -368,6 +368,27 @@ void DrawO_Turn()
 	Draw(0, 1, 36);
 	showcursor();
 }
+
+void DrawX()
+{
+	hidecursor();
+	HANDLE console_color;
+	console_color = GetStdHandle(STD_OUTPUT_HANDLE);
+	Draw(1, 3, 2);
+	Draw(2, 2, 2);
+	showcursor();
+}
+
+void DrawO()
+{
+	hidecursor();
+	HANDLE console_color;
+	console_color = GetStdHandle(STD_OUTPUT_HANDLE);
+	Draw(2, 3, 10);
+	Draw(1, 1, 10);
+	showcursor();
+}
+
 void title(int a) {
 	switch (a) {
 	case 1:

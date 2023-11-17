@@ -314,6 +314,8 @@ int NewGame(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& P
 	GotoXY(_X, _Y);
 	while (running)
 	{
+		DrawX();
+		DrawO();
 		ShowGuide();
 		ShowPlayerInfo(PLAYER1, PLAYER2);
 		_COMMAND = toupper(_getch());
@@ -389,17 +391,21 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 	int count = 0;
 	while (running)
 	{
+		DrawX();
+		DrawO();
 		ShowGuide();
 		ShowPlayerInfo(PLAYER1, PLAYER2);
 		if (TestBoard(A) != 2 && count == 0)
 		{
-			GotoXY(x_center_console - 2, y_center_console - 12);
+			GotoXY(x_center_console + 30, y_center_console - 12);
 			TextColor(116); // white text with background red
-			std::cout << "THIS GAME IS OVER, PRESS 'CONTINUE' TO PLAY AGAIN, OR 'EXIT AND SAVE'";
+			std::cout << "THIS GAME IS OVER IN THE LAST TIME!";
 			int option = ESC_menuLoad(menu);
 			if (option == 1)
 			{
 				StartGame(A);
+				DrawX();
+				DrawO();
 				ShowGuide();
 				ShowPlayerInfo(PLAYER1, PLAYER2);
 			}
