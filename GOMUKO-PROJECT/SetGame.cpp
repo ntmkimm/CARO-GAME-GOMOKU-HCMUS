@@ -3,7 +3,6 @@
 
 void StartGame(_POINT A[BOARD_SIZE][BOARD_SIZE])
 {
-	showcursor();
 	system("cls");
 	ResetData(A);
 	TextColor(240);
@@ -13,7 +12,6 @@ void StartGame(_POINT A[BOARD_SIZE][BOARD_SIZE])
 }
 void SAVE_game(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER PLAYER1, PLAYER PLAYER2)
 {
-	showcursor();
 	bool run = true;
 	std::string file;
 	int count = 1;
@@ -28,33 +26,33 @@ void SAVE_game(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER
 		std::cout << "You want to save file with name: ";
 		std::getline(std::cin >> std::ws, file);
 		//erase the whitespace between filename's characters(if existed)
-		file.erase(std::remove_if(file.begin(), file.end(), [](char c) { return (c == ' ' || c == '\n' || c == '\r' || c == '\t' || c == '\v' || c == '\f'); }), file.end());
+		file.erase(std::remove_if(file.begin(), file.end(), [](char c)
+			{ return (c == ' ' || c == '\n' || c == '\r' || c == '\t' || c == '\v' || c == '\f'); }), file.end());
 	} while (file.length() < 1 || file.length() > 10);
 	while (EXIST_file(file + ".txt"))
 	{
 		std::string str_count = std::to_string(count);
 		if (EXIST_file(file + "(" + str_count + ")" + ".txt"))
 			count++;
-		else 
+		else
 			file = file + "(" + str_count + ")";
 	}
 
 	file = file + ".txt";
 	SAVE_data(A, PLAYER1, PLAYER2, file);
 
-	std::fstream SAVE_file; // writing
-	SAVE_file.open("ListGame.txt", std::ios::app);//app instead of out because std::ios::out will delete data we had saved
+	std::fstream SAVE_file;
+	SAVE_file.open("ListGame.txt", std::ios::app);
 	SAVE_file << file << std::endl;
 	SAVE_file.close();
 
 }
 void LOAD_game(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER& PLAYER1, PLAYER& PLAYER2, std::string file)
 {
-	showcursor();
 	system("cls");
 	LOAD_data(A, PLAYER1, PLAYER2, file);
 	DrawBoard(BOARD_SIZE, BOARD_SIZE, 3, 1, 3, 2);
-	GotoXY(_X, _Y); //return default coordinate
+	GotoXY(_X, _Y);
 }
 
 std::string LOADMENU_run(int option)
@@ -73,16 +71,19 @@ int ESC_menu(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER P
 	menu[0][2].c = "Exit";
 	bool running = true;
 	int ret;
-	DrawBoard(1, 1, x_center_console - 5, y_center_console - 1, 16, 7);
+	DrawBoard(1, 1, x_center_console - 5, y_center_console - 1, 16, 6);
 	for (int i = 0; i < 3; i++)
 	{
-		menu[0][i].y = 2 * i + menu[0][0].y; //set coord y for ech option in menu
+		menu[0][i].y = 2 * i + menu[0][0].y;
 		GotoXY(menu[0][i].x, menu[0][i].y);
 		std::cout << menu[0][i].c << std::endl;
 	}
-	do
+	X1 = x_center_console - 1;
+	Y1 = y_center_console;
+	GotoXY(X1, Y1);
+	while (running)
 	{
-		GotoXY(X1, Y1);
+		init_cursor();
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 's' or _COMMAND == arrow_down)
 			MoveDown1(menu, 3);
@@ -90,6 +91,7 @@ int ESC_menu(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER P
 			MoveUp1(menu, 3);
 		else if (_COMMAND == enter_char)
 		{
+			delete_cursor();
 			if (X1 == menu[0][0].x - 1 && Y1 == menu[0][0].y)
 			{
 				running = false;
@@ -108,13 +110,15 @@ int ESC_menu(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER P
 				break;
 			}
 		}
-	} while (running);
+	};
+	X1 = x_center_console - 1;
+	Y1 = y_center_console;
 	TextColor(255);
-	DrawBoard(1, 1, x_center_console - 5, y_center_console - 1, 16, 7);
+	DrawBoard(1, 1, x_center_console - 5, y_center_console - 1, 16, 6);
 	for (int i = 0; i < 3; i++)
 	{
 		TextColor(255);
-		menu[0][i].y = 2 * i + menu[0][0].y; //set coord y for ech option in menu
+		menu[0][i].y = 2 * i + menu[0][0].y;
 		GotoXY(menu[0][i].x, menu[0][i].y);
 		std::cout << menu[0][i].c << std::endl;
 	}
@@ -124,20 +128,23 @@ int ESC_menu(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER P
 int ESC_menuLoad(Menu menu[COL][MAX_ROW])
 {
 	Draw(3, 0, 36);
-	DrawBoard(1, 1, x_center_console - 5, y_center_console - 1, 18, 5);
+	DrawBoard(1, 1, x_center_console - 5, y_center_console - 1, 18, 4);
 	menu[0][0].c = "Continue";
 	menu[0][1].c = "Exit & Save";
 	bool running = true;
 	int ret;
 	for (int i = 0; i < 2; i++)
 	{
-		menu[0][i].y = 2 * i + menu[0][0].y; //set coord y for ech option in menu
+		menu[0][i].y = 2 * i + menu[0][0].y;
 		GotoXY(menu[0][i].x, menu[0][i].y);
 		std::cout << menu[0][i].c << std::endl;
 	}
-	do
+	X1 = x_center_console - 1;
+	Y1 = y_center_console;
+	GotoXY(X1, Y1);
+	while (running)
 	{
-		GotoXY(X1, Y1);
+		init_cursor();
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 's' or _COMMAND == arrow_down)
 			MoveDown1(menu, 2);
@@ -145,6 +152,7 @@ int ESC_menuLoad(Menu menu[COL][MAX_ROW])
 			MoveUp1(menu, 2);
 		else if (_COMMAND == enter_char)
 		{
+			delete_cursor();
 			if (X1 == menu[0][0].x - 1 && Y1 == menu[0][0].y)
 			{
 				running = false;
@@ -157,13 +165,13 @@ int ESC_menuLoad(Menu menu[COL][MAX_ROW])
 				break;
 			}
 		}
-	} while (running);
+	};
 	TextColor(255);
-	DrawBoard(1, 1, x_center_console - 5, y_center_console - 1, 18, 5);
+	DrawBoard(1, 1, x_center_console - 5, y_center_console - 1, 18, 4);
 	for (int i = 0; i < 2; i++)
 	{
 		TextColor(255);
-		menu[0][i].y = 2 * i + menu[0][0].y; //set coord y for ech option in menu
+		menu[0][i].y = 2 * i + menu[0][0].y;
 		GotoXY(menu[0][i].x, menu[0][i].y);
 		std::cout << menu[0][i].c << std::endl;
 	}
@@ -171,29 +179,99 @@ int ESC_menuLoad(Menu menu[COL][MAX_ROW])
 	return ret;
 }
 
-void SETNAME_player(PLAYER& PLAYER1, PLAYER& PLAYER2) //CREATE NAME'S PLAYER FOR GAME
+int ESC_menuBot(Menu menu[COL][MAX_ROW])
 {
-	system("cls");
-	DrawBoard(1, 1, x_center_console - 30, y_center_console - 3, 80, 8);
+	Draw(3, 0, 36);
+	DrawBoard(1, 1, x_center_console - 5, y_center_console - 1, 18, 4);
+	menu[0][0].c = "Continue";
+	menu[0][1].c = "Exit";
+	bool running = true;
+	int ret;
+	for (int i = 0; i < 2; i++)
+	{
+		menu[0][i].y = 2 * i + menu[0][0].y;
+		GotoXY(menu[0][i].x, menu[0][i].y);
+		std::cout << menu[0][i].c << std::endl;
+	}
+	X1 = x_center_console - 1;
+	Y1 = y_center_console;
+	GotoXY(X1, Y1);
+	while (running)
+	{
+		init_cursor();
+		_COMMAND = toupper(_getch());
+		if (_COMMAND == 's' or _COMMAND == arrow_down)
+			MoveDown1(menu, 2);
+		else if (_COMMAND == 'w' or _COMMAND == arrow_up)
+			MoveUp1(menu, 2);
+		else if (_COMMAND == enter_char)
+		{
+			delete_cursor();
+			if (X1 == menu[0][0].x - 1 && Y1 == menu[0][0].y)
+			{
+				running = false;
+				ret = 1;
+			}
+			else if (X1 == menu[0][1].x - 1 && Y1 == menu[0][1].y)
+			{
+				system("cls");
+				ret = 0;
+				break;
+			}
+		}
+	};
+	TextColor(255);
+	DrawBoard(1, 1, x_center_console - 5, y_center_console - 1, 18, 4);
+	for (int i = 0; i < 2; i++)
+	{
+		TextColor(255);
+		menu[0][i].y = 2 * i + menu[0][0].y;
+		GotoXY(menu[0][i].x, menu[0][i].y);
+		std::cout << menu[0][i].c << std::endl;
+	}
+	GotoXY(_X, _Y);
+	return ret;
+}
+
+void SETNAME_player(PLAYER& PLAYER1, PLAYER& PLAYER2)
+{
 	do {
+		system("cls");
+		DrawBoard(1, 1, x_center_console - 30, y_center_console - 3, 80, 8);
 		GotoXY(x_center_console - 10, y_center_console);
 		TextColor(Color_X);
 		std::cout << "Enter First PLayer's name: ";
-		std::getline(std::cin >> std::ws, PLAYER1.name);
-	} while (PLAYER1.name.length() < 2 || PLAYER1.name.length() > 10);
-
-	do {
 		GotoXY(x_center_console - 10, y_center_console + 2);
 		TextColor(Color_O);
 		std::cout << "Enter Second PLayer's name: ";
+		GotoXY(x_center_console + 20, y_center_console);
+		TextColor(Color_X);
+		std::getline(std::cin >> std::ws, PLAYER1.name);
+		TextColor(240);
+	} while (PLAYER1.name.length() < 2 || PLAYER1.name.length() > 10);
+
+	do {
+		system("cls");
+		DrawBoard(1, 1, x_center_console - 30, y_center_console - 3, 80, 8);
+		GotoXY(x_center_console - 10, y_center_console);
+		TextColor(Color_X);
+		std::cout << "Enter First PLayer's name: ";
+		GotoXY(x_center_console - 10, y_center_console + 2);
+		TextColor(Color_O);
+		std::cout << "Enter Second PLayer's name: ";
+		GotoXY(x_center_console + 20, y_center_console);
+		TextColor(Color_X);
+		std::cout << PLAYER1.name;
+		GotoXY(x_center_console + 20, y_center_console + 2);
+		TextColor(Color_O);
 		std::getline(std::cin >> std::ws, PLAYER2.name);
+		TextColor(240);
 	} while (PLAYER1.name.length() < 2 || PLAYER1.name.length() > 10);
 
 }
 
 void ShowPlayerInfo(PLAYER& PLAYER1, PLAYER& PLAYER2)
 {
-	hidecursor();
 	TextColor(240);
 	DrawBoard(1, 1, x_center_console + 24, y_center_console - 7, 47, 24);
 	using std::setw;
@@ -211,7 +289,6 @@ void ShowPlayerInfo(PLAYER& PLAYER1, PLAYER& PLAYER2)
 	std::cout << setw(7) << PLAYER2.name << setw(16) << CountMoveP2 << setw(13) << PLAYER2.win;
 	TextColor(240);
 	GotoXY(_X, _Y);
-	showcursor();
 }
 
 int Settings(Menu menu[COL][MAX_ROW]) {
@@ -242,9 +319,11 @@ int Settings(Menu menu[COL][MAX_ROW]) {
 	GotoXY(menu[0][0].x - 1, menu[0][0].y);
 	do
 	{
+		init_cursor();
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == esc_char)
 		{
+			delete_cursor();
 			running = false;
 		}
 		else if (_COMMAND == 's' or _COMMAND == arrow_down)
@@ -288,14 +367,14 @@ int Settings(Menu menu[COL][MAX_ROW]) {
 			{
 				S2++;
 				if (S2 % 2 == 0) {
-					menu[1][1].c = " <  Disable >";
+					menu[1][1].c = " <  Disable  >";
 					PlaySound(0, 0, 0);
 					GotoXY(menu[1][1].x, menu[1][1].y);
 					std::cout << menu[1][1].c;
 					GotoXY(menu[0][1].x - 1, menu[0][1].y);
 				}
 				else {
-					menu[1][1].c = " <  Enable  >";
+					menu[1][1].c = " <  Enable   >";
 					Sound2(1);
 					GotoXY(menu[1][1].x, menu[1][1].y);
 					std::cout << menu[1][1].c;
@@ -315,6 +394,7 @@ int NewGame(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& P
 	GotoXY(_X, _Y);
 	while (running)
 	{
+		init_cursor_board(A);
 		DrawX();
 		DrawO();
 		ShowGuide();
@@ -336,12 +416,12 @@ int NewGame(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& P
 				{
 				case -1:
 					CountMoveP1++;
-					TextColor(Color_X);// 4 to 241
+					TextColor(Color_X);
 					std::cout << "x"; break;
 
 				case 1:
 					CountMoveP2++;
-					TextColor(Color_O);// 9 to 244
+					TextColor(Color_O);
 					std::cout << "o"; break;
 				case 0: validEnter = false;
 				}
@@ -360,7 +440,7 @@ int NewGame(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& P
 						std::cout << "DO YOU WANT TO PLAY AGAIN?";
 						if (YESNO_CHOOSE(menu) == 1)
 						{
-							Sound2(1);
+							Sound2(S2);
 							StartGame(A);
 							DrawX_Turn();
 							break;
@@ -392,6 +472,7 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 	int count = 0;
 	while (running)
 	{
+		init_cursor_board(A);
 		DrawX();
 		DrawO();
 		ShowGuide();
@@ -438,9 +519,11 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 				switch (CheckBoard(A, _X, _Y))
 				{
 				case -1:
+					CountMoveP1++;
 					TextColor(Color_X);
 					std::cout << "x"; break;
 				case 1:
+					CountMoveP2++;
 					TextColor(Color_O);
 					std::cout << "o"; break;
 				case 0: validEnter = false;
@@ -476,78 +559,37 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 	return 1;
 }
 
-int MAINMENU_run(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& PLAYER1, PLAYER& PLAYER2, int option)
+int Playwithcomputer(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[22][22], Menu menu[COL][MAX_ROW], PLAYER& PLAYER1, PLAYER& PLAYER2)
 {
-	int ret = 1;
-	std::string file_chosen;
-	switch (option)
-	{
-	case 1:
-		SETNAME_player(PLAYER1, PLAYER2);
-		StartGame(A);
-		NewGame(A, menu, PLAYER1, PLAYER2);
-		break;
-	case 2:
-		system("cls");
-		StartGame(A);
-		Playwithcomputer(A, menu, PLAYER1, PLAYER2);
-		break;
-	case 3:
-		system("cls");
-		file_chosen = LOADMENU_run(LOAD_menu(menu));
-		LOAD_game(A, PLAYER1, PLAYER2, file_chosen);
-		NewGameLoad(A, menu, PLAYER1, PLAYER2);
-		SAVE_data(A, PLAYER1, PLAYER2, file_chosen);
-		break;
-	case 4:
-		system("cls");
-		while (true)
-		{
-			Draw_txt_noeffect("AboutUs.txt");
-			if (_kbhit())
-			{
-				int h = _getch();
-				if (h == 27)
-				{
-					MAINMENU_run(A, menu, PLAYER1, PLAYER2, MAIN_menu(menu));
-					break;
-				}
-			}
-		}
-		break;
-	case 5:
-		system("cls");
-		ret = 0;
-		break;
-	case 6:
-		Settings(menu);
-		GotoXY(0, 0);
-		break;
-	}
-	return ret;
-}
 
-int Playwithcomputer(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& PLAYER1, PLAYER& PLAYER2)
-{
+	for (int i = 0; i < 22; i++)
+		for (int j = 0; j < 22; j++)
+			B[i][j].c = -2;
+	int count = 0;
 	PLAYER1.name = "YOU";
 	PLAYER2.name = "BOT";
-	int t = 2;
-	bool validEnter = true;
 	bool running = true;
 	GotoXY(_X, _Y);
-	bool turn = true;
-	while (t == 2) {
-		if (turn) {
-			while (running)
+	while (running == 1)
+	{
+		init_cursor_board(A);
+		DrawX();
+		DrawO();
+		ShowGuide();
+		ShowPlayerInfo(PLAYER1, PLAYER2);
+		if (count % 2 == 0)
+		{
+			DrawX_Turn();
+			while (true)
 			{
-				DrawX();
-				DrawO();
-				ShowGuide();
-				ShowPlayerInfo(PLAYER1, PLAYER2);
 				_COMMAND = toupper(_getch());
 				if (_COMMAND == esc_char)
 				{
-					//running = ESC_menu(A, menu, PLAYER1, PLAYER2);
+					if (ESC_menuBot(menu) == 0)
+					{
+						running = false;
+						break;
+					}
 				}
 				else
 				{
@@ -557,38 +599,96 @@ int Playwithcomputer(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], 
 					else if (_COMMAND == arrow_right) MoveRight(A);
 					else if (_COMMAND == enter_char)
 					{
-						switch (CheckBoard(A, _X, _Y))
+						if (CheckBoard(A, _X, _Y) == -1)
 						{
-						case -1:
 							CountMoveP1++;
 							TextColor(Color_X);
-							std::cout << "x"; break;
+							std::cout << "x";
+							break;
 						}
-						turn = !turn; break;
 					}
-					t = TestBoard(A);
-					_TURN = !_TURN;
 				}
 			}
 		}
 		else
 		{
-			Move bestMove = findfirstBestmove(A);
-			A[bestMove.x][bestMove.y].c = 1;
-			GotoXY(A[bestMove.x][bestMove.y].x, A[bestMove.x][bestMove.y].y);
+			DrawO_Turn();
+			for (int i = 5; i < SIZE + 5; i++)
+				for (int j = 5; j < SIZE + 5; j++)
+					B[i][j].c = A[i - 5][j - 5].c;
+
+			Move bestMove = findfirstBestmove(B);
+			A[bestMove.x - 5][bestMove.y - 5].c = 1;
+			GotoXY(A[bestMove.x - 5][bestMove.y - 5].x, A[bestMove.x - 5][bestMove.y - 5].y);
 			Sleep(500);
 			CountMoveP2++;
 			TextColor(Color_O);
 			std::cout << "o";
-			turn = !turn;
 		}
-		t = TestBoard(A);
-		_TURN = !_TURN;
+		count++;
+		switch (ProcessFinish(A, TestBoard(A), PLAYER1, PLAYER2))
+		{
+		case -1: case 1: case 0:
+			system("cls");
+			TextColor(240);
+			GotoXY(menu[0][0].x - 11, menu[0][0].y - 3);
+			std::cout << "DO YOU WANT TO PLAY AGAIN?";
+			if (YESNO_CHOOSE(menu) == 1)
+			{
+				StartGame(A);
+				break;
+			}
+			else
+			{
+				running = false;
+			}
+		}
 	}
-	ProcessFinish(A, t, PLAYER1, PLAYER2);
-	Sleep(2500);
-	system("cls");
 	TextColor(240);
 	return 1;
 }
 
+int MAINMENU_run(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[22][22], Menu menu[COL][MAX_ROW], PLAYER& PLAYER1, PLAYER& PLAYER2, int option)
+{
+	int ret = 1;
+	std::string file_chosen;
+	hidecursor();
+	switch (option)
+	{
+	case 1:
+		SETNAME_player(PLAYER1, PLAYER2);
+		loading2();
+		StartGame(A);
+		NewGame(A, menu, PLAYER1, PLAYER2);
+		break;
+	case 2:
+		system("cls");
+		loading2();
+		StartGame(A);
+		Playwithcomputer(A, B, menu, PLAYER1, PLAYER2);
+		break;
+	case 3:
+		system("cls");
+		file_chosen = LOADMENU_run(LOAD_menu(menu));
+		loading2();
+		LOAD_game(A, PLAYER1, PLAYER2, file_chosen);
+		NewGameLoad(A, menu, PLAYER1, PLAYER2);
+		SAVE_data(A, PLAYER1, PLAYER2, file_chosen);
+		break;
+	case 4:
+		loading();
+		system("cls");
+		Draw_txt_noeffect("AboutUs.txt");
+		break;
+	case 5:
+		loading();
+		Settings(menu);
+		break;
+	case 6:
+		loading();
+		system("cls");
+		ret = 0;
+		break;
+	}
+	return ret;
+}

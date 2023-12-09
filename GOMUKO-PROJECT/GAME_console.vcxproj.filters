@@ -27,6 +27,9 @@
     <ClInclude Include="Menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -44,21 +47,15 @@
     <ClCompile Include="Menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="AboutUs.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="Draw.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
     <Text Include="ListGame.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="WinO.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="WinX.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
@@ -75,9 +72,6 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="Sound2.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="Untitled video - Made with Clipchamp.mp4">
       <Filter>Resource Files</Filter>
     </Media>
   </ItemGroup>

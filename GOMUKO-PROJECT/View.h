@@ -40,7 +40,9 @@ enum { y_center_console = 17 };
 #define arrow_right (char) 77
 #define enter_char (char) 13
 #define esc_char (char) 27
-#define cursor_char (char) 16
+#define cursor_char_l (char) 16
+#define cursor_char (char) 4
+
 
 extern int X1;
 extern int Y1;
@@ -58,13 +60,15 @@ struct Menu { int x = x_center_console, y = y_center_console; std::string c; }; 
 struct PLAYER
 {
 	std::string name;
+	int countmove = 0;
 	int win = 0;
 };
 
 void hidecursor();
-void showcursor();
+void init_cursor();
+void delete_cursor();
 void SET_COLOR(int color);
-void CreateConsoleWindow();
+void CreateConsoleWindow(int a);
 void FixConsoleWindow();
 void TextColor(int x);
 void GotoXY(int x, int y);
@@ -72,7 +76,6 @@ void horizon(int column, int width, char middle, char out1, char out2);
 void vertical(int row, int height, int x, int y);
 void DrawBoard(int row, int column, int x, int y, int width, int height);
 void ShowGuide();
-int Draw_txt(const char* file);
 void Draw_txt_noeffect(const char* file);
 void draw(int a, int k, int _y, int mau, int _x, int loop, int K);
 void Draw(int a, int mau, int K);
@@ -84,5 +87,10 @@ void DrawX();
 void DrawO();
 void SoundWin();
 void Sound2(int S2);
-
+int DrawXwin();
+int DrawOwin();
+int DrawDraw();
+void nhapnhay(_POINT A[BOARD_SIZE][BOARD_SIZE], int a, int i, int j, int t);
+void loading();
+void loading2();
 #endif

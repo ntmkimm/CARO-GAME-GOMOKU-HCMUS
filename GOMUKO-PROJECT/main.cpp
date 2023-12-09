@@ -13,6 +13,7 @@ int CountMoveP1, CountMoveP2;
 int main()
 {
 	_POINT A[BOARD_SIZE][BOARD_SIZE];
+	_POINT B[22][22];
 	Menu menu[COL][MAX_ROW];
 	PLAYER PLAYER1;
 	PLAYER PLAYER2;
@@ -28,14 +29,14 @@ int main()
 	Color_O = 244;
 	CountMoveP1 = 0;
 	CountMoveP2 = 0;
-
+	Sound2(S2);
 	int running = 1;
-	while (true)
+	while (running)
 	{
-		Sound2(S2);
-		showcursor();
-		running = MAINMENU_run(A, menu, PLAYER1, PLAYER2, MAIN_menu(menu));
+		running = MAINMENU_run(A, B, menu, PLAYER1, PLAYER2, MAIN_menu(menu));
 		if (running == 0)
 			break;
 	}
 }
+
+

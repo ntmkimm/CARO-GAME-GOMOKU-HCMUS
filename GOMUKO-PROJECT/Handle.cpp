@@ -5,7 +5,7 @@ int CheckBoard(_POINT A[BOARD_SIZE][BOARD_SIZE], int pX, int pY)
 	for (int i = 0; i < BOARD_SIZE; i++)
 		for (int j = 0; j < BOARD_SIZE; j++)
 			if (A[i][j].x == pX && A[i][j].y == pY && A[i][j].c == 0)
-			{ // x toa do, y toa do. c trang thai
+			{
 				if (_TURN == true) { A[i][j].c = -1; }
 				else { A[i][j].c = 1; }
 				return A[i][j].c;
@@ -22,12 +22,26 @@ int row(_POINT A[BOARD_SIZE][BOARD_SIZE])
 		{
 			switch (A[i][j].c)
 			{
-			case 1: if (A[i][j].c == 1 && A[i + 1][j].c == 1 && A[i + 2][j].c == 1 && A[i + 3][j].c == 1 && A[i + 4][j].c == 1) { t = 1; }
-				  else { t = 0; };
+			case 1: if (A[i][j].c == 1 && A[i + 1][j].c == 1 && A[i + 2][j].c == 1 && A[i + 3][j].c == 1 && A[i + 4][j].c == 1)
+			{
+				t = 1;
+				nhapnhay(A, A[i][j].c, i, j, 1);
+			}
+				  else
+			{
+				t = 0;
+			};
 				  break;
-			case -1:  if (A[i][j].c == -1 && A[i + 1][j].c == -1 && A[i + 2][j].c == -1 && A[i + 3][j].c == -1 && A[i + 4][j].c == -1) { t = 1; }
-				   else { t = 0; };
-				   break;
+			case-1: if (A[i][j].c == -1 && A[i + 1][j].c == -1 && A[i + 2][j].c == -1 && A[i + 3][j].c == -1 && A[i + 4][j].c == -1)
+			{
+				t = 1;
+				nhapnhay(A, A[i][j].c, i, j, 1);
+			}
+				  else
+			{
+				t = 0;
+			};
+				  break;
 			case 0: t = 0;  break;
 			}
 			if (t != 0) break;
@@ -44,10 +58,18 @@ int pole(_POINT A[BOARD_SIZE][BOARD_SIZE])
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
 			switch (A[i][j].c) {
-			case 1: if (A[i][j].c == 1 && A[i][j + 1].c == 1 && A[i][j + 2].c == 1 && A[i][j + 3].c == 1 && A[i][j + 4].c == 1) { t = 1; }
+			case 1: if (A[i][j].c == 1 && A[i][j + 1].c == 1 && A[i][j + 2].c == 1 && A[i][j + 3].c == 1 && A[i][j + 4].c == 1)
+			{
+				t = 1;
+				nhapnhay(A, A[i][j].c, i, j, 2);
+			}
 				  else { t = 0; };
 				  break;
-			case -1:  if (A[i][j].c == -1 && A[i][j + 1].c == -1 && A[i][j + 2].c == -1 && A[i][j + 3].c == -1 && A[i][j + 4].c == -1) { t = 1; }
+			case -1:  if (A[i][j].c == -1 && A[i][j + 1].c == -1 && A[i][j + 2].c == -1 && A[i][j + 3].c == -1 && A[i][j + 4].c == -1)
+			{
+				t = 1;
+				nhapnhay(A, A[i][j].c, i, j, 2);
+			}
 				   else { t = 0; };
 				   break;
 			case 0: t = 0;  break;
@@ -66,10 +88,18 @@ int diag1(_POINT A[BOARD_SIZE][BOARD_SIZE])
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
 			switch (A[i][j].c) {
-			case 1: if (A[i][j].c == 1 && A[i + 1][j + 1].c == 1 && A[i + 2][j + 2].c == 1 && A[i + 3][j + 3].c == 1 && A[i + 4][j + 4].c == 1) { t = 1; }
+			case 1: if (A[i][j].c == 1 && A[i + 1][j + 1].c == 1 && A[i + 2][j + 2].c == 1 && A[i + 3][j + 3].c == 1 && A[i + 4][j + 4].c == 1)
+			{
+				t = 1;
+				nhapnhay(A, A[i][j].c, i, j, 3);
+			}
 				  else { t = 0; };
 				  break;
-			case -1:  if (A[i][j].c == -1 && A[i + 1][j + 1].c == -1 && A[i + 2][j + 2].c == -1 && A[i + 3][j + 3].c == -1 && A[i + 4][j + 4].c == -1) { t = 1; }
+			case -1:  if (A[i][j].c == -1 && A[i + 1][j + 1].c == -1 && A[i + 2][j + 2].c == -1 && A[i + 3][j + 3].c == -1 && A[i + 4][j + 4].c == -1)
+			{
+				t = 1;
+				nhapnhay(A, A[i][j].c, i, j, 3);
+			}
 				   else { t = 0; };
 				   break;
 			case 0: t = 0;  break;
@@ -89,10 +119,18 @@ int diag2(_POINT A[BOARD_SIZE][BOARD_SIZE])
 		{
 			switch (A[i][j].c)
 			{
-			case 1: if (A[i][j].c == 1 && A[i - 1][j + 1].c == 1 && A[i - 2][j + 2].c == 1 && A[i - 3][j + 3].c == 1 && A[i - 4][j + 4].c == 1) { t = 1; }
+			case 1: if (A[i][j].c == 1 && A[i - 1][j + 1].c == 1 && A[i - 2][j + 2].c == 1 && A[i - 3][j + 3].c == 1 && A[i - 4][j + 4].c == 1)
+			{
+				t = 1;
+				nhapnhay(A, A[i][j].c, i, j, 4);
+			}
 				  else { t = 0; };
 				  break;
-			case -1:  if (A[i][j].c == -1 && A[i - 1][j + 1].c == -1 && A[i - 2][j + 2].c == -1 && A[i - 3][j + 3].c == -1 && A[i - 4][j + 4].c == -1) { t = 1; }
+			case -1:  if (A[i][j].c == -1 && A[i - 1][j + 1].c == -1 && A[i - 2][j + 2].c == -1 && A[i - 3][j + 3].c == -1 && A[i - 4][j + 4].c == -1)
+			{
+				t = 1;
+				nhapnhay(A, A[i][j].c, i, j, 4);
+			}
 				   else { t = 0; };
 				   break;
 			case 0: t = 0;  break;
@@ -142,21 +180,18 @@ int ProcessFinish(_POINT A[BOARD_SIZE][BOARD_SIZE], int pWhoWin, PLAYER& PLAYER1
 		PLAYER1.win++;
 		PlaySound(0, 0, 0);
 		Draw(3, 0, 30);
-		Draw_txt("WinX.txt");
-		SoundWin();
+		DrawXwin();
 		break;
 	case 1:
 		PLAYER2.win++;
 		PlaySound(0, 0, 0);
 		Draw(3, 0, 30);
-		Draw_txt("WinO.txt");
-		SoundWin();
+		DrawOwin();
 		break;
 	case 0:
 		PlaySound(0, 0, 0);
 		Draw(3, 0, 30);
-		Draw_txt("Draw.txt");
-		SoundWin();
+		DrawDraw();
 		break;
 	case 2:
 		_TURN = !_TURN;
@@ -165,8 +200,26 @@ int ProcessFinish(_POINT A[BOARD_SIZE][BOARD_SIZE], int pWhoWin, PLAYER& PLAYER1
 	return pWhoWin;
 }
 
+void init_cursor_board(_POINT A[BOARD_SIZE][BOARD_SIZE])
+{
+	hidecursor();
+	TextColor(240);
+	if (A[(_X - 5) / 4][(_Y - 2) / 2].c == 0)
+	{
+		GotoXY(_X, _Y);
+		std::cout << cursor_char;
+	}
+}
+
 void MoveRight(_POINT A[BOARD_SIZE][BOARD_SIZE])
 {
+	hidecursor();
+	TextColor(255);
+	GotoXY(_X, _Y);
+	if (A[(_X - 5) / 4][(_Y - 2) / 2].c == 0)
+	{
+		std::cout << cursor_char;
+	}
 	if (_X < A[BOARD_SIZE - 1][BOARD_SIZE - 1].x)
 	{
 		_X += 4;
@@ -175,6 +228,13 @@ void MoveRight(_POINT A[BOARD_SIZE][BOARD_SIZE])
 }
 void MoveLeft(_POINT A[BOARD_SIZE][BOARD_SIZE])
 {
+	hidecursor();
+	TextColor(255);
+	GotoXY(_X, _Y);
+	if (A[(_X - 5) / 4][(_Y - 2) / 2].c == 0)
+	{
+		std::cout << cursor_char;
+	}
 	if (_X > A[0][0].x)
 	{
 		_X -= 4;
@@ -183,6 +243,13 @@ void MoveLeft(_POINT A[BOARD_SIZE][BOARD_SIZE])
 }
 void MoveDown(_POINT A[BOARD_SIZE][BOARD_SIZE])
 {
+	hidecursor();
+	TextColor(255);
+	GotoXY(_X, _Y);
+	if (A[(_X - 5) / 4][(_Y - 2) / 2].c == 0)
+	{
+		std::cout << cursor_char;
+	}
 	if (_Y < A[BOARD_SIZE - 1][BOARD_SIZE - 1].y)
 	{
 		_Y += 2;
@@ -191,10 +258,16 @@ void MoveDown(_POINT A[BOARD_SIZE][BOARD_SIZE])
 }
 void MoveUp(_POINT A[BOARD_SIZE][BOARD_SIZE])
 {
+	hidecursor();
+	TextColor(255);
+	GotoXY(_X, _Y);
+	if (A[(_X - 5) / 4][(_Y - 2) / 2].c == 0)
+	{
+		std::cout << cursor_char;
+	}
 	if (_Y > A[0][0].y)
 	{
 		_Y -= 2;
 		GotoXY(_X, _Y);
-
 	}
 }

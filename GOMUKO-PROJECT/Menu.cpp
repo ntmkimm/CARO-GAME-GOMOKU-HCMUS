@@ -19,6 +19,8 @@ void ResetData(_POINT A[BOARD_SIZE][BOARD_SIZE])
 }
 void LOAD_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER& PLAYER1, PLAYER& PLAYER2, std::string file)
 {
+	CountMoveP1 = 0;
+	CountMoveP2 = 0;
 	std::ifstream LOAD_file;
 	LOAD_file.open(file, std::ios::in);
 
@@ -33,8 +35,8 @@ void LOAD_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER& PLAYER1, PLAYER& PLAYER
 	for (int i = 0; i < BOARD_SIZE; i++)
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			A[i][j].x = 4 * j + LEFT + 2; //COORD X
-			A[i][j].y = 2 * i + TOP + 1; //COORD Y
+			A[i][j].x = 4 * j + LEFT + 2;
+			A[i][j].y = 2 * i + TOP + 1;
 			LOAD_file >> A[i][j].c;
 		}
 	LOAD_file.close();
@@ -60,7 +62,6 @@ void LOAD_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER& PLAYER1, PLAYER& PLAYER
 			}
 		}
 	_COMMAND = -1;
-	//Thiet lap lai toa do ban dau
 	_X = A[0][0].x;
 	_Y = A[0][0].y;
 }
@@ -117,18 +118,24 @@ bool EXIST_file(std::string file)
 
 void MoveDown1(Menu menu[COL][MAX_ROW], int option)
 {
-	showcursor();
+	hidecursor();
+	TextColor(255);
+	GotoXY(X1 - 2, Y1); std::cout << cursor_char_l;
 	if (Y1 < menu[0][option - 1].y)
 	{
+		GotoXY(X1, Y1);
 		Y1 += 2;
 		GotoXY(X1, Y1);
 	}
 }
 void MoveUp1(Menu menu[COL][MAX_ROW], int option)
 {
-	showcursor();
-	if (Y1 > menu[0][0].y) 
+	hidecursor();
+	TextColor(255);
+	GotoXY(X1 - 2, Y1); std::cout << cursor_char_l;
+	if (Y1 > menu[0][0].y)
 	{
+		GotoXY(X1, Y1);
 		Y1 -= 2;
 		GotoXY(X1, Y1);
 	}
@@ -141,13 +148,14 @@ int YESNO_CHOOSE(Menu menu[COL][MAX_ROW])
 	menu[0][1].c = "NO";
 	for (int i = 0; i < 2; i++)
 	{
-		menu[0][i].y = 2 * i + menu[0][0].y; //set coord y for ech option in menu
+		menu[0][i].y = 2 * i + menu[0][0].y;
 		GotoXY(menu[0][i].x, menu[0][i].y);
 		std::cout << menu[0][i].c << std::endl;
 	}
 	GotoXY(menu[0][0].x - 1, menu[0][0].y);
 	while (1)
 	{
+		init_cursor();
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 'w' or _COMMAND == arrow_up)
 			MoveUp1(menu, 2);
@@ -155,6 +163,7 @@ int YESNO_CHOOSE(Menu menu[COL][MAX_ROW])
 			MoveDown1(menu, 2);
 		if (_COMMAND == enter_char)
 		{
+			delete_cursor();
 			if (X1 == menu[0][0].x - 1 && Y1 == menu[0][0].y)
 				return 1;
 			else if (X1 == menu[0][1].x - 1 && Y1 == menu[0][1].y)
@@ -175,14 +184,17 @@ int LOAD_menu(Menu menu[COL][MAX_ROW])
 	if (size > MAX_ROW) size = MAX_ROW;
 	for (int i = 0; i < size; i++)
 	{
-		menu[0][i].y = 2 * i + menu[0][0].y; //set coord y for ech option in menu
+		menu[0][i].y = 2 * i + menu[0][0].y;
 		GotoXY(menu[0][i].x, menu[0][i].y);
 		menu[0][i].c = LOAD_files[i];
 		std::cout << menu[0][i].c << std::endl;
 	}
+	X1 = x_center_console - 1;
+	Y1 = y_center_console;
 	GotoXY(X1, Y1);
 	while (true)
 	{
+		init_cursor();
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 's' || _COMMAND == arrow_down)
 			MoveDown1(menu, (int)size);
@@ -190,6 +202,7 @@ int LOAD_menu(Menu menu[COL][MAX_ROW])
 			MoveUp1(menu, (int)size);
 		else if (_COMMAND == enter_char)
 		{
+			delete_cursor();
 			for (int i = 0; i < (int)size; i++)
 				if (X1 == menu[0][i].x - 1 && Y1 == menu[0][i].y)
 					return i;
@@ -198,7 +211,7 @@ int LOAD_menu(Menu menu[COL][MAX_ROW])
 }
 int MAIN_menu(Menu menu[COL][MAX_ROW])
 {
-	CreateConsoleWindow();
+	CreateConsoleWindow(240);
 	FixConsoleWindow();
 	system("cls");
 
@@ -208,17 +221,17 @@ int MAIN_menu(Menu menu[COL][MAX_ROW])
 	title(4);
 	Draw(3, 0, 15);
 
-	DrawBoard(1, 1, x_center_console - 10, y_center_console - 1, 25, 13);
-	menu[0][0].c = "New game";
-	menu[0][1].c = "Play BOT";
-	menu[0][2].c = "Load game";
+	DrawBoard(1, 1, x_center_console - 10, y_center_console - 1, 25, 12);
+	menu[0][0].c = "PvP Mode";
+	menu[0][1].c = "PvE Mode";
+	menu[0][2].c = "Load Game";
 	menu[0][3].c = "About Us";
-	menu[0][4].c = "Exit";
-	menu[0][5].c = "Settings";
+	menu[0][4].c = "Settings";
+	menu[0][5].c = "Exit";
 
 	for (int i = 0; i < 6; i++)
 	{
-		menu[0][i].y = 2 * i + menu[0][0].y; //set coord y for ech option in menu
+		menu[0][i].y = 2 * i + menu[0][0].y;
 		GotoXY(menu[0][i].x, menu[0][i].y);
 		std::cout << menu[0][i].c << std::endl;
 	}
@@ -226,6 +239,7 @@ int MAIN_menu(Menu menu[COL][MAX_ROW])
 	GotoXY(X1, Y1);
 	while (true)
 	{
+		init_cursor();
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 's' or _COMMAND == arrow_down)
 			MoveDown1(menu, 6);
@@ -233,6 +247,7 @@ int MAIN_menu(Menu menu[COL][MAX_ROW])
 			MoveUp1(menu, 6);
 		else if (_COMMAND == enter_char)
 		{
+			delete_cursor();
 			if (X1 == menu[0][0].x - 1 && Y1 == menu[0][0].y)
 				return 1;
 			else if (X1 == menu[0][1].x - 1 && Y1 == menu[0][1].y)

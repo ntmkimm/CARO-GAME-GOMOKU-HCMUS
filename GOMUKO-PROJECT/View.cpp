@@ -1,6 +1,5 @@
 ﻿#include "View.h"
 
-
 void hidecursor()
 {
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -8,6 +7,21 @@ void hidecursor()
 	info.dwSize = 100;
 	info.bVisible = FALSE;
 	SetConsoleCursorInfo(consoleHandle, &info);
+}
+
+void init_cursor()
+{
+	hidecursor();
+	TextColor(240);
+	GotoXY(X1 - 2, Y1); std::cout << cursor_char_l;
+}
+
+void delete_cursor()
+{
+	hidecursor();
+	TextColor(255);
+	GotoXY(X1 - 2, Y1); std::cout << cursor_char_l;
+	TextColor(240);
 }
 
 void SET_COLOR(int color)
@@ -24,24 +38,14 @@ void SET_COLOR(int color)
 	}
 }
 
-void showcursor()
-{
-	SET_COLOR(16);
-	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
-	CONSOLE_CURSOR_INFO info;
-	info.dwSize = 5;
-	info.bVisible = TRUE;
-	SetConsoleCursorInfo(consoleHandle, &info);
-}
-
-void CreateConsoleWindow()
+void CreateConsoleWindow(int a)
 {
 	HWND consoleWindow = GetConsoleWindow();
 	RECT r;
 	HANDLE hConsole;
 
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(hConsole, 240); //240 for the white background (wowww)
+	SetConsoleTextAttribute(hConsole, a);
 	GetWindowRect(consoleWindow, &r);
 	MoveWindow(consoleWindow, 0, 0, 1320, 700, 1);
 	ShowScrollBar(consoleWindow, SB_BOTH, FALSE);
@@ -90,9 +94,11 @@ void vertical(int row, int height, int x, int y)
 }
 void DrawBoard(int row, int column, int x, int y, int width, int height)
 {
-	//width = 3; height = 2;
 	for (int i = 0; i <= column; i++)
+	{
 		vertical(row, height, x + i * (width + 1), y);
+		Sleep(2);
+	}
 	for (int i = 0; i <= row; i++)
 	{
 		GotoXY(x, y + i * height);
@@ -102,6 +108,7 @@ void DrawBoard(int row, int column, int x, int y, int width, int height)
 			horizon(column, width, BOTTOM_CROSS, BOTTOM_LEFT, BOTTOM_RIGHT);
 		else
 			horizon(column, width, CROSS, LEFT_CROSS, RIGHT_CROSS);
+		Sleep(2);
 	}
 }
 void ShowGuide()
@@ -115,62 +122,45 @@ void ShowGuide()
 	GotoXY(5, 32);
 	std::cout << setw(7) << "[FUNCTION]" << setw(10) << "MOVE" << setw(10) << "CHOOSE" << setw(10) << "PAUSE";
 	GotoXY(_X, _Y);
-	showcursor();
 }
-int Draw_txt(const char* file)
+
+void SoundWin()
 {
-	FILE* f;
-	int c, hex = 1;
-	errno_t err;
-	system("cls");
-	while (1)
-	{
-		hidecursor();
-		if (_kbhit())
-		{
-			int h = _getch();
-			if (h == 13)
-				return 0;
-			return 0;
-			break;
-		}
-		SET_COLOR(0);
-		GotoXY(0, 5);
-		err = fopen_s(&f, file, "r");
-		for (int i = 1; i <= 17; i++)
-			for (int j = 1; j <= 121; j++)
-			{
-				c = getc(f);
-				if (c == '.')
-					SET_COLOR(0);
-				else if (hex % 2 == 1)
-					SET_COLOR(7);
-				else
-					SET_COLOR(hex);
-				std::cout << (char)c;
-			}
-		hex++;
-		fclose(f);
-	}
+	PlaySound(TEXT("Win.wav"), NULL, SND_FILENAME | SND_ASYNC);
 }
+void Sound2(int S2)
+{
+	if (S2 == 1)
+		PlaySound(TEXT("Sound2.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+}
+
 void Draw_txt_noeffect(const char* file)
 {
 	FILE* h;
 	int c;
 	errno_t err;
-	int printting = true;
+	int printing = true;
+	int running = true;
 	GotoXY(0, 5);
-	err = fopen_s(&h, file, "r");
-	while (printting)
+	while (running)
 	{
+		err = fopen_s(&h, file, "r");
 		hidecursor();
-		SET_COLOR(240);
-		c = fgetc(h);
-		std::cout << (char)c;
-		if (feof(h))
-			printting = false;
+		while (printing)
+		{
+			SET_COLOR(240);
+			c = fgetc(h);
+			std::cout << (char)c;
+			if (feof(h))
+				printing = false;
+		}
+		fclose(h);
+		_COMMAND = toupper(_getch());
+		if (_COMMAND == esc_char)
+		{
+			running = false;
+		}
 	}
-	fclose(h);
 }
 
 int cl(int mau) {
@@ -178,8 +168,10 @@ int cl(int mau) {
 		return 256;
 	else if (mau == 2)
 		return 68;
-	else
+	else if (mau == 3)
 		return 187;
+	else
+		return mau;
 }
 
 void draw(int a, int k, int _y, int mau, int _x, int loop, int K) {
@@ -196,9 +188,9 @@ void draw(int a, int k, int _y, int mau, int _x, int loop, int K) {
 		}
 		break;
 	case 2:
-		P = mau;
+		P = cl(mau);
 		SetConsoleTextAttribute(console_color, P);
-		GotoXY(x_center_console + 2 + 4 * k + K, y_center_console - n - 3 + _y);
+		GotoXY(x_center_console + 2 + 4 * k + K + _x, y_center_console - n - 3 + _y);
 		printf("   ");
 		break;
 	case 4:
@@ -356,7 +348,7 @@ void DrawX_Turn()
 	Draw(1, 3, 36);
 	Draw(2, 2, 36);
 	Draw(0, 2, 36);
-	showcursor();
+	GotoXY(_X, _Y);
 }
 void DrawO_Turn()
 {
@@ -366,7 +358,7 @@ void DrawO_Turn()
 	Draw(2, 3, 36);
 	Draw(1, 1, 36);
 	Draw(0, 1, 36);
-	showcursor();
+	GotoXY(_X, _Y);
 }
 
 void DrawX()
@@ -376,7 +368,6 @@ void DrawX()
 	console_color = GetStdHandle(STD_OUTPUT_HANDLE);
 	Draw(1, 3, 2);
 	Draw(2, 2, 2);
-	showcursor();
 }
 
 void DrawO()
@@ -386,7 +377,6 @@ void DrawO()
 	console_color = GetStdHandle(STD_OUTPUT_HANDLE);
 	Draw(2, 3, 10);
 	Draw(1, 1, 10);
-	showcursor();
 }
 
 void title(int a) {
@@ -494,13 +484,415 @@ void title(int a) {
 	}
 }
 
-void SoundWin()
+void DrawWin(int P)
 {
-	PlaySound(TEXT("Win.wav"), NULL, SND_FILENAME);
+	HANDLE console_color;
+	console_color = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(console_color, P);
+	GotoXY(x_center_console - 14, y_center_console - 8);
+	printf(" ");
+	GotoXY(x_center_console - 9, y_center_console - 8);
+	printf(" ");
+	GotoXY(x_center_console + 26, y_center_console - 8);
+	printf(" ");
+	GotoXY(x_center_console + 30, y_center_console - 8);
+	printf(" ");
+	GotoXY(x_center_console + 23, y_center_console - 5);
+	printf(" ");
+
+	for (int j = 0; j < 6; j++)
+		for (int i = 0; i < 4; i++)
+			draw(4, 1, 2 - 2 * j, P, i + j, 1, 4);
+
+	for (int j = 0; j < 5; j++)
+		for (int i = 0; i < 4; i++)
+			draw(5, 1, 0 - 2 * j, P, i + j, 1, 11);
+	draw(7, 1, 5, P, 0, 1, -10);
+
+	for (int j = 0; j < 3; j++)
+		draw(4, 1, 0 - j, P, -j, 2, 20);
+
+	for (int j = 0; j < 5; j++)
+		for (int i = 0; i < 4; i++)
+			draw(4, 1, 1 - 2 * j, P, -i - j, 1, 30);
+
+	for (int j = 0; j < 2; j++)
+		for (int i = 0; i < 6; i++)
+		{
+			GotoXY(x_center_console + 9 + i - 4 * j, y_center_console - 8 + 11 * j);
+			printf(" ");
+		}
+
+	for (int j = 0; j < 2; j++)
+		for (int i = 0; i < 2; i++)
+			draw(4, 1, -3 - j, P, -i - j, 1, 36);
+
+	for (int j = 0; j < 2; j++)
+		for (int i = 0; i < 3; i++)
+			draw(4, 1, -6 - 2 * j, P, -i - j, 1, 35);
+
+	for (int j = 0; j < 3; j++)
+		for (int i = 0; i < 3; i++)
+			draw(5, 1, -3 * j, P, i + j, 1, 37);
+
+	for (int j = 0; j < 2; j++)
+		for (int i = 0; i < 4; i++)
+			draw(4, 1, 2 - 10 * j, P, i + 3 * j, 1, 36);
+
+	for (int j = 0; j < 2; j++)
+		for (int i = 0; i < 2; i++)
+			draw(5, 1, 1 - 2 * j, P, -i - j, 1, 45);
+
+	for (int j = 0; j < 2; j++)
+		for (int i = 0; i < 2; i++)
+			draw(4, 1, 2 - 4 * j, P, -i - 3 * j, 1, 46);
+
+	SetConsoleTextAttribute(console_color, 255);
+	GotoXY(x_center_console - 8, y_center_console + 3);
+	printf(" ");
+	GotoXY(x_center_console - 2, y_center_console + 3);
+	printf(" ");
+	GotoXY(x_center_console + 3, y_center_console - 5);
+	printf(" ");
+	GotoXY(x_center_console - 1, y_center_console + 3);
+	printf(" ");
+	GotoXY(x_center_console + 22, y_center_console + 3);
+	printf(" ");
 }
-void Sound2(int S2)
+int DrawXwin()
 {
-	if (S2 == 1)
-		PlaySound(TEXT("Sound2.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+	system("cls");
+	int P = 4;
+	SoundWin();
+	GotoXY(60, 35);
+	std::cout << "Press any key to continue";
+	while (1) {
+		hidecursor();
+		if (_kbhit())
+		{
+			int h = _getch();
+			if (h == 13)
+				return 0;
+			return 0;
+			break;
+		}
+		if (P >= 300)
+			P = 4;
+		P += 16;
+		HANDLE console_color;
+		console_color = GetStdHandle(STD_OUTPUT_HANDLE);
+		SetConsoleTextAttribute(console_color, P);
+		DrawWin(P);
+		for (int j = 0; j < 14; j++)
+			for (int i = 0; i < 7; i++)
+				draw(4, 1, 3 - j, P, i + j, 1, -29);
+		for (int j = 0; j < 2; j++)
+			for (int i = 0; i < 11; i++)
+				draw(4, 1, 4 - j * 16, P, i + j * 13, 1, -31);
+
+		for (int j = 0; j < 5; j++)
+			for (int i = 0; i < 2; i++)
+				draw(4, 1, 3 - j, P, -i - j, 1, -11);
+		for (int j = 0; j < 2; j++)
+			for (int i = 0; i < 7; i++)
+				draw(4, 1, 4 - 16 * j, P, -i - 16 * j, 1, -9);
+		for (int j = 0; j < 2; j++)
+			for (int i = 0; i < 2; i++)
+				draw(4, 1, -6 - j, P, -i - j, 1, -23);
+		for (int j = 0; j < 3; j++)
+			for (int i = 0; i < 3; i++)
+				draw(4, 1, -8 - j, P, -i - j, 1, -25);
+
+		SetConsoleTextAttribute(console_color, 255);
+		for (int j = 0; j < 2; j++)
+		{
+			for (int i = 0; i < 2; i++)
+			{
+				GotoXY(x_center_console - 48 + 10 * i + 13 * j, y_center_console - 9 + 15 * j);
+				printf(" ");
+				GotoXY(x_center_console - 32 + 6 * i - 16 * j, y_center_console - 9 + 15 * j);
+				printf(" ");
+			}
+		}
+		Sleep(100);
+	}
 }
 
+int DrawOwin()
+{
+	system("cls");
+	int P = 4;
+	SoundWin();
+	GotoXY(60, 35);
+	std::cout << "Press any key to continue";
+	while (1) {
+		hidecursor();
+		if (_kbhit())
+		{
+			int h = _getch();
+			if (h == 13)
+				return 0;
+			return 0;
+			break;
+		}
+		if (P >= 300)
+			P = 4;
+		P += 16;
+		HANDLE console_color;
+		console_color = GetStdHandle(STD_OUTPUT_HANDLE);
+		SetConsoleTextAttribute(console_color, P);
+		DrawWin(P);
+		for (int t = 0; t < 2; t++)
+		{
+			for (int h = 0; h < 2; h++)
+				for (int j = 0; j < 3; j++)
+					for (int i = 0; i < 3; i++)
+						draw(4, 1, 5 - j * (-2 * h + 1) - 15 * h, P, (-i - j) * pow(-1, t), 1, -25 + 9 * t);
+			for (int i = 0; i < 3; i++)
+				draw(5, 1, -6, P, i, 3, -30 + 17 * t);
+			draw(5, 1, -3, P, 0, 1, -31 + 21 * t);
+			for (int j = 0; j < 2; j++)
+				for (int i = 0; i < 2; i++)
+					draw(7, 1, 2 + 16 * i, P, 0, 1, -47 + 2 * j * (1 - 2 * t) + 6 * t);
+		}
+		SetConsoleTextAttribute(console_color, 255);
+		for (int i = 0; i < 2; i++)
+		{
+			for (int j = 0; j < 2; j++)
+			{
+				GotoXY(x_center_console - 44 + 13 * j, y_center_console - 11 + i * 16);
+				printf(" ");
+			}
+		}
+		Sleep(100);
+	}
+}
+
+int DrawDraw()
+{
+	system("cls");
+	int P = 4;
+	SoundWin();
+	GotoXY(60, 35);
+	std::cout << "Press any key to continue";
+	while (1) {
+		hidecursor();
+		if (_kbhit())
+		{
+			int h = _getch();
+			if (h == 13)
+				return 0;
+			return 0;
+			break;
+		}
+		if (P >= 300)
+			P = 4;
+		P += 16;
+		HANDLE console_color;
+		console_color = GetStdHandle(STD_OUTPUT_HANDLE);
+		SetConsoleTextAttribute(console_color, P);
+		for (int j = 0; j < 7; j++)
+			for (int i = 0; i < 7; i++)
+				draw(4, 1, 2 - 2 * j, P, -i - j, 2, -30);
+		for (int j = 0; j < 2; j++)
+			for (int i = 0; i < 11; i++)
+				draw(4, 1, 4 - j * 16, P, i - j * 6, 1, -39);
+
+		for (int j = 0; j < 3; j++)
+			for (int i = 0; i < 8; i++)
+				draw(4, 1, -9 - j, P, i - j * 6, 1, -24);
+
+		for (int j = 0; j < 4; j++)
+			for (int i = 0; i < 3; i++)
+				draw(4, 1, -6 - j, P, i - 2 * j, 1, -13);
+
+		for (int j = 0; j < 2; j++)
+			for (int i = 0; i < 8; i++)
+				draw(4, 1, 4 - j, P, i + j * 6, 1, -29);
+
+		for (int j = 0; j < 5; j++)
+			for (int i = 0; i < 2; i++)
+				draw(4, 1, 3 - j, P, i + j, 1, -16);
+
+		for (int i = 0; i < 2; i++)
+			draw(4, 1, -5, P, i, 3, -12);
+
+		for (int j = 0; j < 5; j++)
+			for (int i = 0; i < 2; i++)
+				draw(4, 1, -3 - j * 2, P, i - j, 2, -1);
+
+		for (int j = 0; j < 2; j++)
+			for (int i = 0; i < 5; i++)
+				draw(4, 1, -1 - j * 10, P, i - 3 * j, 1, -3);
+
+		for (int j = 0; j < 2; j++)
+			for (int i = 0; i < 3; i++)
+				draw(4, 1, -1 - i, P, -i + 2 * i * j, 1, 3 + j);
+
+		for (int h = 0; h < 2; h++)
+			for (int j = 0; j < 4; j++)
+				for (int i = 0; i < 2; i++)
+				{
+					draw(4, 1, -1 - j * (1 - 2 * h) - 10 * h, P, -i - j, 1, 14);
+					draw(4, 1, -1 - j * (1 - 2 * h) - 10 * h, P, i + j, 1, 18);
+					draw(4, 1, -1 - 10 * h, P, i + j, 1, 15);
+					draw(4, 1, -6, P, i + h * 11, 1, 10);
+				}
+
+		for (int j = 0; j < 2; j++)
+			for (int i = 0; i < 2; i++)
+				draw(4, 1, -5 - 6 * j, P, i + j, 3, 21);
+
+		for (int j = 0; j < 6; j++)
+			for (int i = 0; i < 4; i++)
+				draw(4, 1, -1 - 2 * j, P, i + j, 1, 28);
+
+		for (int j = 0; j < 5; j++)
+			for (int i = 0; i < 4; i++)
+				draw(5, 1, -3 - 2 * j, P, i + j, 1, 35);
+		draw(7, 1, 8, P, 0, 1, 14);
+
+		for (int j = 0; j < 3; j++)
+			draw(4, 1, -3 - j, P, -j, 2, 44);
+
+		SetConsoleTextAttribute(console_color, 255);
+		GotoXY(x_center_console + 16, y_center_console + 6);
+		printf(" ");
+		GotoXY(x_center_console + 22, y_center_console + 6);
+		printf(" ");
+		GotoXY(x_center_console + 27, y_center_console - 2);
+		printf(" ");
+		GotoXY(x_center_console + 23, y_center_console + 6);
+		printf(" ");
+		Sleep(100);
+	}
+}
+
+void nhapnhay(_POINT A[BOARD_SIZE][BOARD_SIZE], int a, int i, int j, int m)
+{
+	int t = 0, g = 0, k = 0, P = 240;
+	PlaySound(0, 0, 0);
+	HANDLE console_color;
+	console_color = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(console_color, P);
+	GotoXY(60, 35);
+	std::cout << "Press any key to continue";
+	while (1)
+	{
+		hidecursor();
+		if (_kbhit())
+		{
+			int h = _getch();
+			if (h == 13)
+				break;
+			break;
+		}
+		for (int h = 0; h < 5; h++)
+		{
+			if (m == 1)
+				t = h;
+			else if (m == 2)
+				g = h;
+			else if (m == 3)
+			{
+				t = h;
+				g = h;
+			}
+			else
+			{
+				t = -h;
+				g = h;
+			}
+			P++;
+			if (P == 252)
+				P = 240;
+			GotoXY(A[i + t][j + g].x, A[i + t][j + g].y);
+			SetConsoleTextAttribute(console_color, P);
+			if (a == -1)
+				std::cout << "x";
+			if (a == 1)
+				std::cout << "o";
+			k++;
+			Sleep(100);
+		}
+	}
+}
+
+void loading2()
+{
+	hidecursor();
+	system("cls");
+	HANDLE console_color = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(console_color, 240);
+	GotoXY(x_center_console - 2, y_center_console + 3);
+	printf("LOADING ");
+	DrawBoard(1, 1, 65, 16, 20, 3);
+	for (int i = 0; i < 9; i++)
+	{
+		SetConsoleTextAttribute(console_color, 240);
+		GotoXY(x_center_console + 7, y_center_console + 3);
+		printf("      ");
+		for (int j = 0; j < 3; j++)
+		{
+			GotoXY(x_center_console + 7 + j, y_center_console + 3);
+			printf(". ");
+			Sleep(100);
+		}
+		SetConsoleTextAttribute(console_color, 0);
+		for (int j = 0; j < 2; j++)
+		{
+			GotoXY(x_center_console - 3 + 2 * i, y_center_console + j);
+			printf("  ");
+		}
+	}
+	SetConsoleTextAttribute(console_color, 240);
+	Sleep(200);
+}
+
+void loading()
+{
+	HANDLE console_color = GetStdHandle(STD_OUTPUT_HANDLE);
+	int a = 1;
+	while (a)
+	{
+		int h = -1;
+		for (int i = -13; i < 13; i++)
+		{
+			hidecursor();
+			if (_kbhit())
+			{
+				int k = _getch();
+				if (k == 0)
+					break;
+				SetConsoleTextAttribute(console_color, 240);
+				break;
+			}
+			if (i == 0)
+				h++;
+			if (i < 0)
+			{
+				SetConsoleTextAttribute(console_color, 0);
+				h++;
+			}
+			else
+			{
+				SetConsoleTextAttribute(console_color, 240);
+				h--;
+			}
+			for (int j = 0; j < 19; j++)
+			{
+				GotoXY(x_center_console + 2 + h * 6, y_center_console + 1 + j);
+				printf("      ");
+				GotoXY(x_center_console + 2 - h * 6, y_center_console + 1 + j);
+				printf("      ");
+				GotoXY(x_center_console + 2 + h * 6, y_center_console + 1 - j);
+				printf("      ");
+				GotoXY(x_center_console + 2 - h * 6, y_center_console + 1 - j);
+				printf("      ");
+				Sleep(1);
+			}
+			Sleep(1);
+		}
+		a = 0;
+	}
+}
