@@ -279,6 +279,7 @@ void MoveDown(_POINT A[BOARD_SIZE][BOARD_SIZE])
 		GotoXY(_X, _Y);
 	}
 }
+
 void MoveUp(_POINT A[BOARD_SIZE][BOARD_SIZE])
 {
 	TextColor(255);
