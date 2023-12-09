@@ -31,7 +31,7 @@ void LOAD_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER& PLAYER1, PLAYER& PLAYER
 	LOAD_file >> PLAYER2.win;
 
 	LOAD_file >> _TURN; //pass _turn of loadfile to _turn variable
-	std::string line;
+	
 	for (int i = 0; i < BOARD_SIZE; i++)
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
@@ -40,27 +40,7 @@ void LOAD_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER& PLAYER1, PLAYER& PLAYER
 			LOAD_file >> A[i][j].c;
 		}
 	LOAD_file.close();
-	for (int i = 0; i < BOARD_SIZE; i++)
-		for (int j = 0; j < BOARD_SIZE; j++)
-		{
-			GotoXY(A[i][j].x, A[i][j].y);
-			switch (A[i][j].c)
-			{
-			case 0: break;
-			case -1:
-				CountMoveP1++;
-				TextColor(Color_X);
-				std::cout << "x";
-				TextColor(240);
-				break;
-			case 1:
-				CountMoveP2++;
-				TextColor(Color_O);
-				std::cout << "o";
-				TextColor(240);
-				break;
-			}
-		}
+
 	_COMMAND = -1;
 	_X = A[0][0].x;
 	_Y = A[0][0].y;
@@ -68,7 +48,7 @@ void LOAD_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER& PLAYER1, PLAYER& PLAYER
 void SAVE_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER PLAYER1, PLAYER PLAYER2, std::string file)
 {
 	std::fstream SAVE_file;
-	SAVE_file.open(file, std::ios::out); // writing 
+	SAVE_file.open(file, std::ios::trunc); 
 
 	SAVE_file << PLAYER1.name << std::endl;
 	SAVE_file << PLAYER2.name << std::endl;
@@ -81,8 +61,7 @@ void SAVE_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER PLAYER1, PLAYER PLAYER2,
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
-			SAVE_file << A[i][j].c << " ";
-
+			SAVE_file << A[i][j].c;
 		SAVE_file << std::endl;
 	}
 	SAVE_file.close();
@@ -93,7 +72,7 @@ std::vector<std::string> LOAD_file()
 	std::vector<std::string> File;
 	std::string NAME_file;
 	std::fstream LIST_game;
-	LIST_game.open("ListGame.txt", std::ios::in); //read
+	LIST_game.open("ListGame.txt", std::ios::in); 
 	while (LIST_game >> NAME_file)
 		File.push_back(NAME_file);
 	LIST_game.close();
@@ -101,9 +80,9 @@ std::vector<std::string> LOAD_file()
 }
 bool EXIST_file(std::string file)
 {
-	std::string name; // filename cua cac file da luu trong ListGame.txt
+	std::string name; 
 	std::fstream SAVE_file;
-	SAVE_file.open("ListGame.txt", std::ios::in); //read only
+	SAVE_file.open("ListGame.txt", std::ios::in); 
 
 	while (SAVE_file >> name)
 		if (name == file)
@@ -152,7 +131,9 @@ int YESNO_CHOOSE(Menu menu[COL][MAX_ROW])
 		GotoXY(menu[0][i].x, menu[0][i].y);
 		std::cout << menu[0][i].c << std::endl;
 	}
-	GotoXY(menu[0][0].x - 1, menu[0][0].y);
+	X1 = x_center_console - 1;
+	Y1 = y_center_console;
+	GotoXY(X1, Y1);
 	while (1)
 	{
 		init_cursor();
