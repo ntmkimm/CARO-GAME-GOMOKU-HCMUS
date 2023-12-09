@@ -387,6 +387,31 @@ int Settings(Menu menu[COL][MAX_ROW]) {
 	return 0;
 }
 
+void LoadData(_POINT A[BOARD_SIZE][BOARD_SIZE])
+{
+	CountMoveP1 = 0;
+	CountMoveP2 = 0;
+	for (int i = 0; i < BOARD_SIZE; i++)
+		for (int j = 0; j < BOARD_SIZE; j++)
+		{
+			GotoXY(A[i][j].x, A[i][j].y);
+			if (A[i][j].c == -1)
+			{
+				CountMoveP1++;
+				TextColor(Color_X);
+				std::cout << "x";
+				TextColor(240);
+			}
+			else if (A[i][j].c == 1)
+			{
+				CountMoveP2++;
+				TextColor(Color_O);
+				std::cout << "o";
+				TextColor(240);
+			}
+		}
+}
+
 int NewGame(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& PLAYER1, PLAYER& PLAYER2)
 {
 	bool validEnter = true;
@@ -394,6 +419,7 @@ int NewGame(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& P
 	GotoXY(_X, _Y);
 	while (running)
 	{
+		LoadData(A);
 		init_cursor_board(A);
 		DrawX();
 		DrawO();
@@ -415,12 +441,10 @@ int NewGame(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& P
 				switch (CheckBoard(A, _X, _Y))
 				{
 				case -1:
-					CountMoveP1++;
 					TextColor(Color_X);
 					std::cout << "x"; break;
 
 				case 1:
-					CountMoveP2++;
 					TextColor(Color_O);
 					std::cout << "o"; break;
 				case 0: validEnter = false;
@@ -472,6 +496,7 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 	int count = 0;
 	while (running)
 	{
+		LoadData(A);
 		init_cursor_board(A);
 		DrawX();
 		DrawO();
@@ -519,11 +544,10 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 				switch (CheckBoard(A, _X, _Y))
 				{
 				case -1:
-					CountMoveP1++;
 					TextColor(Color_X);
 					std::cout << "x"; break;
+
 				case 1:
-					CountMoveP2++;
 					TextColor(Color_O);
 					std::cout << "o"; break;
 				case 0: validEnter = false;
@@ -572,7 +596,7 @@ int Playwithcomputer(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[22][22], Menu me
 	GotoXY(_X, _Y);
 	while (running == 1)
 	{
-		init_cursor_board(A);
+		LoadData(A);
 		DrawX();
 		DrawO();
 		ShowGuide();
@@ -582,6 +606,7 @@ int Playwithcomputer(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[22][22], Menu me
 			DrawX_Turn();
 			while (true)
 			{
+				init_cursor_board(A);
 				_COMMAND = toupper(_getch());
 				if (_COMMAND == esc_char)
 				{
@@ -603,6 +628,7 @@ int Playwithcomputer(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[22][22], Menu me
 						{
 							CountMoveP1++;
 							TextColor(Color_X);
+							GotoXY(_X, _Y);
 							std::cout << "x";
 							break;
 						}
@@ -636,6 +662,7 @@ int Playwithcomputer(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[22][22], Menu me
 			if (YESNO_CHOOSE(menu) == 1)
 			{
 				StartGame(A);
+				running = true;
 				break;
 			}
 			else
