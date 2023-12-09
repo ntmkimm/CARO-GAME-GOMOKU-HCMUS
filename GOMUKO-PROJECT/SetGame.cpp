@@ -661,6 +661,7 @@ int Playwithcomputer(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[22][22], Menu me
 			std::cout << "DO YOU WANT TO PLAY AGAIN?";
 			if (YESNO_CHOOSE(menu) == 1)
 			{
+				count = 0;
 				StartGame(A);
 				running = true;
 				break;

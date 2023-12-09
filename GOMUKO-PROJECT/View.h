@@ -40,8 +40,8 @@ enum { y_center_console = 17 };
 #define arrow_right (char) 77
 #define enter_char (char) 13
 #define esc_char (char) 27
-#define cursor_char_l (char) 16
-#define cursor_char (char) 4
+#define cursor_char_l ">>"
+#define cursor_char "-"
 
 
 extern int X1;
