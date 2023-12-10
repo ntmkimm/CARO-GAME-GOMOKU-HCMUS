@@ -24,7 +24,7 @@ bool defense(_POINT B[22][22]) {
     for (int i = 5; i < SIZE + 5; i++) {
         for (int j = 5; j < SIZE + 5; j++) {
             if (B[i][j].c == -1 && B[i][j].c == B[i][j + 1].c && B[i][j].c == B[i][j + 2].c && B[i][j].c == B[i][j + 3].c) {
-                if (B[i][j - 1].c == 0 && B[i][j + 4].c == 0) return 0;
+                if (B[i][j - 1].c == 0 || B[i][j + 4].c == 0) return 0;
             }
         }
     }
@@ -32,7 +32,7 @@ bool defense(_POINT B[22][22]) {
     for (int i = 5; i < SIZE + 5; i++) {
         for (int j = 5; j < SIZE + 5; j++) {
             if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j + 1].c && B[i][j].c == B[i + 2][j + 2].c && B[i][j].c == B[i + 3][j + 3].c) {
-                if (B[i - 1][j - 1].c == 0 && B[i + 4][j + 4].c == 0)
+                if (B[i - 1][j - 1].c == 0 || B[i + 4][j + 4].c == 0)
                     return 0;
             }
         }
@@ -41,7 +41,7 @@ bool defense(_POINT B[22][22]) {
     for (int i = 5; i < SIZE + 5; i++) {
         for (int j = 5; j < SIZE + 5; j++) {
             if (B[i][j].c == -1 && B[i][j].c == B[i - 1][j + 1].c && B[i][j].c == B[i - 2][j + 2].c && B[i][j].c == B[i - 3][j + 3].c) {
-                if (B[i + 1][j - 1].c == 0 && B[i - 4][j + 4].c == 0)
+                if (B[i + 1][j - 1].c == 0 || B[i - 4][j + 4].c == 0)
                     return 0;
             }
         }
@@ -51,7 +51,7 @@ bool defense(_POINT B[22][22]) {
     for (int i = 5; i < SIZE + 5; i++) {
         for (int j = 5; j < SIZE + 5; j++) {
             if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j].c && B[i][j].c == B[i + 2][j].c && B[i][j].c == B[i + 4][j].c) {
-                if (B[i][j + 3].c == 0) return 0;
+                if (B[i + 3][j].c == 0) return 0;
             }
         }
     }
@@ -120,8 +120,8 @@ bool defense(_POINT B[22][22]) {
     //hBng ngBng x_xxx
     for (int i = 5; i < SIZE + 5; i++) {
         for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i][j + 4].c && B[i][j].c == B[i][j + 2].c && B[i][j].c == B[i][j + 3].c) {
-                if (B[i][j + 1].c == 0) return 0;
+            if (B[i][j].c == -1 && B[i][j].c == B[i + 4][j].c && B[i][j].c == B[i + 2][j].c && B[i][j].c == B[i + 3][j].c) {
+                if (B[i + 1][j].c == 0) return 0;
             }
         }
     }
@@ -673,7 +673,6 @@ int evaluate(_POINT B[22][22]) {
             }
         }
     }
-
     //hBng ngBng x_xx
     for (int i = 5; i < SIZE + 5; i++) {
         for (int j = 5; j < SIZE + 5; j++) {
@@ -708,12 +707,8 @@ int evaluate(_POINT B[22][22]) {
             }
         }
     }
-
-
-
-
     //BTTBCK
-    //check for defense
+     //check for defense
     if (def == 1) {
         //hBng ngBng oooo_
         for (int i = 5; i < SIZE + 5; i++) {
@@ -723,13 +718,7 @@ int evaluate(_POINT B[22][22]) {
                 }
             }
         }
-        //for (int i = 5; i < SIZE + 5; i++) {
-        //    for (int j = 5; j < SIZE + 5; j++) {
-        //        if (B[i][j].c == B[i + 1][j].c && B[i][j].c == B[i + 2][j].c && B[i][j].c == B[i + 3][j].c && B[i][j].c == 1 && (B[i + 4][j].c == 0 && B[i - 1][j].c == 0)) {
-        //            POINT2 += 70;
-        //        }
-        //    }
-        //}
+
         //hBng doc oooo_
         for (int i = 5; i < SIZE + 5; i++) {
             for (int j = 5; j < SIZE + 5; j++) {
@@ -738,13 +727,7 @@ int evaluate(_POINT B[22][22]) {
                 }
             }
         }
-        //for (int i = 5; i < SIZE + 5; i++) {
-        //    for (int j = 5; j < SIZE + 5; j++) {
-        //        if (B[i][j].c == 1 && B[i][j].c == B[i][j + 1].c && B[i][j].c == B[i][j + 2].c && B[i][j].c == B[i][j + 3].c && (B[i][j + 4].c == 0 && B[i][j - 1].c == 0)) {
-        //            POINT2 += 70;
-        //        }
-        //    }
-        //}
+
         // hBng cheo1 oooo_
         for (int i = 5; i < SIZE + 5; i++) {
             for (int j = 5; j < SIZE + 5; j++) {
@@ -753,13 +736,7 @@ int evaluate(_POINT B[22][22]) {
                 }
             }
         }
-        //for (int i = 5; i < SIZE + 5; i++) {
-        //    for (int j = 5; j < SIZE + 5; j++) {
-        //        if (B[i][j].c == 1 && B[i][j].c == B[i - 1][j + 1].c && B[i][j].c == B[i - 2][j + 2].c && B[i][j].c == B[i - 3][j + 3].c && (B[i - 4][j + 4].c == 0 && B[i + 1][j - 1].c == 0)) {
-        //            POINT2 += 70;
-        //        }
-        //    }
-        //}
+
         //hBng cheo2 oooo_
         for (int i = 5; i < SIZE + 5; i++) {
             for (int j = 5; j < SIZE + 5; j++) {
@@ -768,13 +745,6 @@ int evaluate(_POINT B[22][22]) {
                 }
             }
         }
-        //for (int i = 5; i < SIZE + 5; i++) {
-        //    for (int j = 5; j < SIZE + 5; j++) {
-        //        if (B[i][j].c == 1 && B[i][j].c == B[i + 1][j + 1].c && B[i][j].c == B[i + 2][j + 2].c && B[i][j].c == B[i + 3][j + 3].c && (B[i + 4][j + 4].c == 0 && B[i - 1][j - 1].c == 0)) {
-        //            POINT2 += 70;
-        //        }
-        //    }
-        //}
 
         //hBng ngBng ooo_o
         for (int i = 5; i < SIZE + 5; i++) {
