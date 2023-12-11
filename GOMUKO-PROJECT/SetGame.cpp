@@ -237,14 +237,16 @@ void SETNAME_player(PLAYER& PLAYER1, PLAYER& PLAYER2)
 {
 	do {
 		system("cls");
-		DrawBoard(1, 1, x_center_console - 30, y_center_console - 3, 80, 8);
-		GotoXY(x_center_console - 10, y_center_console);
+		Draw_txt("des1.txt", Color_O);
+		Draw_txt("des2.txt", Color_X);
+		DrawBoard(1, 1, x_center_console - 30, y_center_console - 3, 70, 8);
+		GotoXY(x_center_console - 20, y_center_console);
 		TextColor(Color_X);
 		std::cout << "Enter First PLayer's name: ";
-		GotoXY(x_center_console - 10, y_center_console + 2);
+		GotoXY(x_center_console - 20, y_center_console + 2);
 		TextColor(Color_O);
 		std::cout << "Enter Second PLayer's name: ";
-		GotoXY(x_center_console + 20, y_center_console);
+		GotoXY(x_center_console + 10, y_center_console);
 		TextColor(Color_X);
 		std::getline(std::cin >> std::ws, PLAYER1.name);
 		TextColor(240);
@@ -252,17 +254,19 @@ void SETNAME_player(PLAYER& PLAYER1, PLAYER& PLAYER2)
 
 	do {
 		system("cls");
-		DrawBoard(1, 1, x_center_console - 30, y_center_console - 3, 80, 8);
-		GotoXY(x_center_console - 10, y_center_console);
+		Draw_txt("des1.txt", Color_O);
+		Draw_txt("des2.txt", Color_X);
+		DrawBoard(1, 1, x_center_console - 30, y_center_console - 3, 70, 8);
+		GotoXY(x_center_console - 20, y_center_console);
 		TextColor(Color_X);
 		std::cout << "Enter First PLayer's name: ";
-		GotoXY(x_center_console - 10, y_center_console + 2);
+		GotoXY(x_center_console - 20, y_center_console + 2);
 		TextColor(Color_O);
 		std::cout << "Enter Second PLayer's name: ";
-		GotoXY(x_center_console + 20, y_center_console);
+		GotoXY(x_center_console + 10, y_center_console);
 		TextColor(Color_X);
 		std::cout << PLAYER1.name;
-		GotoXY(x_center_console + 20, y_center_console + 2);
+		GotoXY(x_center_console + 10, y_center_console + 2);
 		TextColor(Color_O);
 		std::getline(std::cin >> std::ws, PLAYER2.name);
 		TextColor(240);
@@ -276,7 +280,7 @@ void ShowPlayerInfo(PLAYER& PLAYER1, PLAYER& PLAYER2)
 	DrawBoard(1, 1, x_center_console + 24, y_center_console - 7, 47, 24);
 	using std::setw;
 	GotoXY(113, 14);
-	TextColor(116);
+	TextColor(244); //red
 	std::cout << "PLAYER INFO";
 	TextColor(240);
 	GotoXY(100, 19);
@@ -293,9 +297,10 @@ void ShowPlayerInfo(PLAYER& PLAYER1, PLAYER& PLAYER2)
 
 int Settings(Menu menu[COL][MAX_ROW]) {
 	system("cls");
+	Draw_txt("SETTINGS.txt", Color_X);
 	DrawBoard(1, 1, x_center_console - 40, y_center_console - 3, 90, 8);
 	GotoXY(x_center_console - 25, y_center_console + 1);
-	TextColor(116);
+	TextColor(Color_O);
 	std::cout << "SETTINGS";
 	TextColor(240);
 	menu[0][0].c = "Color   X   _   O  :";

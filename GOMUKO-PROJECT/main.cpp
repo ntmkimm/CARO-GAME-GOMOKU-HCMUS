@@ -1,4 +1,4 @@
-#include "SetGame.h"
+﻿#include "SetGame.h"
 #include <iostream>
 #include <Windows.h>
 
@@ -12,6 +12,8 @@ int Color_X, Color_O;
 int CountMoveP1, CountMoveP2;
 int main()
 {
+	SetConsoleCP(437);
+	SetConsoleOutputCP(437);
 	_POINT A[BOARD_SIZE][BOARD_SIZE];
 	_POINT B[22][22];
 	Menu menu[COL][MAX_ROW];
@@ -37,6 +39,11 @@ int main()
 		if (running == 0)
 			break;
 	}
+	/*for (int i = 0; i < 300; ++i)
+	{
+		TextColor(i);
+		std::cout << i << "\n";
+	}*/
 }
 
 

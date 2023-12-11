@@ -1,4 +1,5 @@
 ﻿#include "View.h"
+#define _CRT_SECURE_NO_WARNINGS
 
 void hidecursor()
 {
@@ -118,9 +119,9 @@ void ShowGuide()
 	DrawBoard(1, 1, 3, 27, 47, 7);
 	using std::setw;
 	GotoXY(5, 29);
-	std::cout << setw(7) << "[KEY]" << setw(10) << char(27) << char(24) << char(25) << char(26) << setw(10) << "ENTER" << setw(10) << "ESC";
+	std::cout << setw(7) << "[KEY]" << setw(15) << "ARROW KEY" << setw(10) << "ENTER" << setw(10) << "ESC";
 	GotoXY(5, 32);
-	std::cout << setw(7) << "[FUNCTION]" << setw(10) << "MOVE" << setw(10) << "CHOOSE" << setw(10) << "PAUSE";
+	std::cout << setw(7) << "[FUNCTION]" << setw(10) << "MOVE" << setw(13) << "CHOOSE" << setw(10) << "PAUSE";
 	GotoXY(_X, _Y);
 }
 
@@ -161,6 +162,25 @@ void Draw_txt_noeffect(const char* file)
 			running = false;
 		}
 	}
+}
+
+void Draw_txt(const char* filename, int color)
+{
+	TextColor(color);
+	FILE* h;
+	int c;
+	errno_t err;
+	err = fopen_s(&h, filename, "r");
+	int printing = true;
+	while (printing)
+	{
+		c = fgetc(h);
+		std::cout << (char)c;
+		if (feof(h))
+			printing = false;
+	}
+	fclose(h);
+	TextColor(240);
 }
 
 int cl(int mau) {

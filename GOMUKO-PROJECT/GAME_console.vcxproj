@@ -143,7 +143,11 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="AboutUs.txt" />
+    <Text Include="des1.txt" />
+    <Text Include="des2.txt" />
     <Text Include="ListGame.txt" />
+    <Text Include="savedgames.txt" />
+    <Text Include="SETTINGS.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitattributes" />

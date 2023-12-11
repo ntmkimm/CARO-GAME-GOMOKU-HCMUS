@@ -58,6 +58,18 @@
     <Text Include="ListGame.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="SETTINGS.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="des2.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="des1.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="savedgames.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitattributes">
