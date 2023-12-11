@@ -502,7 +502,7 @@ int evaluate(_POINT B[22][22]) {
     for (int i = 5; i < SIZE + 5; i++) {
         for (int j = 5; j < SIZE + 5; j++) {
             if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j].c && B[i][j].c == B[i + 2][j].c && B[i][j].c == B[i + 4][j].c) {
-                if (B[i][j + 3].c == 1) POINT2 += 150;
+                if (B[i + 3][j].c == 1) POINT2 += 150;
             }
         }
     }
@@ -571,8 +571,8 @@ int evaluate(_POINT B[22][22]) {
     //hBng ngBng x_xxx
     for (int i = 5; i < SIZE + 5; i++) {
         for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i][j + 4].c && B[i][j].c == B[i][j + 2].c && B[i][j].c == B[i][j + 3].c) {
-                if (B[i][j + 1].c == 1) POINT2 += 150;
+            if (B[i][j].c == -1 && B[i][j].c == B[i + 4][j].c && B[i][j].c == B[i + 2][j].c && B[i][j].c == B[i + 3][j].c) {
+                if (B[i + 1][j].c == 1) POINT2 += 150;
             }
         }
     }
