@@ -17,6 +17,7 @@ We created a gomuko game for our project of Introduction to Information of Techn
 #DETAIL
 
 #HOW TO RUN IT 
+
 Compile all the file and run main.cpp - summary file of whole project.
 
 
