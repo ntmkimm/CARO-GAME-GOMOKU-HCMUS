@@ -12,6 +12,29 @@ void StartGame(_POINT A[BOARD_SIZE][BOARD_SIZE])
 	DrawX_Turn();
 	GotoXY(_X, _Y);
 }
+
+void SAVE_datafile(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER PLAYER1, PLAYER PLAYER2, std::string file)
+{
+	std::fstream SAVE_file;
+	SAVE_file.open(file, std::ios::out);
+
+	SAVE_file << PLAYER1.name << std::endl;
+	SAVE_file << PLAYER2.name << std::endl;
+
+	SAVE_file << PLAYER1.win << std::endl;
+	SAVE_file << PLAYER2.win << std::endl;
+
+	SAVE_file << _TURN << std::endl;
+
+	for (int i = 0; i < BOARD_SIZE; i++)
+	{
+		for (int j = 0; j < BOARD_SIZE; j++)
+			SAVE_file << A[j][i].c << " ";
+		SAVE_file << std::endl;
+	}
+	SAVE_file.close();
+}
+
 void SAVE_game(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER PLAYER1, PLAYER PLAYER2)
 {
 	bool run = true;
@@ -41,7 +64,8 @@ void SAVE_game(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER
 	}
 
 	file = file + ".txt";
-	SAVE_data(A, PLAYER1, PLAYER2, file);
+
+	SAVE_datafile(A, PLAYER1, PLAYER2, file);
 
 	std::fstream SAVE_file;
 	SAVE_file.open("ListGame.txt", std::ios::app);
@@ -495,25 +519,6 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 		{
 			CountMoveP1 = 0;
 			CountMoveP2 = 0;
-			for (int i = 0; i < BOARD_SIZE; i++)
-				for (int j = 0; j < BOARD_SIZE; j++)
-				{
-					GotoXY(A[i][j].x, A[i][j].y);
-					if (A[j][i].c == -1)
-					{
-						CountMoveP1++;
-						TextColor(Color_X);
-						std::cout << "x";
-						TextColor(240);
-					}
-					else if (A[j][i].c == 1)
-					{
-						CountMoveP2++;
-						TextColor(Color_O);
-						std::cout << "o";
-						TextColor(240);
-					}
-				}
 			if (TestBoard(A) == 0 || TestBoard(A) == 1)
 			{
 				GotoXY(x_center_console + 30, y_center_console - 12);
