@@ -502,15 +502,14 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 	while (running)
 	{
 		LoadData(A);
-		init_cursor_board(A);
 		DrawX();
 		DrawO();
 		ShowGuide();
 		ShowPlayerInfo(PLAYER1, PLAYER2);
-		if (TestBoard(A) != 2 && count == 0)
+		if ((TestBoard(A) == 0 || TestBoard(A) == 1) && count == 0)
 		{
 			GotoXY(x_center_console + 30, y_center_console - 12);
-			TextColor(116); // white text with background red
+			TextColor(270); 
 			std::cout << "THIS GAME IS OVER IN THE LAST TIME!";
 			int option = ESC_menuLoad(menu);
 			if (option == 1)
@@ -532,6 +531,7 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 			else
 				DrawO_Turn();
 		}
+		init_cursor_board(A);
 		GotoXY(_X, _Y);
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == esc_char)
