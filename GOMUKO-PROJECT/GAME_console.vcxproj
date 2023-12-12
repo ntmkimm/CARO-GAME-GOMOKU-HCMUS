@@ -155,6 +155,7 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <Media Include="mario_03.wav" />
     <Media Include="Sound2.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

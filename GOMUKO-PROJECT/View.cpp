@@ -788,10 +788,15 @@ int DrawDraw()
 	}
 }
 
+void SoundTink()
+{
+	PlaySound(TEXT("mario_03.wav"), NULL, SND_FILENAME | SND_ASYNC);
+}
+
 void nhapnhay(_POINT A[BOARD_SIZE][BOARD_SIZE], int a, int i, int j, int m)
 {
 	int t = 0, g = 0, k = 0, P = 240;
-	PlaySound(0, 0, 0);
+	SoundTink();
 	HANDLE console_color;
 	console_color = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(console_color, P);
