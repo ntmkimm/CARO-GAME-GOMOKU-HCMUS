@@ -402,6 +402,13 @@ int evaluate(_POINT B[22][22]) {
     bool atk = attack(B);
     //Nuoc khoi dBu
     if (demnuocbot(B) < 4) {
+        if (demnuocbot(B) < 2) {
+            for (int i = 10; i < 12; i++) {
+                for (int j = 10; j < 12; j++) {
+                    if (B[i][j].c == 1) POINT2 += 5;
+                }
+            }
+        }
         for (int i = 5; i < SIZE + 5; i++) {
             for (int j = 5; j < SIZE + 5; j++) {
                 if (B[i][j].c == -1) {

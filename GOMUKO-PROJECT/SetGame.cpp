@@ -629,6 +629,7 @@ int Playwithcomputer(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[22][22], Menu me
 			DrawX_Turn();
 			while (true)
 			{
+				LoadData(A);
 				init_cursor_board(A);
 				_COMMAND = toupper(_getch());
 				if (_COMMAND == esc_char)
@@ -655,12 +656,14 @@ int Playwithcomputer(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[22][22], Menu me
 							std::cout << "x";
 							break;
 						}
+						LoadData(A);
 					}
 				}
 			}
 		}
 		else
 		{
+			LoadData(A);
 			DrawO_Turn();
 			for (int i = 5; i < SIZE + 5; i++)
 				for (int j = 5; j < SIZE + 5; j++)
@@ -674,6 +677,7 @@ int Playwithcomputer(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[22][22], Menu me
 			TextColor(Color_O);
 			std::cout << "o";
 		}
+		LoadData(A);
 		count++;
 		switch (ProcessFinish(A, TestBoard(A), PLAYER1, PLAYER2))
 		{
@@ -729,12 +733,12 @@ int MAINMENU_run(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[22][22], Menu menu[C
 		SAVE_data(A, PLAYER1, PLAYER2, file_chosen);
 		break;
 	case 4:
-		loading();
+		loading2();
 		system("cls");
 		Draw_txt_noeffect("AboutUs.txt");
 		break;
 	case 5:
-		loading();
+		loading2();
 		Settings(menu);
 		break;
 	case 6:
