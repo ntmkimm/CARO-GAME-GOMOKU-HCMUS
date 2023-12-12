@@ -21,10 +21,7 @@ void ResetData(_POINT A[BOARD_SIZE][BOARD_SIZE])
 void SAVE_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER PLAYER1, PLAYER PLAYER2, std::string file)
 {
 	std::fstream SAVE_file;
-	if (EXIST_file(file) == true)
-		SAVE_file.open(file, std::ios::trunc);
-	else if (EXIST_file(file) == false)
-		SAVE_file.open(file, std::ios::out);
+	SAVE_file.open(file, std::ios::out);
 
 	SAVE_file << PLAYER1.name << std::endl;
 	SAVE_file << PLAYER2.name << std::endl;
@@ -37,7 +34,7 @@ void SAVE_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER PLAYER1, PLAYER PLAYER2,
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
-			SAVE_file << A[i][j].c;
+			SAVE_file << A[i][j].c << " ";
 		SAVE_file << std::endl;
 	}
 	SAVE_file.close();
@@ -63,6 +60,12 @@ void LoadData(_POINT A[BOARD_SIZE][BOARD_SIZE])
 				CountMoveP2++;
 				TextColor(Color_O);
 				std::cout << "o";
+				TextColor(240);
+			}
+			else if (A[i][j].c == 0)
+			{
+				TextColor(255);
+				std::cout << " ";
 				TextColor(240);
 			}
 		}

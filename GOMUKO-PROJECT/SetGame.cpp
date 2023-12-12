@@ -486,27 +486,51 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 		DrawO_Turn();
 	while (running)
 	{
-		LoadData(A);
 		DrawX();
 		DrawO();
 		ShowGuide();
+		LoadData(A);
 		ShowPlayerInfo(PLAYER1, PLAYER2);
-		/*if ((TestBoard(A) == 0 || TestBoard(A) == 1) && count == 0)
+		if (count == 0)
 		{
-			GotoXY(x_center_console + 30, y_center_console - 12);
-			TextColor(270); 
-			std::cout << "THIS GAME IS OVER IN THE LAST TIME!";
-			int option = ESC_menuLoad(menu);
-			if (option == 1)
+			CountMoveP1 = 0;
+			CountMoveP2 = 0;
+			for (int i = 0; i < BOARD_SIZE; i++)
+				for (int j = 0; j < BOARD_SIZE; j++)
+				{
+					GotoXY(A[i][j].x, A[i][j].y);
+					if (A[j][i].c == -1)
+					{
+						CountMoveP1++;
+						TextColor(Color_X);
+						std::cout << "x";
+						TextColor(240);
+					}
+					else if (A[j][i].c == 1)
+					{
+						CountMoveP2++;
+						TextColor(Color_O);
+						std::cout << "o";
+						TextColor(240);
+					}
+				}
+			if (TestBoard(A) == 0 || TestBoard(A) == 1)
 			{
-				StartGame(A);
-				DrawX();
-				DrawO();
-				ShowGuide();
-				ShowPlayerInfo(PLAYER1, PLAYER2);
+				GotoXY(x_center_console + 30, y_center_console - 12);
+				TextColor(270);
+				std::cout << "THIS GAME IS OVER IN THE LAST TIME!";
+				int option = ESC_menuLoad(menu);
+				if (option == 1)
+				{
+					StartGame(A);
+					DrawX();
+					DrawO();
+					ShowGuide();
+					ShowPlayerInfo(PLAYER1, PLAYER2);
+				}
+				else
+					break;
 			}
-			else
-				break;
 			++count;
 		}
 		else
@@ -515,7 +539,7 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 				DrawX_Turn();
 			else
 				DrawO_Turn();
-		}*/
+		}
 		init_cursor_board(A);
 		GotoXY(_X, _Y);
 		_COMMAND = toupper(_getch());
@@ -535,10 +559,12 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 				{
 				case -1:
 					TextColor(Color_X);
+					CountMoveP1++;
 					std::cout << "x"; break;
 
 				case 1:
 					TextColor(Color_O);
+					CountMoveP1++;
 					std::cout << "o"; break;
 				case 0: validEnter = false;
 				}

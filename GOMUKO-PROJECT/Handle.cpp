@@ -213,14 +213,14 @@ void MoveRight(_POINT A[BOARD_SIZE][BOARD_SIZE])
 	GotoXY(_X, _Y);
 	if (A[(_X - 5) / 4][(_Y - 2) / 2].c != 1 && A[(_X - 5) / 4][(_Y - 2) / 2].c != -1)
 	{
-		std::cout << cursor_char;
+		std::cout << " ";
 	}
-	else if (A[(_X - 5) / 4][(_Y - 2) / 2].c == -1)
+	else if (A[(_X - 5) / 4][(_Y - 2) / 2].c == -1 && A[(_X - 5) / 4][(_Y - 2) / 2].c != 0)
 	{	
 		TextColor(Color_X);
 		std::cout << "x";
 	}
-	else if (A[(_X - 5) / 4][(_Y - 2) / 2].c == 1)
+	else if (A[(_X - 5) / 4][(_Y - 2) / 2].c == 1 && A[(_X - 5) / 4][(_Y - 2) / 2].c != 0)
 	{
 		TextColor(Color_O);
 		std::cout << "o";
@@ -237,14 +237,14 @@ void MoveLeft(_POINT A[BOARD_SIZE][BOARD_SIZE])
 	GotoXY(_X, _Y);
 	if (A[(_X - 5) / 4][(_Y - 2) / 2].c != 1 && A[(_X - 5) / 4][(_Y - 2) / 2].c != -1)
 	{
-		std::cout << cursor_char;
+		std::cout << " ";
 	}
-	else if (A[(_X - 5) / 4][(_Y - 2) / 2].c == -1)
+	else if (A[(_X - 5) / 4][(_Y - 2) / 2].c == -1 && A[(_X - 5) / 4][(_Y - 2) / 2].c != 0)
 	{
 		TextColor(Color_X);
 		std::cout << "x";
 	}
-	else if (A[(_X - 5) / 4][(_Y - 2) / 2].c == 1)
+	else if (A[(_X - 5) / 4][(_Y - 2) / 2].c == 1 && A[(_X - 5) / 4][(_Y - 2) / 2].c != 0)
 	{
 		TextColor(Color_O);
 		std::cout << "o";
@@ -261,14 +261,14 @@ void MoveDown(_POINT A[BOARD_SIZE][BOARD_SIZE])
 	GotoXY(_X, _Y);
 	if (A[(_X - 5) / 4][(_Y - 2) / 2].c != 1 && A[(_X - 5) / 4][(_Y - 2) / 2].c != -1)
 	{
-		std::cout << cursor_char;
+		std::cout << " ";
 	}
-	else if (A[(_X - 5) / 4][(_Y - 2) / 2].c == -1)
+	else if (A[(_X - 5) / 4][(_Y - 2) / 2].c == -1 && A[(_X - 5) / 4][(_Y - 2) / 2].c != 0)
 	{
 		TextColor(Color_X);
 		std::cout << "x";
 	}
-	else if (A[(_X - 5) / 4][(_Y - 2) / 2].c == 1)
+	else if (A[(_X - 5) / 4][(_Y - 2) / 2].c == 1 && A[(_X - 5) / 4][(_Y - 2) / 2].c != 0)
 	{
 		TextColor(Color_O);
 		std::cout << "o";
@@ -286,14 +286,14 @@ void MoveUp(_POINT A[BOARD_SIZE][BOARD_SIZE])
 	GotoXY(_X, _Y);
 	if (A[(_X - 5) / 4][(_Y - 2) / 2].c != 1 && A[(_X - 5) / 4][(_Y - 2) / 2].c != -1)
 	{
-		std::cout << cursor_char;
+		std::cout << " ";
 	}
-	else if (A[(_X - 5) / 4][(_Y - 2) / 2].c == -1)
+	else if (A[(_X - 5) / 4][(_Y - 2) / 2].c == -1 && A[(_X - 5) / 4][(_Y - 2) / 2].c != 0)
 	{
 		TextColor(Color_X);
 		std::cout << "x";
 	}
-	else if (A[(_X - 5) / 4][(_Y - 2) / 2].c == 1)
+	else if (A[(_X - 5) / 4][(_Y - 2) / 2].c == 1 && A[(_X - 5) / 4][(_Y - 2) / 2].c != 0)
 	{
 		TextColor(Color_O);
 		std::cout << "o";
