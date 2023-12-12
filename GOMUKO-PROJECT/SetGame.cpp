@@ -400,13 +400,15 @@ int Settings(Menu menu[COL][MAX_ROW]) {
 				if (S2 % 2 == 0) {
 					menu[1][1].c = " <  Disable  >";
 					PlaySound(0, 0, 0);
+					S2 = 0;
 					GotoXY(menu[1][1].x, menu[1][1].y);
 					std::cout << menu[1][1].c;
 					GotoXY(menu[0][1].x - 1, menu[0][1].y);
 				}
 				else {
 					menu[1][1].c = " <  Enable   >";
-					Sound2(1);
+					S2 = 1;
+					Sound2(S2);
 					GotoXY(menu[1][1].x, menu[1][1].y);
 					std::cout << menu[1][1].c;
 					GotoXY(menu[0][1].x - 1, menu[0][1].y);
@@ -465,6 +467,7 @@ int NewGame(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& P
 					{
 					case -1: case 1: case 0:
 						system("cls");
+						Sound2(S2);
 						Draw_txt("des1.txt", Color_O);
 						Draw_txt("des2.txt", Color_X);
 						TextColor(240);
@@ -486,7 +489,10 @@ int NewGame(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& P
 							GotoXY(menu[0][0].x - 11, menu[0][0].y - 3);
 							std::cout << "DO YOU WANT TO SAVE GAME?";
 							if (YESNO_CHOOSE(menu) == 1)
+							{
 								SAVE_game(A, menu, PLAYER1, PLAYER2);
+								running = false;
+							}
 							else
 								running = false;
 						}
@@ -504,10 +510,6 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 	bool validEnter = true;
 	bool running = true;
 	int count = 0;
-	if (_TURN == 1)
-		DrawX_Turn();
-	else
-		DrawO_Turn();
 	while (running)
 	{
 		DrawX();
@@ -515,27 +517,22 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 		ShowGuide();
 		LoadData(A);
 		ShowPlayerInfo(PLAYER1, PLAYER2);
-		if (count == 0)
+		if (TestBoard(A) != 2 && count == 0)
 		{
-			CountMoveP1 = 0;
-			CountMoveP2 = 0;
-			if (TestBoard(A) == 0 || TestBoard(A) == 1)
+			GotoXY(x_center_console + 30, y_center_console - 12);
+			TextColor(270);
+			std::cout << "THIS GAME IS OVER IN THE LAST TIME!";
+			int option = ESC_menuLoad(menu);
+			if (option == 1)
 			{
-				GotoXY(x_center_console + 30, y_center_console - 12);
-				TextColor(270);
-				std::cout << "THIS GAME IS OVER IN THE LAST TIME!";
-				int option = ESC_menuLoad(menu);
-				if (option == 1)
-				{
-					StartGame(A);
-					DrawX();
-					DrawO();
-					ShowGuide();
-					ShowPlayerInfo(PLAYER1, PLAYER2);
-				}
-				else
-					break;
+				StartGame(A);
+				DrawX();
+				DrawO();
+				ShowGuide();
+				ShowPlayerInfo(PLAYER1, PLAYER2);
 			}
+			else
+				break;
 			++count;
 		}
 		else
@@ -583,6 +580,7 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 					{
 					case -1: case 1: case 0:
 						system("cls");
+						Sound2(S2);
 						Draw_txt("des1.txt", Color_O);
 						Draw_txt("des2.txt", Color_X);
 						TextColor(240);
@@ -683,6 +681,7 @@ int Playwithcomputer(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[22][22], Menu me
 		{
 		case -1: case 1: case 0:
 			system("cls");
+			Sound2(S2);
 			Draw_txt("des1.txt", Color_O);
 			Draw_txt("des2.txt", Color_X);
 			TextColor(240);

@@ -861,7 +861,7 @@ void loading2()
 		{
 			GotoXY(x_center_console + 7 + j, y_center_console + 3);
 			printf(". ");
-			Sleep(100);
+			Sleep(70);
 		}
 		SetConsoleTextAttribute(console_color, 0);
 		for (int j = 0; j < 2; j++)
