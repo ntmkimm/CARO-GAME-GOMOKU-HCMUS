@@ -5,6 +5,8 @@ void StartGame(_POINT A[BOARD_SIZE][BOARD_SIZE])
 {
 	system("cls");
 	ResetData(A);
+	GotoXY(62, 35);
+	std::cout << "CARO PROJECT BY GROUP 6";
 	TextColor(240);
 	DrawBoard(BOARD_SIZE, BOARD_SIZE, 3, 1, 3, 2);
 	DrawX_Turn();
@@ -392,31 +394,6 @@ int Settings(Menu menu[COL][MAX_ROW]) {
 	return 0;
 }
 
-void LoadData(_POINT A[BOARD_SIZE][BOARD_SIZE])
-{
-	CountMoveP1 = 0;
-	CountMoveP2 = 0;
-	for (int i = 0; i < BOARD_SIZE; i++)
-		for (int j = 0; j < BOARD_SIZE; j++)
-		{
-			GotoXY(A[i][j].x, A[i][j].y);
-			if (A[i][j].c == -1)
-			{
-				CountMoveP1++;
-				TextColor(Color_X);
-				std::cout << "x";
-				TextColor(240);
-			}
-			else if (A[i][j].c == 1)
-			{
-				CountMoveP2++;
-				TextColor(Color_O);
-				std::cout << "o";
-				TextColor(240);
-			}
-		}
-}
-
 int NewGame(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& PLAYER1, PLAYER& PLAYER2)
 {
 	bool validEnter = true;
@@ -464,6 +441,8 @@ int NewGame(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& P
 					{
 					case -1: case 1: case 0:
 						system("cls");
+						Draw_txt("des1.txt", Color_O);
+						Draw_txt("des2.txt", Color_X);
 						TextColor(240);
 						GotoXY(menu[0][0].x - 11, menu[0][0].y - 3);
 						std::cout << "DO YOU WANT TO PLAY AGAIN?";
@@ -477,7 +456,9 @@ int NewGame(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER& P
 						else
 						{
 							system("cls");
-							TextColor(241);
+							Draw_txt("des1.txt", Color_O);
+							Draw_txt("des2.txt", Color_X);
+							TextColor(240);
 							GotoXY(menu[0][0].x - 11, menu[0][0].y - 3);
 							std::cout << "DO YOU WANT TO SAVE GAME?";
 							if (YESNO_CHOOSE(menu) == 1)
@@ -499,6 +480,10 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 	bool validEnter = true;
 	bool running = true;
 	int count = 0;
+	if (_TURN == 1)
+		DrawX_Turn();
+	else
+		DrawO_Turn();
 	while (running)
 	{
 		LoadData(A);
@@ -506,7 +491,7 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 		DrawO();
 		ShowGuide();
 		ShowPlayerInfo(PLAYER1, PLAYER2);
-		if ((TestBoard(A) == 0 || TestBoard(A) == 1) && count == 0)
+		/*if ((TestBoard(A) == 0 || TestBoard(A) == 1) && count == 0)
 		{
 			GotoXY(x_center_console + 30, y_center_console - 12);
 			TextColor(270); 
@@ -530,7 +515,7 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 				DrawX_Turn();
 			else
 				DrawO_Turn();
-		}
+		}*/
 		init_cursor_board(A);
 		GotoXY(_X, _Y);
 		_COMMAND = toupper(_getch());
@@ -567,6 +552,8 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 					{
 					case -1: case 1: case 0:
 						system("cls");
+						Draw_txt("des1.txt", Color_O);
+						Draw_txt("des2.txt", Color_X);
 						TextColor(240);
 						GotoXY(menu[0][0].x - 11, menu[0][0].y - 3);
 						std::cout << "DO YOU WANT TO PLAY AGAIN?";
@@ -661,6 +648,8 @@ int Playwithcomputer(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[22][22], Menu me
 		{
 		case -1: case 1: case 0:
 			system("cls");
+			Draw_txt("des1.txt", Color_O);
+			Draw_txt("des2.txt", Color_X);
 			TextColor(240);
 			GotoXY(menu[0][0].x - 11, menu[0][0].y - 3);
 			std::cout << "DO YOU WANT TO PLAY AGAIN?";

@@ -17,38 +17,14 @@ void ResetData(_POINT A[BOARD_SIZE][BOARD_SIZE])
 	_TURN = true; _COMMAND = -1;
 	_X = A[0][0].x; _Y = A[0][0].y;
 }
-void LOAD_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER& PLAYER1, PLAYER& PLAYER2, std::string file)
-{
-	CountMoveP1 = 0;
-	CountMoveP2 = 0;
-	std::ifstream LOAD_file;
-	LOAD_file.open(file, std::ios::in);
 
-	std::getline(LOAD_file, PLAYER1.name);
-	std::getline(LOAD_file, PLAYER2.name);
-
-	LOAD_file >> PLAYER1.win;
-	LOAD_file >> PLAYER2.win;
-
-	LOAD_file >> _TURN; //pass _turn of loadfile to _turn variable
-	
-	for (int i = 0; i < BOARD_SIZE; i++)
-		for (int j = 0; j < BOARD_SIZE; j++)
-		{
-			A[i][j].x = 4 * j + LEFT + 2;
-			A[i][j].y = 2 * i + TOP + 1;
-			LOAD_file >> A[i][j].c;
-		}
-	LOAD_file.close();
-
-	_COMMAND = -1;
-	_X = A[0][0].x;
-	_Y = A[0][0].y;
-}
 void SAVE_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER PLAYER1, PLAYER PLAYER2, std::string file)
 {
 	std::fstream SAVE_file;
-	SAVE_file.open(file, std::ios::trunc); 
+	if (EXIST_file(file) == true)
+		SAVE_file.open(file, std::ios::trunc);
+	else if (EXIST_file(file) == false)
+		SAVE_file.open(file, std::ios::out);
 
 	SAVE_file << PLAYER1.name << std::endl;
 	SAVE_file << PLAYER2.name << std::endl;
@@ -67,22 +43,66 @@ void SAVE_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER PLAYER1, PLAYER PLAYER2,
 	SAVE_file.close();
 }
 
-std::vector<std::string> LOAD_file()
+void LoadData(_POINT A[BOARD_SIZE][BOARD_SIZE])
 {
-	std::vector<std::string> File;
-	std::string NAME_file;
-	std::fstream LIST_game;
-	LIST_game.open("ListGame.txt", std::ios::in); 
-	while (LIST_game >> NAME_file)
-		File.push_back(NAME_file);
-	LIST_game.close();
-	return File;
+	CountMoveP1 = 0;
+	CountMoveP2 = 0;
+	for (int i = 0; i < BOARD_SIZE; i++)
+		for (int j = 0; j < BOARD_SIZE; j++)
+		{
+			GotoXY(A[i][j].x, A[i][j].y);
+			if (A[i][j].c == -1)
+			{
+				CountMoveP1++;
+				TextColor(Color_X);
+				std::cout << "x";
+				TextColor(240);
+			}
+			else if (A[i][j].c == 1)
+			{
+				CountMoveP2++;
+				TextColor(Color_O);
+				std::cout << "o";
+				TextColor(240);
+			}
+		}
 }
+
+void LOAD_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER& PLAYER1, PLAYER& PLAYER2, std::string file)
+{
+	CountMoveP1 = 0;
+	CountMoveP2 = 0;
+	std::ifstream LOAD_file;
+	LOAD_file.open(file, std::ios::in);
+
+	std::getline(LOAD_file, PLAYER1.name);
+	std::getline(LOAD_file, PLAYER2.name);
+
+	LOAD_file >> PLAYER1.win;
+	LOAD_file >> PLAYER2.win;
+
+	LOAD_file >> _TURN;
+	
+	for (int i = 0; i < BOARD_SIZE; i++)
+		for (int j = 0; j < BOARD_SIZE; j++)
+		{
+			A[i][j].x = 4 * j + LEFT + 2;
+			A[i][j].y = 2 * i + TOP + 1;
+			LOAD_file >> A[i][j].c;
+		}
+	LOAD_file.close();
+
+//	LoadData(A);
+	_COMMAND = -1;
+	_X = A[0][0].x;
+	_Y = A[0][0].y;
+}
+
 bool EXIST_file(std::string file)
 {
-	std::string name; 
+	std::string name;
 	std::fstream SAVE_file;
-	SAVE_file.open("ListGame.txt", std::ios::in); 
+	SAVE_file.open("ListGame.txt", std::ios::in);
 
 	while (SAVE_file >> name)
 		if (name == file)
@@ -93,6 +113,18 @@ bool EXIST_file(std::string file)
 
 	SAVE_file.close();
 	return false;
+}
+
+std::vector<std::string> LOAD_file()
+{
+	std::vector<std::string> File;
+	std::string NAME_file;
+	std::fstream LIST_game;
+	LIST_game.open("ListGame.txt", std::ios::in); 
+	while (LIST_game >> NAME_file)
+		File.push_back(NAME_file);
+	LIST_game.close();
+	return File;
 }
 
 void MoveDown1(Menu menu[COL][MAX_ROW], int option)
@@ -151,12 +183,15 @@ int YESNO_CHOOSE(Menu menu[COL][MAX_ROW])
 				return 0;
 		}
 	}
+	TextColor(240);
 }
 int LOAD_menu(Menu menu[COL][MAX_ROW])
 {
 	std::string NAME_file;
 	std::vector<std::string> LOAD_files = LOAD_file();
 	Draw_txt("savedgames.txt", Color_X);
+	GotoXY(62, 35);
+	std::cout << "CARO PROJECT BY GROUP 6";
 	GotoXY(x_center_console - 1, y_center_console - 4);
 	TextColor(Color_X);
 	std::cout << "SAVED GAMES";
@@ -196,7 +231,6 @@ int MAIN_menu(Menu menu[COL][MAX_ROW])
 	CreateConsoleWindow(240);
 	FixConsoleWindow();
 	system("cls");
-
 	title(1);
 	title(2);
 	title(3);

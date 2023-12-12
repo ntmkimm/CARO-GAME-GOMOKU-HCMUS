@@ -6,6 +6,7 @@
 #include "Handle.h"
 
 void ResetData(_POINT A[BOARD_SIZE][BOARD_SIZE]);
+void LoadData(_POINT A[BOARD_SIZE][BOARD_SIZE]);
 void LOAD_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER& PLAYER1, PLAYER& PLAYER2, std::string file);
 void SAVE_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER PLAYER1, PLAYER PLAYER2, std::string file);
 
