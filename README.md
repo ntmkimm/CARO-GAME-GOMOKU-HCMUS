@@ -7,7 +7,7 @@ This repository is contributed by 4 members of Group Six - 23TNT1:
 
 Our Instructor: Mr. Truong Toan Thinh, University of Science
 
-We created a gomuko game for our project of Introduction to Information of Technology.
+We created a gomoku game for our project of Introduction to Information of Technology.
 
 #DESCRIPTION
 - This game based Console Window
