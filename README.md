@@ -11,7 +11,7 @@ We created a gomuko game for our project of Introduction to Information of Techn
 
 #DESCRIPTION
 - This game based Console Window
-- We test this game under Visual Studio Environent
+- We test this game under Visual Studio Enviroment
 - No special library, everything from scratch
 
 #DETAIL
