@@ -1,4 +1,4 @@
-# GOMUKO-PROJECT
+# GOKUMO-PROJECT
 This repository is contributed by 4 members of Group Six - 23TNT1:
 - Nguyen Van Linh : 23122003
 - Tran Hoang Gia Bao : 23122022
