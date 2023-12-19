@@ -604,11 +604,11 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 	return 1;
 }
 
-int Playwithcomputer(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[22][22], Menu menu[COL][MAX_ROW], PLAYER& PLAYER1, PLAYER& PLAYER2)
+int Playwithcomputer(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[25][25], Menu menu[COL][MAX_ROW], PLAYER& PLAYER1, PLAYER& PLAYER2)
 {
 
-	for (int i = 0; i < 22; i++)
-		for (int j = 0; j < 22; j++)
+	for (int i = 0; i < 25; i++)
+		for (int j = 0; j < 25; j++)
 			B[i][j].c = -2;
 	int count = 0;
 	PLAYER1.name = "YOU";
@@ -704,7 +704,7 @@ int Playwithcomputer(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[22][22], Menu me
 	return 1;
 }
 
-int MAINMENU_run(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[22][22], Menu menu[COL][MAX_ROW], PLAYER& PLAYER1, PLAYER& PLAYER2, int option)
+int MAINMENU_run(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[25][25], Menu menu[COL][MAX_ROW], PLAYER& PLAYER1, PLAYER& PLAYER2, int option)
 {
 	int ret = 1;
 	std::string file_chosen;

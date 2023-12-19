@@ -16,8 +16,6 @@
 enum { BOARD_SIZE = 15 };
 enum { COL = 2 };
 enum { MAX_ROW = 7 };
-//enum { x_center_console = 70 };
-//enum { y_center_console = 17 };
 enum { x_center_console = 75 };
 enum { y_center_console = 17 };
 

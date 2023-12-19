@@ -2,7 +2,7 @@
 
 
 
-int demnuocbot(_POINT B[22][22]) {
+int demnuocbot(_POINT B[25][25]) {
     int dem = 0;
     for (int i = 5; i < SIZE + 5; i++) {
         for (int j = 5; j < SIZE + 5; j++) {
@@ -11,7 +11,7 @@ int demnuocbot(_POINT B[22][22]) {
     }
     return dem;
 }
-bool defense(_POINT B[22][22]) {
+bool defense(_POINT B[25][25]) {
     //hBng ngBng xxxx_
     for (int i = 5; i < SIZE + 5; i++) {
         for (int j = 5; j < SIZE + 5; j++) {
@@ -153,7 +153,7 @@ bool defense(_POINT B[22][22]) {
     }
     return 1;
 }
-bool attack(_POINT B[22][22]) {
+bool attack(_POINT B[25][25]) {
     //hBng ngBng oooo_
     for (int i = 5; i < SIZE + 5; i++) {
         for (int j = 5; j < SIZE + 5; j++) {
@@ -287,7 +287,7 @@ bool attack(_POINT B[22][22]) {
     }
     return 0;
 }
-bool pre_defense(_POINT B[22][22]) {
+bool pre_defense(_POINT B[25][25]) {
     //hBng ngBng xxx_
     for (int i = 5; i < SIZE + 5; i++) {
         for (int j = 5; j < SIZE + 5; j++) {
@@ -395,7 +395,7 @@ bool pre_defense(_POINT B[22][22]) {
     return 1;
 }
 int POINT2 = 0;
-int evaluate(_POINT B[22][22]) {
+int evaluate(_POINT B[25][25]) {
     int POINT2 = INT_MIN;
     bool def = defense(B);
     bool pre_def = pre_defense(B);
@@ -955,7 +955,7 @@ int evaluate(_POINT B[22][22]) {
     }
     return POINT2;
 }
-int evaluate1(_POINT B[22][22]) {
+int evaluate1(_POINT B[25][25]) {
     int POINT2 = INT_MIN;
     bool def = defense(B);
     bool pre_def = pre_defense(B);
@@ -981,7 +981,7 @@ int evaluate1(_POINT B[22][22]) {
     }
     return POINT2;
 }
-Move findfirstBestmove(_POINT B[22][22]) {
+Move findfirstBestmove(_POINT B[25][25]) {
     int Bestscorefornextmove = INT_MIN;
     Move Nextmove;
     Nextmove.x = -1;
