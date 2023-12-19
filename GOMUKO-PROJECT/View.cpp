@@ -116,11 +116,11 @@ void ShowGuide()
 {
 	hidecursor();
 	TextColor(240);
-	DrawBoard(1, 1, 3, 27, 47, 7);
+	DrawBoard(1, 1, 3, 32, 59, 3);
 	using std::setw;
-	GotoXY(5, 29);
+	GotoXY(12, 33);
 	std::cout << setw(7) << "[KEY]" << setw(15) << "ARROW KEY" << setw(10) << "ENTER" << setw(10) << "ESC";
-	GotoXY(5, 32);
+	GotoXY(12, 34);
 	std::cout << setw(7) << "[FUNCTION]" << setw(10) << "MOVE" << setw(13) << "CHOOSE" << setw(10) << "PAUSE";
 	GotoXY(_X, _Y);
 }
@@ -800,7 +800,7 @@ void nhapnhay(_POINT A[BOARD_SIZE][BOARD_SIZE], int a, int i, int j, int m)
 	HANDLE console_color;
 	console_color = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(console_color, P);
-	GotoXY(60, 35);
+	GotoXY(x_center_console -7, 35);
 	std::cout << "Press any key to continue";
 	while (1)
 	{

@@ -13,13 +13,15 @@
 
 #pragma comment(lib,"winmm.lib")
 
-enum { BOARD_SIZE = 12 };
+enum { BOARD_SIZE = 15 };
 enum { COL = 2 };
 enum { MAX_ROW = 7 };
-enum { x_center_console = 70 };
+//enum { x_center_console = 70 };
+//enum { y_center_console = 17 };
+enum { x_center_console = 75 };
 enum { y_center_console = 17 };
 
-#define SIZE 12
+#define SIZE 15
 #define LEFT 3
 #define TOP 1
 #define TOP_LEFT (char)201

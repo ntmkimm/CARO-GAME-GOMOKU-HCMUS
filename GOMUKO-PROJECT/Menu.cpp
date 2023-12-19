@@ -193,7 +193,7 @@ int LOAD_menu(Menu menu[COL][MAX_ROW])
 	std::string NAME_file;
 	std::vector<std::string> LOAD_files = LOAD_file();
 	Draw_txt("savedgames.txt", Color_X);
-	GotoXY(62, 35);
+	GotoXY(x_center_console - 8, 35);
 	std::cout << "CARO PROJECT BY GROUP 6";
 	GotoXY(x_center_console - 1, y_center_console - 4);
 	TextColor(Color_X);

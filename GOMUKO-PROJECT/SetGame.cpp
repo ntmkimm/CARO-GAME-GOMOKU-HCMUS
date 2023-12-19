@@ -5,7 +5,7 @@ void StartGame(_POINT A[BOARD_SIZE][BOARD_SIZE])
 {
 	system("cls");
 	ResetData(A);
-	GotoXY(62, 35);
+	GotoXY(x_center_console - 8, 35);
 	std::cout << "CARO PROJECT BY GROUP 6";
 	TextColor(240);
 	DrawBoard(BOARD_SIZE, BOARD_SIZE, 3, 1, 3, 2);
@@ -305,16 +305,16 @@ void ShowPlayerInfo(PLAYER& PLAYER1, PLAYER& PLAYER2)
 	TextColor(240);
 	DrawBoard(1, 1, x_center_console + 24, y_center_console - 7, 47, 24);
 	using std::setw;
-	GotoXY(113, 14);
+	GotoXY(x_center_console + 43, 14);
 	TextColor(244); //red
 	std::cout << "PLAYER INFO";
 	TextColor(240);
-	GotoXY(100, 19);
+	GotoXY(x_center_console + 30, 19);
 	std::cout << setw(7) << "NAME" << setw(16) << "COUNT MOVE" << setw(13) << "WIN";
-	GotoXY(100, 23);
+	GotoXY(x_center_console + 30, 23);
 	TextColor(Color_X);
 	std::cout << setw(7) << PLAYER1.name << setw(16) << CountMoveP1 << setw(13) << PLAYER1.win;
-	GotoXY(100, 27);
+	GotoXY(x_center_console + 30, 27);
 	TextColor(Color_O);
 	std::cout << setw(7) << PLAYER2.name << setw(16) << CountMoveP2 << setw(13) << PLAYER2.win;
 	TextColor(240);
@@ -713,31 +713,26 @@ int MAINMENU_run(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[22][22], Menu menu[C
 	{
 	case 1:
 		SETNAME_player(PLAYER1, PLAYER2);
-		loading2();
 		StartGame(A);
 		NewGame(A, menu, PLAYER1, PLAYER2);
 		break;
 	case 2:
 		system("cls");
-		loading2();
 		StartGame(A);
 		Playwithcomputer(A, B, menu, PLAYER1, PLAYER2);
 		break;
 	case 3:
 		system("cls");
 		file_chosen = LOADMENU_run(LOAD_menu(menu));
-		loading2();
 		LOAD_game(A, PLAYER1, PLAYER2, file_chosen);
 		NewGameLoad(A, menu, PLAYER1, PLAYER2);
 		SAVE_data(A, PLAYER1, PLAYER2, file_chosen);
 		break;
 	case 4:
-		loading2();
 		system("cls");
 		Draw_txt_noeffect("AboutUs.txt");
 		break;
 	case 5:
-		loading2();
 		Settings(menu);
 		break;
 	case 6:
