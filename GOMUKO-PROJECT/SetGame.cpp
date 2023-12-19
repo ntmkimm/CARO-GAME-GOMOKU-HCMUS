@@ -111,9 +111,9 @@ int ESC_menu(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER P
 	{
 		init_cursor();
 		_COMMAND = toupper(_getch());
-		if (_COMMAND == 's' or _COMMAND == arrow_down)
+		if (_COMMAND == arrow_down)
 			MoveDown1(menu, 3);
-		else if (_COMMAND == 'w' or _COMMAND == arrow_up)
+		else if ( _COMMAND == arrow_up)
 			MoveUp1(menu, 3);
 		else if (_COMMAND == enter_char)
 		{
@@ -172,9 +172,9 @@ int ESC_menuLoad(Menu menu[COL][MAX_ROW])
 	{
 		init_cursor();
 		_COMMAND = toupper(_getch());
-		if (_COMMAND == 's' or _COMMAND == arrow_down)
+		if (_COMMAND == arrow_down)
 			MoveDown1(menu, 2);
-		else if (_COMMAND == 'w' or _COMMAND == arrow_up)
+		else if (_COMMAND == arrow_up)
 			MoveUp1(menu, 2);
 		else if (_COMMAND == enter_char)
 		{
@@ -226,9 +226,9 @@ int ESC_menuBot(Menu menu[COL][MAX_ROW])
 	{
 		init_cursor();
 		_COMMAND = toupper(_getch());
-		if (_COMMAND == 's' or _COMMAND == arrow_down)
+		if (_COMMAND == arrow_down)
 			MoveDown1(menu, 2);
-		else if (_COMMAND == 'w' or _COMMAND == arrow_up)
+		else if (_COMMAND == arrow_up)
 			MoveUp1(menu, 2);
 		else if (_COMMAND == enter_char)
 		{

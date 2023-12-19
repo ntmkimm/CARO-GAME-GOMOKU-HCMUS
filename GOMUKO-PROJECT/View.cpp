@@ -48,7 +48,7 @@ void CreateConsoleWindow(int a)
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hConsole, a);
 	GetWindowRect(consoleWindow, &r);
-	MoveWindow(consoleWindow, 0, 0, 1320, 700, 1);
+	MoveWindow(consoleWindow, 50, 50, 1320, 700, 1);
 	ShowScrollBar(consoleWindow, SB_BOTH, FALSE);
 }
 void FixConsoleWindow()
@@ -841,37 +841,6 @@ void nhapnhay(_POINT A[BOARD_SIZE][BOARD_SIZE], int a, int i, int j, int m)
 			Sleep(100);
 		}
 	}
-}
-
-void loading2()
-{
-	hidecursor();
-	system("cls");
-	HANDLE console_color = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(console_color, 240);
-	GotoXY(x_center_console - 2, y_center_console + 3);
-	printf("LOADING ");
-	DrawBoard(1, 1, 65, 16, 20, 3);
-	for (int i = 0; i < 9; i++)
-	{
-		SetConsoleTextAttribute(console_color, 240);
-		GotoXY(x_center_console + 7, y_center_console + 3);
-		printf("      ");
-		for (int j = 0; j < 3; j++)
-		{
-			GotoXY(x_center_console + 7 + j, y_center_console + 3);
-			printf(". ");
-			Sleep(70);
-		}
-		SetConsoleTextAttribute(console_color, 0);
-		for (int j = 0; j < 2; j++)
-		{
-			GotoXY(x_center_console - 3 + 2 * i, y_center_console + j);
-			printf("  ");
-		}
-	}
-	SetConsoleTextAttribute(console_color, 240);
-	Sleep(200);
 }
 
 void loading()

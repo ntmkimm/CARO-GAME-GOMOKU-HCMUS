@@ -93,5 +93,4 @@ int DrawOwin();
 int DrawDraw();
 void nhapnhay(_POINT A[BOARD_SIZE][BOARD_SIZE], int a, int i, int j, int t);
 void loading();
-void loading2();
 #endif
