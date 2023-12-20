@@ -57,6 +57,8 @@ int pole(_POINT A[BOARD_SIZE][BOARD_SIZE])
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
+			if (j + 4 >= BOARD_SIZE)
+				break;
 			switch (A[i][j].c) {
 			case 1: if (A[i][j].c == 1 && A[i][j + 1].c == 1 && A[i][j + 2].c == 1 && A[i][j + 3].c == 1 && A[i][j + 4].c == 1)
 			{
