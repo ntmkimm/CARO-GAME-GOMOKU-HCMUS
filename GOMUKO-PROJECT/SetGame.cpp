@@ -5,7 +5,7 @@ void StartGame(_POINT A[BOARD_SIZE][BOARD_SIZE])
 {
 	system("cls");
 	ResetData(A);
-	GotoXY(x_center_console - 8, 35);
+	GotoXY(x_center_console - 7, 35);
 	std::cout << "CARO PROJECT BY GROUP 6";
 	TextColor(240);
 	DrawBoard(BOARD_SIZE, BOARD_SIZE, 3, 1, 3, 2);
@@ -296,7 +296,7 @@ void SETNAME_player(PLAYER& PLAYER1, PLAYER& PLAYER2)
 		TextColor(Color_O);
 		std::getline(std::cin >> std::ws, PLAYER2.name);
 		TextColor(240);
-	} while (PLAYER1.name.length() < 2 || PLAYER1.name.length() > 10);
+	} while (PLAYER2.name.length() < 2 || PLAYER2.name.length() > 10);
 
 }
 
