@@ -800,7 +800,7 @@ void nhapnhay(_POINT A[BOARD_SIZE][BOARD_SIZE], int a, int i, int j, int m)
 	HANDLE console_color;
 	console_color = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(console_color, P);
-	GotoXY(x_center_console -7, 35);
+	GotoXY(x_center_console - 7, 35);
 	std::cout << "Press any key to continue";
 	while (1)
 	{

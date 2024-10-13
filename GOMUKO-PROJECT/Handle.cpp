@@ -213,7 +213,7 @@ void MoveRight(_POINT A[BOARD_SIZE][BOARD_SIZE])
 {
 	TextColor(255);
 	GotoXY(_X, _Y);
-	if (A[(_X - 5) / 4][(_Y - 2) / 2].c  == 0)
+	if (A[(_X - 5) / 4][(_Y - 2) / 2].c == 0)
 	{
 		std::cout << " ";
 	}

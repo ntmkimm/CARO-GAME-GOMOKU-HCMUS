@@ -13,7 +13,7 @@ int CountMoveP1, CountMoveP2;
 int main()
 {
 	_POINT A[BOARD_SIZE][BOARD_SIZE];
-	_POINT B[25][25];
+	_POINT B[BOARD_SIZE + 2][BOARD_SIZE + 2];
 	Menu menu[COL][MAX_ROW];
 	PLAYER PLAYER1;
 	PLAYER PLAYER2;

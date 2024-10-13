@@ -1,1020 +1,269 @@
+﻿
 #include "Ai.h"
+#include <iostream>
+#include <cstdlib>
+#include <climits>
+#include <algorithm>
 
 
+using namespace std;
 
-int demnuocbot(_POINT B[25][25]) {
-    int dem = 0;
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1) dem++;
+
+void set_game(_POINT board[][BOARD_SIZE + 2]) {
+    for (int i = 0; i < BOARD_SIZE + 2; i++) {
+        for (int j = 0; j < BOARD_SIZE + 2; j++) {
+            if (i == 0 || i == BOARD_SIZE + 2 - 1 || j == 0 || j == BOARD_SIZE + 2 - 1) {
+                board[i][j].c = 2;
+            }
+            else {
+                board[i][j].c = 0;
+            }
         }
     }
-    return dem;
 }
-bool defense(_POINT B[25][25]) {
-    //hBng ngBng xxxx_
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j].c && B[i][j].c == B[i + 2][j].c && B[i][j].c == B[i + 3][j].c) {
-                if (B[i - 1][j].c == 0 || B[i + 4][j].c == 0) return 0;
-            }
-        }
-    }
-    //hBng doc xxxx_
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i][j + 1].c && B[i][j].c == B[i][j + 2].c && B[i][j].c == B[i][j + 3].c) {
-                if (B[i][j - 1].c == 0 || B[i][j + 4].c == 0) return 0;
-            }
-        }
-    }
-    // hBng cheo1 xxxx_
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j + 1].c && B[i][j].c == B[i + 2][j + 2].c && B[i][j].c == B[i + 3][j + 3].c) {
-                if (B[i - 1][j - 1].c == 0 || B[i + 4][j + 4].c == 0)
-                    return 0;
-            }
-        }
-    }
-    //hBng cheo2 xxxx_
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i - 1][j + 1].c && B[i][j].c == B[i - 2][j + 2].c && B[i][j].c == B[i - 3][j + 3].c) {
-                if (B[i + 1][j - 1].c == 0 || B[i - 4][j + 4].c == 0)
-                    return 0;
-            }
-        }
-    }
 
-    //hBng ngBng xxx_x
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j].c && B[i][j].c == B[i + 2][j].c && B[i][j].c == B[i + 4][j].c) {
-                if (B[i + 3][j].c == 0) return 0;
-            }
-        }
-    }
-    //hBng doc xxx_x
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i][j + 1].c && B[i][j + 2].c == B[i][j].c && B[i][j].c == B[i][j + 4].c) {
-                if (B[i][j + 3].c == 0) return 0;
-            }
-        }
-    }
-    // hBng cheo1 xxx_x
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i - 1][j + 1].c && B[i][j].c == B[i - 2][j + 2].c && B[i][j].c == B[i - 4][j + 4].c) {
-                if (B[i - 3][j + 3].c == 0)
-                    return 0;
-            }
-        }
-    }
-    //hBng cheo2 xxx_x
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j + 1].c && B[i][j].c == B[i + 2][j + 2].c && B[i][j].c == B[i + 4][j + 4].c) {
-                if (B[i + 3][j + 3].c == 0)
-                    return 0;
-            }
-        }
-    }
 
-    //hBng ngBng xx_xx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j].c && B[i][j].c == B[i + 4][j].c && B[i][j].c == B[i + 3][j].c) {
-                if (B[i + 2][j].c == 0) return 0;
-            }
-        }
-    }
-    //hBng doc xx_xx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i][j + 1].c && B[i][j].c == B[i][j + 4].c && B[i][j].c == B[i][j + 3].c) {
-                if (B[i][j + 2].c == 0) return 0;
-            }
-        }
-    }
-    // hBng cheo1 xx_xx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i - 1][j + 1].c && B[i][j].c == B[i - 4][j + 4].c && B[i][j].c == B[i - 3][j + 3].c) {
-                if (B[i - 2][j + 2].c == 0)
-                    return 0;
-            }
-        }
-    }
-    //hBng cheo2 xx_xx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j + 1].c && B[i][j].c == B[i + 4][j + 4].c && B[i][j].c == B[i + 3][j + 3].c) {
-                if (B[i + 2][j + 2].c == 0)
-                    return 0;
-            }
-        }
-    }
-
-    //hBng ngBng x_xxx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 4][j].c && B[i][j].c == B[i + 2][j].c && B[i][j].c == B[i + 3][j].c) {
-                if (B[i + 1][j].c == 0) return 0;
-            }
-        }
-    }
-    //hBng doc x_xxx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i][j + 4].c && B[i][j].c == B[i][j + 2].c && B[i][j].c == B[i][j + 3].c) {
-                if (B[i][j + 1].c == 0) return 0;
-            }
-        }
-    }
-    // hBng cheo1 x_xxx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i - 4][j + 4].c && B[i][j].c == B[i - 2][j + 2].c && B[i][j].c == B[i - 3][j + 3].c) {
-                if (B[i - 1][j + 1].c == 0)
-                    return 0;
-            }
-        }
-    }
-    //hBng cheo2 x_xxx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 4][j + 4].c && B[i][j].c == B[i + 2][j + 2].c && B[i][j].c == B[i + 3][j + 3].c) {
-                if (B[i + 1][j + 1].c == 0)
-                    return 0;
-            }
-        }
-    }
-    return 1;
+void make_move(_POINT board[][BOARD_SIZE + 2], int x, int y, bool turn) {
+    board[x][y].c = turn ? 1 : -1;
 }
-bool attack(_POINT B[25][25]) {
-    //hBng ngBng oooo_
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == B[i + 1][j].c && B[i][j].c == B[i + 2][j].c && B[i][j].c == B[i + 3][j].c && B[i][j].c == 1 && (B[i + 4][j].c == 0 || B[i - 1][j].c == 0)) {
-                return 1;
-            }
-        }
-    }
-    //hBng doc oooo_
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == 1 && B[i][j].c == B[i][j + 1].c && B[i][j].c == B[i][j + 2].c && B[i][j].c == B[i][j + 3].c && (B[i][j + 4].c == 0 || B[i][j - 1].c == 0)) {
-                return 1;
-            }
-        }
-    }
-    // hBng cheo1 oooo_
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == 1 && B[i][j].c == B[i - 1][j + 1].c && B[i][j].c == B[i - 2][j + 2].c && B[i][j].c == B[i - 3][j + 3].c && (B[i - 4][j + 4].c == 0 || B[i + 1][j - 1].c == 0)) {
-                return 1;
-            }
-        }
-    }
-    //hBng cheo2 oooo_
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == 1 && B[i][j].c == B[i + 1][j + 1].c && B[i][j].c == B[i + 2][j + 2].c && B[i][j].c == B[i + 3][j + 3].c && (B[i + 4][j + 4].c == 0 || B[i - 1][j - 1].c == 0)) {
-                return 1;
+
+int win_check(_POINT board[][BOARD_SIZE + 2]) {
+    const int WINNING_LENGTH = 5;
+
+    for (int i = 1; i < BOARD_SIZE + 2 - 1; i++) {
+        for (int j = 1; j < BOARD_SIZE + 2 - WINNING_LENGTH + 1; j++) {
+            if (board[i][j].c != 0 &&
+                board[i][j].c == board[i][j + 1].c &&
+                board[i][j].c == board[i][j + 2].c &&
+                board[i][j].c == board[i][j + 3].c &&
+                board[i][j].c == board[i][j + 4].c) {
+                return board[i][j].c;
             }
         }
     }
 
-    //hBng ngBng ooo_o
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == 1 && B[i][j].c == B[i + 1][j].c && B[i][j].c == B[i + 2][j].c && B[i][j].c == B[i + 4][j].c && B[i + 3][j].c == 0) {
-                return 1;
-            }
-        }
-    }
-    //hBng doc ooo_o
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == 1 && B[i][j].c == B[i][j + 1].c && B[i][j].c == B[i][j + 2].c && B[i][j].c == B[i][j + 4].c && B[i][j + 3].c == 0) {
-                return 1;
-            }
-        }
-    }
-    // hBng cheo1 ooo_o
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == 1 && B[i][j].c == B[i - 1][j + 1].c && B[i][j].c == B[i - 2][j + 2].c && B[i][j].c == B[i - 4][j + 4].c && B[i - 3][j + 3].c == 0) {
-                return 1;
-            }
-        }
-    }
-    //hBng cheo2 ooo_o
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == 1 && B[i][j].c == B[i + 1][j + 1].c && B[i][j].c == B[i + 2][j + 2].c && B[i][j].c == B[i + 4][j + 4].c && B[i + 3][j + 3].c == 0) {
-                return 1;
+    for (int i = 1; i < BOARD_SIZE + 2 - WINNING_LENGTH + 1; i++) {
+        for (int j = 1; j < BOARD_SIZE + 2 - 1; j++) {
+            if (board[i][j].c != 0 &&
+                board[i][j].c == board[i + 1][j].c &&
+                board[i][j].c == board[i + 2][j].c &&
+                board[i][j].c == board[i + 3][j].c &&
+                board[i][j].c == board[i + 4][j].c) {
+                return board[i][j].c;
             }
         }
     }
 
-    //hBng ngBng oo_oo
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == 1 && B[i][j].c == B[i + 1][j].c && B[i][j].c == B[i + 4][j].c && B[i][j].c == B[i + 3][j].c && B[i + 2][j].c == 0) {
-                return 1;
-            }
-        }
-    }
-    //hBng doc oo_oo
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == 1 && B[i][j].c == B[i][j + 1].c && B[i][j].c == B[i][j + 4].c && B[i][j].c == B[i][j + 3].c && B[i][j + 2].c == 0) {
-                return 1;
-            }
-        }
-    }
-    // hBng cheo1 oo_oo
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == 1 && B[i][j].c == B[i - 1][j + 1].c && B[i][j].c == B[i - 4][j + 4].c && B[i][j].c == B[i - 3][j + 3].c && B[i - 2][j + 2].c == 0) {
-                return 1;
-            }
-        }
-    }
-    //hBng cheo2 oo_oo
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == 1 && B[i][j].c == B[i + 1][j + 1].c && B[i][j].c == B[i + 4][j + 4].c && B[i][j].c == B[i + 3][j + 3].c && B[i + 2][j + 2].c == 0) {
-                return 1;
+    for (int i = 1; i < BOARD_SIZE + 2 - WINNING_LENGTH + 1; i++) {
+        for (int j = 1; j < BOARD_SIZE + 2 - WINNING_LENGTH + 1; j++) {
+            if (board[i][j].c != 0 &&
+                board[i][j].c == board[i + 1][j + 1].c &&
+                board[i][j].c == board[i + 2][j + 2].c &&
+                board[i][j].c == board[i + 3][j + 3].c &&
+                board[i][j].c == board[i + 4][j + 4].c) {
+                return board[i][j].c;
             }
         }
     }
 
-    //hBng ngBng o_ooo
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == 1 && B[i][j].c == B[i + 4][j].c && B[i][j].c == B[i + 2][j].c && B[i][j].c == B[i + 3][j].c && B[i + 1][j].c == 0) {
-                return 1;
+    for (int i = 4; i < BOARD_SIZE + 2 - 1; i++) {
+        for (int j = 1; j < BOARD_SIZE + 2 - WINNING_LENGTH + 1; j++) {
+            if (board[i][j].c != 0 &&
+                board[i][j].c == board[i - 1][j + 1].c &&
+                board[i][j].c == board[i - 2][j + 2].c &&
+                board[i][j].c == board[i - 3][j + 3].c &&
+                board[i][j].c == board[i - 4][j + 4].c) {
+                return board[i][j].c;
             }
         }
     }
-    //hBng doc o_ooo
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == 1 && B[i][j].c == B[i][j + 4].c && B[i][j].c == B[i][j + 2].c && B[i][j].c == B[i][j + 3].c && B[i][j + 1].c == 0) {
-                return 1;
-            }
-        }
-    }
-    // hBng cheo1 o_ooo
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == 1 && B[i][j].c == B[i - 4][j + 4].c && B[i][j].c == B[i - 2][j + 2].c && B[i][j].c == B[i - 3][j + 3].c && B[i - 1][j + 1].c == 0) {
-                return 1;
-            }
-        }
-    }
-    //hBng cheo2 o_ooo
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == 1 && B[i][j].c == B[i + 4][j + 4].c && B[i][j].c == B[i + 2][j + 2].c && B[i][j].c == B[i + 3][j + 3].c && B[i + 1][j + 1].c == 0) {
-                return 1;
-            }
-        }
-    }
-    return 0;
+    return 0; // No winner
 }
-bool pre_defense(_POINT B[25][25]) {
-    //hBng ngBng xxx_
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j].c && B[i][j].c == B[i + 2][j].c) {
-                if (B[i - 1][j].c == 0 && B[i + 3][j].c == 0) return 0;
-            }
-        }
-    }
-    //hBng doc xxx_
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i][j + 1].c && B[i][j].c == B[i][j + 2].c) {
-                if (B[i][j - 1].c == 0 && B[i][j + 3].c == 0) return 0;
-            }
-        }
-    }
-    // hBng cheo1 xxx_
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i - 1][j + 1].c && B[i][j].c == B[i - 2][j + 2].c) {
-                if (B[i + 1][j - 1].c == 0 && B[i - 3][j + 3].c == 0)
-                    return 0;
-            }
-        }
-    }
-    //hBng cheo2 xxx_
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j + 1].c && B[i][j].c == B[i + 2][j + 2].c) {
-                if (B[i - 1][j - 1].c == 0 && B[i + 3][j + 3].c == 0)
-                    return 0;
-            }
-        }
-    }
 
-    //hBng ngBng xx_x
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j].c && B[i][j].c == B[i + 3][j].c) {
-                if (B[i + 2][j].c == 0) return 0;
-            }
-        }
-    }
-    //hBng doc xx_x
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i][j + 1].c && B[i][j].c == B[i][j + 3].c) {
-                if (B[i][j + 2].c == 0) return 0;
-            }
-        }
-    }
-    // hBng cheo1 xx_x
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i - 1][j + 1].c && B[i][j].c == B[i - 3][j + 3].c) {
-                if (B[i - 2][j + 2].c == 0)
-                    return 0;
-            }
-        }
-    }
-    //hBng cheo2 xx_x
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j + 1].c && B[i][j].c == B[i + 3][j + 3].c) {
-                if (B[i + 2][j + 2].c == 0)
-                    return 0;
-            }
-        }
-    }
 
-    //hBng ngBng x_xx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 3][j].c && B[i][j].c == B[i + 2][j].c) {
-                if (B[i + 1][j].c == 0) return 0;
-            }
-        }
-    }
-    //hBng doc x_xx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i][j + 2].c && B[i][j].c == B[i][j + 3].c) {
-                if (B[i][j + 1].c == 0) return 0;
-            }
-        }
-    }
-    // hBng cheo1 x_xx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i - 2][j + 2].c && B[i][j].c == B[i - 3][j + 3].c) {
-                if (B[i - 1][j + 1].c == 0)
-                    return 0;
-            }
-        }
-    }
-    //hBng cheo2 x_xx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 3][j + 3].c && B[i][j].c == B[i + 2][j + 2].c) {
-                if (B[i + 1][j + 1].c == 0)
-                    return 0;
-            }
-        }
-    }
-    return 1;
-}
-int POINT2 = 0;
-int evaluate(_POINT B[25][25]) {
-    int POINT2 = INT_MIN;
-    bool def = defense(B);
-    bool pre_def = pre_defense(B);
-    bool atk = attack(B);
-    //Nuoc khoi dBu
-    if (demnuocbot(B) < 4) {
-        if (demnuocbot(B) < 2) {
-            for (int i = 10; i < 12; i++) {
-                for (int j = 10; j < 12; j++) {
-                    if (B[i][j].c == 1) POINT2 += 5;
+int evaluation(_POINT board[][BOARD_SIZE + 2]) {
+    const int WINNING_LENGTH = 5;
+    int score = 0;
+
+    // Đánh giá cho các chuỗi 3 và 4 liên tiếp
+    for (int i = 1; i < BOARD_SIZE + 2 - WINNING_LENGTH + 1; i++) {
+        for (int j = 1; j < BOARD_SIZE + 2 - WINNING_LENGTH + 1; j++) {
+            // Kiểm tra hàng ngang
+            if (board[i][j].c != 0) {
+                if (board[i][j].c == board[i][j + 1].c &&
+                    board[i][j].c == board[i][j + 2].c) {
+                    if (board[i][j + 3].c == board[i][j + 4].c) { // 4 liên tiếp
+                        if (board[i][j - 1].c == 0 && board[i][j + 5].c == 0) {
+                            score += (board[i][j].c == 1) ? 1000 : -1000;
+                        }
+                        else if (board[i][j - 1].c == 0 || board[i][j + 5].c == 0) {
+                            score += (board[i][j].c == 1) ? 500 : -500;
+                        }
+                    }
+                    else if (board[i][j + 3].c == 0 && board[i][j + 4].c == 0) { // 3 liên tiếp
+                        score += (board[i][j].c == 1) ? 100 : -100;
+                    }
+
+                    //TEST CODE=================================================
+                    else if (board[i][j + 3].c == 0 || board[i][j + 4].c == 0) { // 3 liên tiếp
+                        score += (board[i][j].c == 1) ? 30 : -30;
+                    }
+                    //TEST CODE=================================================
                 }
-            }
-        }
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == -1) {
-                    if (B[i - 1][j - 1].c == 1 || B[i - 1][j + 1].c == 1 || B[i + 1][j - 1].c == 1 || B[i + 1][j + 1].c == 1) {
-                        POINT2 += 1;
+
+                // Kiểm tra hàng dọc
+                if (board[i][j].c == board[i + 1][j].c &&
+                    board[i][j].c == board[i + 2][j].c) {
+                    if (board[i + 3][j].c == board[i + 4][j].c) { // 4 liên tiếp
+                        if (board[i - 1][j].c == 0 && board[i + 5][j].c == 0) {
+                            score += (board[i][j].c == 1) ? 1000 : -1000;
+                        }
+                        else if (board[i - 1][j].c == 0 || board[i + 5][j].c == 0) {
+                            score += (board[i][j].c == 1) ? 500 : -500;
+                        }
+                    }
+                    else if (board[i + 3][j].c == 0 && board[i + 4][j].c == 0) { // 3 liên tiếp
+                        score += (board[i][j].c == 1) ? 100 : -100;
+                    }
+
+                    //TEST CODE=================================================
+                    else if (board[i + 3][j].c == 0 || board[i + 4][j].c == 0) { // 3 liên tiếp
+                        score += (board[i][j].c == 1) ? 30 : -30;
+                    }
+                    //TEST CODE=================================================
+                }
+
+                // Kiểm tra chéo chính
+                if (board[i][j].c == board[i + 1][j + 1].c &&
+                    board[i][j].c == board[i + 2][j + 2].c) {
+                    if (board[i + 3][j + 3].c == board[i + 4][j + 4].c) { // 4 liên tiếp
+                        if (board[i - 1][j - 1].c == 0 && board[i + 5][j + 5].c == 0) {
+                            score += (board[i][j].c == 1) ? 1000 : -1000;
+                        }
+                        else if (board[i - 1][j - 1].c == 0 || board[i + 5][j + 5].c == 0) {
+                            score += (board[i][j].c == 1) ? 500 : -500;
+                        }
+                    }
+                    else if (board[i + 3][j + 3].c == 0 && board[i + 4][j + 4].c == 0) { // 3 liên tiếp
+                        score += (board[i][j].c == 1) ? 100 : -100;
+                    }
+
+                    else if (board[i + 3][j + 3].c == 0 || board[i + 4][j + 4].c == 0) { // 3 liên tiếp
+                        score += (board[i][j].c == 1) ? 30 : -30;
                     }
                 }
-            }
-        }
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1) {
-                    if (B[i - 1][j].c == 1 || B[i][j + 1].c == 1 || B[i][j - 1].c == 1 || B[i + 1][j].c == 1) {
-                        POINT2 += 1;
+
+                // Kiểm tra chéo phụ
+                if (board[i][j].c == board[i - 1][j + 1].c &&
+                    board[i][j].c == board[i - 2][j + 2].c) {
+                    if (board[i - 3][j + 3].c == board[i - 4][j + 4].c) { // 4 liên tiếp
+                        if (board[i + 1][j - 1].c == 0 && board[i - 5][j + 5].c == 0) {
+                            score += (board[i][j].c == 1) ? 1000 : -1000;
+                        }
+                        else if (board[i + 1][j - 1].c == 0 || board[i - 5][j + 5].c == 0) {
+                            score += (board[i][j].c == 1) ? 500 : -500;
+                        }
+                    }
+                    else if (board[i - 3][j + 3].c == 0 && board[i - 4][j + 4].c == 0) { // 3 liên tiếp
+                        score += (board[i][j].c == 1) ? 100 : -100;
+                    }
+
+                    else if (board[i - 3][j + 3].c == 0 || board[i - 4][j + 4].c == 0) { // 3 liên tiếp
+                        score += (board[i][j].c == 1) ? 30 : -30;
                     }
                 }
             }
         }
     }
-
-    // Check js for winner 
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == B[i + 1][j].c && B[i][j].c == B[i + 2][j].c && B[i + 3][j].c == B[i][j].c && B[i][j].c == B[i + 4][j].c) {
-                if (B[i][j].c == 1)
-                    return INT_MAX;
-            }
-        }
-    }
-    // Check iumns for winner
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == B[i][j + 1].c && B[i][j].c == B[i][j + 2].c && B[i][j].c == B[i][j + 3].c && B[i][j].c == B[i][j + 4].c) {
-                if (B[i][j].c == 1)
-                    return INT_MAX;
-            }
-        }
-    }
-    // Check djBgonBls for winner
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == B[i + 1][j + 1].c && B[i][j].c == B[i + 2][j + 2].c && B[i][j].c == B[i + 3][j + 3].c && B[i][j].c == B[i + 4][j + 4].c) {
-                if (B[i][j].c == 1)
-                    return INT_MAX;
-            }
-        }
-    }
-    // check cheo win
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == B[i - 1][j + 1].c && B[i][j].c == B[i - 2][j + 2].c && B[i][j].c == B[i - 3][j + 3].c && B[i][j].c == B[i - 4][j + 4].c) {
-                if (B[i][j].c == 1)
-                    return INT_MAX;
-            }
-        }
-    }
-
-
-
-    //DEFENSE
-
-    //hBng ngBng xxxx_
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j].c && B[i][j].c == B[i + 2][j].c && B[i][j].c == B[i + 3][j].c) {
-                if ((B[i - 1][j].c == 1 || B[i - 1][j].c == -2) && (B[i + 4][j].c == 1 || B[i + 4][j].c == -2)) POINT2 += 150;
-            }
-        }
-    }
-    //hBng doc xxxx_
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i][j + 1].c && B[i][j].c == B[i][j + 2].c && B[i][j].c == B[i][j + 3].c) {
-                if ((B[i][j - 1].c == 1 || B[i][j - 1].c == -2) && (B[i][j + 4].c == 1 || B[i][j + 4].c == -2)) POINT2 += 150;
-            }
-        }
-    }
-    // hBng cheo1 xxxx_
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j + 1].c && B[i][j].c == B[i + 2][j + 2].c && B[i][j].c == B[i + 3][j + 3].c) {
-                if ((B[i - 1][j - 1].c == 1 || B[i - 1][j - 1].c == -2) && (B[i + 4][j + 4].c == 1 || B[i + 4][j + 4].c == -2))
-                    POINT2 += 150;
-            }
-        }
-    }
-    //hBng cheo2 xxxx_
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i - 1][j + 1].c && B[i][j].c == B[i - 2][j + 2].c && B[i][j].c == B[i - 3][j + 3].c) {
-                if ((B[i + 1][j - 1].c == 1 || B[i + 1][j - 1].c == -2) && (B[i - 4][j + 4].c == 1 || B[i - 4][j + 4].c == -2))
-                    POINT2 += 150;
-            }
-        }
-    }
-
-    //hBng ngBng xxx_x
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j].c && B[i][j].c == B[i + 2][j].c && B[i][j].c == B[i + 4][j].c) {
-                if (B[i + 3][j].c == 1) POINT2 += 150;
-            }
-        }
-    }
-    //hBng doc xxx_x
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i][j + 1].c && B[i][j + 2].c == B[i][j].c && B[i][j].c == B[i][j + 4].c) {
-                if (B[i][j + 3].c == 1) POINT2 += 150;
-            }
-        }
-    }
-    // hBng cheo1 xxx_x
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i - 1][j + 1].c && B[i][j].c == B[i - 2][j + 2].c && B[i][j].c == B[i - 4][j + 4].c) {
-                if (B[i - 3][j + 3].c == 1)
-                    POINT2 += 150;
-            }
-        }
-    }
-    //hBng cheo2 xxx_x
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j + 1].c && B[i][j].c == B[i + 2][j + 2].c && B[i][j].c == B[i + 4][j + 4].c) {
-                if (B[i + 3][j + 3].c == 1)
-                    POINT2 += 150;
-            }
-        }
-    }
-
-    //hBng ngBng xx_xx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j].c && B[i][j].c == B[i + 4][j].c && B[i][j].c == B[i + 3][j].c) {
-                if (B[i + 2][j].c == 1) POINT2 += 150;
-            }
-        }
-    }
-    //hBng doc xx_xx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i][j + 1].c && B[i][j].c == B[i][j + 4].c && B[i][j].c == B[i][j + 3].c) {
-                if (B[i][j + 2].c == 1) POINT2 += 150;
-            }
-        }
-    }
-    // hBng cheo1 xx_xx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i - 1][j + 1].c && B[i][j].c == B[i - 4][j + 4].c && B[i][j].c == B[i - 3][j + 3].c) {
-                if (B[i - 2][j + 2].c == 1)
-                    POINT2 += 150;
-            }
-        }
-    }
-    //hBng cheo2 xx_xx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j + 1].c && B[i][j].c == B[i + 4][j + 4].c && B[i][j].c == B[i + 3][j + 3].c) {
-                if (B[i + 2][j + 2].c == 1)
-                    POINT2 += 150;
-            }
-        }
-    }
-
-    //hBng ngBng x_xxx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 4][j].c && B[i][j].c == B[i + 2][j].c && B[i][j].c == B[i + 3][j].c) {
-                if (B[i + 1][j].c == 1) POINT2 += 150;
-            }
-        }
-    }
-    //hBng doc x_xxx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i][j + 4].c && B[i][j].c == B[i][j + 2].c && B[i][j].c == B[i][j + 3].c) {
-                if (B[i][j + 1].c == 1) POINT2 += 150;
-            }
-        }
-    }
-    // hBng cheo1 x_xxx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i - 4][j + 4].c && B[i][j].c == B[i - 2][j + 2].c && B[i][j].c == B[i - 3][j + 3].c) {
-                if (B[i - 1][j + 1].c == 1)
-                    POINT2 += 150;
-            }
-        }
-    }
-    //hBng cheo2 x_xxx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 4][j + 4].c && B[i][j].c == B[i + 2][j + 2].c && B[i][j].c == B[i + 3][j + 3].c) {
-                if (B[i + 1][j + 1].c == 1)
-                    POINT2 += 150;
-            }
-        }
-    }
-
-
-    //hBng ngBng xxx_
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j].c && B[i][j].c == B[i + 2][j].c) {
-                if (B[i - 1][j].c == 1 || B[i + 3][j].c == 1 || B[i - 1][j].c == -2 || B[i + 3][j].c == -2) POINT2 += 65;
-            }
-        }
-    }
-    //hBng doc xxx_
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i][j + 1].c && B[i][j].c == B[i][j + 2].c) {
-                if (B[i][j - 1].c == 1 || B[i][j + 3].c == 1 || B[i][j - 1].c == -2 || B[i][j + 3].c == -2) POINT2 += 65;
-            }
-        }
-    }
-    // hBng cheo1 xxx_
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i - 1][j + 1].c && B[i][j].c == B[i - 2][j + 2].c) {
-                if (B[i + 1][j - 1].c == 1 || B[i - 3][j + 3].c == 1 || B[i + 1][j - 1].c == -2 || B[i - 3][j + 3].c == -2)
-                    POINT2 += 65;
-            }
-        }
-    }
-    //hBng cheo2 xxx_
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j + 1].c && B[i][j].c == B[i + 2][j + 2].c) {
-                if (B[i - 1][j - 1].c == 1 || B[i + 3][j + 3].c == 1 || B[i - 1][j - 1].c == -2 || B[i + 3][j + 3].c == -2)
-                    POINT2 += 65;
-            }
-        }
-    }
-
-    //hBng ngBng xx_x
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j].c && B[i][j].c == B[i + 3][j].c) {
-                if (B[i + 2][j].c == 1) POINT2 += 65;
-            }
-        }
-    }
-    //hBng doc xx_x
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i][j + 1].c && B[i][j].c == B[i][j + 3].c) {
-                if (B[i][j + 2].c == 1) POINT2 += 65;
-            }
-        }
-    }
-    // hBng cheo1 xx_x
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i - 1][j + 1].c && B[i][j].c == B[i - 3][j + 3].c) {
-                if (B[i - 2][j + 2].c == 1)
-                    POINT2 += 65;
-            }
-        }
-    }
-    //hBng cheo2 xx_x
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 1][j + 1].c && B[i][j].c == B[i + 3][j + 3].c) {
-                if (B[i + 2][j + 2].c == 1)
-                    POINT2 += 65;
-            }
-        }
-    }
-    //hBng ngBng x_xx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 3][j].c && B[i][j].c == B[i + 2][j].c) {
-                if (B[i + 1][j].c == 1) POINT2 += 65;
-            }
-        }
-    }
-    //hBng doc x_xx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i][j + 2].c && B[i][j].c == B[i][j + 3].c) {
-                if (B[i][j + 1].c == 1) POINT2 += 65;
-            }
-        }
-    }
-    // hBng cheo1 x_xx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i - 2][j + 2].c && B[i][j].c == B[i - 3][j + 3].c) {
-                if (B[i - 1][j + 1].c == 1)
-                    POINT2 += 65;
-            }
-        }
-    }
-    //hBng cheo2 x_xx
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1 && B[i][j].c == B[i + 3][j + 3].c && B[i][j].c == B[i + 2][j + 2].c) {
-                if (B[i + 1][j + 1].c == 1)
-                    POINT2 += 65;
-            }
-        }
-    }
-    //BTTBCK
-     //check for defense
-    if (def == 1) {
-        //hBng ngBng oooo_
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == B[i + 1][j].c && B[i][j].c == B[i + 2][j].c && B[i][j].c == B[i + 3][j].c && B[i][j].c == 1 && (B[i + 4][j].c == 0 || B[i - 1][j].c == 0)) {
-                    POINT2 += 300;
-                }
-            }
-        }
-
-        //hBng doc oooo_
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i][j + 1].c && B[i][j].c == B[i][j + 2].c && B[i][j].c == B[i][j + 3].c && (B[i][j + 4].c == 0 || B[i][j - 1].c == 0)) {
-                    POINT2 += 300;
-                }
-            }
-        }
-
-        // hBng cheo1 oooo_
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i - 1][j + 1].c && B[i][j].c == B[i - 2][j + 2].c && B[i][j].c == B[i - 3][j + 3].c && (B[i - 4][j + 4].c == 0 || B[i + 1][j - 1].c == 0)) {
-                    POINT2 += 300;
-                }
-            }
-        }
-
-        //hBng cheo2 oooo_
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i + 1][j + 1].c && B[i][j].c == B[i + 2][j + 2].c && B[i][j].c == B[i + 3][j + 3].c && (B[i + 4][j + 4].c == 0 || B[i - 1][j - 1].c == 0)) {
-                    POINT2 += 300;
-                }
-            }
-        }
-
-        //hBng ngBng ooo_o
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i + 1][j].c && B[i][j].c == B[i + 2][j].c && B[i][j].c == B[i + 4][j].c && B[i + 3][j].c == 0) {
-                    POINT2 += 73;
-                }
-            }
-        }
-        //hBng doc ooo_o
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i][j + 1].c && B[i][j].c == B[i][j + 2].c && B[i][j].c == B[i][j + 4].c && B[i][j + 3].c == 0) {
-                    POINT2 += 73;
-                }
-            }
-        }
-        // hBng cheo1 ooo_o
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i - 1][j + 1].c && B[i][j].c == B[i - 2][j + 2].c && B[i][j].c == B[i - 4][j + 4].c && B[i - 3][j + 3].c == 0) {
-                    POINT2 += 73;
-                }
-            }
-        }
-        //hBng cheo2 ooo_o
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i + 1][j + 1].c && B[i][j].c == B[i + 2][j + 2].c && B[i][j].c == B[i + 4][j + 4].c && B[i + 3][j + 3].c == 0) {
-                    POINT2 += 73;
-                }
-            }
-        }
-
-        //hBng ngBng oo_oo
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i + 1][j].c && B[i][j].c == B[i + 4][j].c && B[i][j].c == B[i + 3][j].c && B[i + 2][j].c == 0) {
-                    POINT2 += 73;
-                }
-            }
-        }
-        //hBng doc oo_oo
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i][j + 1].c && B[i][j].c == B[i][j + 4].c && B[i][j].c == B[i][j + 3].c && B[i][j + 2].c == 0) {
-                    POINT2 += 73;
-                }
-            }
-        }
-        // hBng cheo1 oo_oo
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i - 1][j + 1].c && B[i][j].c == B[i - 4][j + 4].c && B[i][j].c == B[i - 3][j + 3].c && B[i - 2][j + 2].c == 0) {
-                    POINT2 += 73;
-                }
-            }
-        }
-        //hBng cheo2 oo_oo
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i + 1][j + 1].c && B[i][j].c == B[i + 4][j + 4].c && B[i][j].c == B[i + 3][j + 3].c && B[i + 2][j + 2].c == 0) {
-                    POINT2 += 73;
-                }
-            }
-        }
-
-        //hBng ngBng o_ooo
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i + 4][j].c && B[i][j].c == B[i + 2][j].c && B[i][j].c == B[i + 3][j].c && B[i + 1][j].c == 0) {
-                    POINT2 += 73;
-                }
-            }
-        }
-        //hBng doc o_ooo
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i][j + 4].c && B[i][j].c == B[i][j + 2].c && B[i][j].c == B[i][j + 3].c && B[i][j + 1].c == 0) {
-                    POINT2 += 73;
-                }
-            }
-        }
-        // hBng cheo1 o_ooo
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i - 4][j + 4].c && B[i][j].c == B[i - 2][j + 2].c && B[i][j].c == B[i - 3][j + 3].c && B[i - 1][j + 1].c == 0) {
-                    POINT2 += 73;
-                }
-            }
-        }
-        //hBng cheo2 o_ooo
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i + 4][j + 4].c && B[i][j].c == B[i + 2][j + 2].c && B[i][j].c == B[i + 3][j + 3].c && B[i + 1][j + 1].c == 0) {
-                    POINT2 += 73;
-                }
-            }
-        }
-    }
-
-    if ((def == 1 && pre_def == 1) || (def == 1 && atk == 1)) {
-        //hBng ngBng ooo_
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == B[i + 1][j].c && B[i][j].c == B[i + 2][j].c && B[i][j].c == 1 && (B[i + 3][j].c == 0 && B[i - 1][j].c == 0)) {
-                    POINT2 += 60;
-                }
-            }
-        }
-        //hBng doc ooo_
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i][j + 1].c && B[i][j].c == B[i][j + 2].c && (B[i][j + 3].c == 0 && B[i][j - 1].c == 0)) {
-                    POINT2 += 60;
-                }
-            }
-        }
-        // hBng cheo1 ooo_
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i - 1][j + 1].c && B[i][j].c == B[i - 2][j + 2].c && (B[i - 3][j + 3].c == 0 && B[i + 1][j - 1].c == 0)) {
-                    POINT2 += 60;
-                }
-            }
-        }
-        //hBng cheo2 ooo_ 
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i + 1][j + 1].c && B[i][j].c == B[i + 2][j + 2].c && (B[i + 3][j + 3].c == 0 && B[i - 1][j - 1].c == 0)) {
-                    POINT2 += 60;
-                }
-            }
-        }
-
-        //hBng ngBng oo_o
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == B[i + 1][j].c && B[i][j].c == B[i + 3][j].c && B[i][j].c == 1 && (B[i + 2][j].c == 0 && B[i - 1][j].c == 0 && B[i + 4][j].c == 0)) {
-                    POINT2 += 56;
-                }
-            }
-        }
-        //hBng doc oo_o
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i][j + 1].c && B[i][j].c == B[i][j + 3].c && (B[i][j + 2].c == 0 && B[i][j - 1].c == 0 && B[i][j + 4].c == 0)) {
-                    POINT2 += 56;
-                }
-            }
-        }
-        // hBng cheo1 oo_o
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i - 1][j + 1].c && B[i][j].c == B[i - 3][j + 3].c && (B[i - 2][j + 2].c == 0 && B[i + 1][j - 1].c == 0 && B[i - 4][j + 4].c == 0)) {
-                    POINT2 += 56;
-                }
-            }
-        }
-        //hBng cheo2 oo_o 
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i + 1][j + 1].c && B[i][j].c == B[i + 3][j + 3].c && (B[i + 2][j + 2].c == 0 && B[i - 1][j - 1].c == 0 && B[i + 4][j + 4].c == 0)) {
-                    POINT2 += 56;
-                }
-            }
-        }
-
-        //hBng ngBng o_oo
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == B[i + 2][j].c && B[i][j].c == B[i + 3][j].c && B[i][j].c == 1 && (B[i + 1][j].c == 0 && B[i - 1][j].c == 0 && B[i + 4][j].c == 0)) {
-                    POINT2 += 56;
-                }
-            }
-        }
-        //hBng doc o_oo
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i][j + 2].c && B[i][j].c == B[i][j + 3].c && (B[i][j + 1].c == 0 && B[i][j - 1].c == 0 && B[i][j + 4].c == 0)) {
-                    POINT2 += 56;
-                }
-            }
-        }
-        // hBng cheo1 o_oo
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i - 2][j + 2].c && B[i][j].c == B[i - 3][j + 3].c && (B[i - 1][j + 1].c == 0 && B[i + 1][j - 1].c == 0 && B[i - 4][j + 4].c == 0)) {
-                    POINT2 += 56;
-                }
-            }
-        }
-        //hBng cheo2 o_oo 
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 1 && B[i][j].c == B[i + 2][j + 2].c && B[i][j].c == B[i + 3][j + 3].c && (B[i + 1][j + 1].c == 0 && B[i - 1][j - 1].c == 0 && B[i + 4][j + 4].c == 0)) {
-                    POINT2 += 56;
-                }
-            }
-        }
-    }
-    return POINT2;
+    return score;
 }
-int evaluate1(_POINT B[25][25]) {
-    int POINT2 = INT_MIN;
-    bool def = defense(B);
-    bool pre_def = pre_defense(B);
-    bool atk = attack(B);
-    //Nuoc khoi dau
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == -1) {
-                if (B[i - 1][j - 1].c == 1 || B[i - 1][j + 1].c == 1 || B[i + 1][j - 1].c == 1 || B[i + 1][j + 1].c == 1) {
-                    POINT2 += 1;
-                }
-            }
+
+
+
+bool on_border_check(_POINT board[][BOARD_SIZE + 2], int x, int y) {
+    int radius = 1;
+    for (int i = x - radius; i <= x + radius; i++) {
+        for (int j = y - radius; j <= y + radius; j++) {
+            if (board[i][j].c == 1 || board[i][j].c == -1) return true;
         }
     }
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == 1) {
-                if (B[i - 1][j].c == 1 || B[i][j + 1].c == 1 || B[i][j - 1].c == 1 || B[i + 1][j].c == 1) {
-                    POINT2 += 1;
-                }
-            }
-        }
-    }
-    return POINT2;
+    return false;
 }
-Move findfirstBestmove(_POINT B[25][25]) {
-    int Bestscorefornextmove = INT_MIN;
-    Move Nextmove;
-    Nextmove.x = -1;
-    Nextmove.y = -1;
-    for (int i = 5; i < SIZE + 5; i++) {
-        for (int j = 5; j < SIZE + 5; j++) {
-            if (B[i][j].c == 0) {
-                B[i][j].c = 1;
-                int currentscore = evaluate(B);
-                B[i][j].c = 0;
-                if (currentscore > Bestscorefornextmove) {
-                    Bestscorefornextmove = currentscore;
-                    Nextmove.x = i;
-                    Nextmove.y = j;
+
+int minimax(_POINT board[][BOARD_SIZE + 2], bool turn, int depth, int alpha, int beta, int& count) {
+    int score;
+    int temp = win_check(board);
+    if (temp != 0 || depth == 0) {
+        if (temp == 1) return 100000000;
+        if (temp == -1) return -100000000;
+        return evaluation(board);
+    }
+
+    if (turn) {
+        score = -INT_MAX;
+        for (int i = 1; i < BOARD_SIZE + 2 - 1; i++) {
+            for (int j = 1; j < BOARD_SIZE + 2 - 1; j++) {
+                if (on_border_check(board, i, j) && board[i][j].c == 0) {
+                    board[i][j].c = 1;
+                    count++;
+                    score = max(score, minimax(board, !turn, depth - 1, alpha, beta, count));
+                    board[i][j].c = 0;
+                    alpha = max(alpha, score);
+                    if (beta <= alpha) return score;
                 }
             }
         }
     }
-    if (Nextmove.x == -1 && Nextmove.y == -1) {
-        for (int i = 5; i < SIZE + 5; i++) {
-            for (int j = 5; j < SIZE + 5; j++) {
-                if (B[i][j].c == 0) {
-                    B[i][j].c = 1;
-                    int currentscore = evaluate1(B);
-                    B[i][j].c = 0;
-                    if (currentscore > Bestscorefornextmove) {
-                        Bestscorefornextmove = currentscore;
-                        Nextmove.x = i;
-                        Nextmove.y = j;
-                    }
+    else {
+        score = INT_MAX;
+        for (int i = 1; i < BOARD_SIZE + 2 - 1; i++) {
+            for (int j = 1; j < BOARD_SIZE + 2 - 1; j++) {
+                if (on_border_check(board, i, j) && board[i][j].c == 0) {
+                    board[i][j].c = -1;
+                    count++;
+                    score = min(score, minimax(board, !turn, depth - 1, alpha, beta, count));
+                    board[i][j].c = 0;
+                    beta = min(beta, score);
+                    if (beta <= alpha) return score;
                 }
             }
         }
     }
-    return Nextmove;
+    return score;
 }
+
+MOVE next_move(_POINT board[][BOARD_SIZE + 2], bool turn, int& min_count) {
+    int depth = 3;
+    int score, best_score;
+    MOVE move = { -1, -1 };
+
+
+    best_score = turn ? -INT_MAX : INT_MAX;
+
+    for (int i = 1; i < BOARD_SIZE + 2 - 1; i++) {
+        for (int j = 1; j < BOARD_SIZE + 2 - 1; j++) {
+            int count = 0;
+            if (on_border_check(board, i, j) && board[i][j].c == 0) {
+                make_move(board, i, j, turn);
+                score = minimax(board, !turn, depth, -INT_MAX, INT_MAX, count);
+                board[i][j].c = 0;
+                if ((turn && score > best_score) || (!turn && score < best_score)) {
+                    best_score = score;
+                    min_count = count;
+                    move.x = i;
+                    move.y = j;
+                }
+                else if (score == best_score && count < min_count) {
+                    min_count = count;
+                    move.x = i;
+                    move.y = j;
+                }
+            }
+        }
+    }
+    return move;
+}
+
+
+
+

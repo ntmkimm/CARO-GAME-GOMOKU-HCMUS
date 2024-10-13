@@ -113,7 +113,7 @@ int ESC_menu(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYER P
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == arrow_down)
 			MoveDown1(menu, 3);
-		else if ( _COMMAND == arrow_up)
+		else if (_COMMAND == arrow_up)
 			MoveUp1(menu, 3);
 		else if (_COMMAND == enter_char)
 		{
@@ -604,12 +604,9 @@ int NewGameLoad(_POINT A[BOARD_SIZE][BOARD_SIZE], Menu menu[COL][MAX_ROW], PLAYE
 	return 1;
 }
 
-int Playwithcomputer(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[25][25], Menu menu[COL][MAX_ROW], PLAYER& PLAYER1, PLAYER& PLAYER2)
+int Playwithcomputer(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[BOARD_SIZE + 2][BOARD_SIZE + 2], Menu menu[COL][MAX_ROW], PLAYER& PLAYER1, PLAYER& PLAYER2)
 {
-
-	for (int i = 0; i < 25; i++)
-		for (int j = 0; j < 25; j++)
-			B[i][j].c = -2;
+	set_game(B);
 	int count = 0;
 	PLAYER1.name = "YOU";
 	PLAYER2.name = "BOT";
@@ -663,12 +660,12 @@ int Playwithcomputer(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[25][25], Menu me
 		{
 			LoadData(A);
 			DrawO_Turn();
-			for (int i = 5; i < SIZE + 5; i++)
-				for (int j = 5; j < SIZE + 5; j++)
-					B[i][j].c = A[i - 5][j - 5].c;
-
-			Move bestMove = findfirstBestmove(B);
-			A[bestMove.x - 5][bestMove.y - 5].c = 1;
+			for (int i = 1; i < BOARD_SIZE + 1; i++)
+				for (int j = 1; j < BOARD_SIZE + 1; j++)
+					B[i][j].c = -A[i - 1][j - 1].c;
+			int min_count = INT_MAX;
+			MOVE bestMove = next_move(B, false, min_count);
+			A[bestMove.x - 1][bestMove.y - 1].c = 1;
 			GotoXY(A[bestMove.x - 5][bestMove.y - 5].x, A[bestMove.x - 5][bestMove.y - 5].y);
 			Sleep(500);
 			CountMoveP2++;
@@ -704,7 +701,7 @@ int Playwithcomputer(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[25][25], Menu me
 	return 1;
 }
 
-int MAINMENU_run(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[25][25], Menu menu[COL][MAX_ROW], PLAYER& PLAYER1, PLAYER& PLAYER2, int option)
+int MAINMENU_run(_POINT A[BOARD_SIZE][BOARD_SIZE], _POINT B[BOARD_SIZE + 2][BOARD_SIZE + 2], Menu menu[COL][MAX_ROW], PLAYER& PLAYER1, PLAYER& PLAYER2, int option)
 {
 	int ret = 1;
 	std::string file_chosen;

@@ -85,7 +85,7 @@ void LOAD_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER& PLAYER1, PLAYER& PLAYER
 	LOAD_file >> PLAYER2.win;
 
 	LOAD_file >> _TURN;
-	
+
 	for (int i = 0; i < BOARD_SIZE; i++)
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
@@ -95,7 +95,7 @@ void LOAD_data(_POINT A[BOARD_SIZE][BOARD_SIZE], PLAYER& PLAYER1, PLAYER& PLAYER
 		}
 	LOAD_file.close();
 
-//	LoadData(A);
+	//	LoadData(A);
 	_COMMAND = -1;
 	_X = A[0][0].x;
 	_Y = A[0][0].y;
@@ -123,7 +123,7 @@ std::vector<std::string> LOAD_file()
 	std::vector<std::string> File;
 	std::string NAME_file;
 	std::fstream LIST_game;
-	LIST_game.open("ListGame.txt", std::ios::in); 
+	LIST_game.open("ListGame.txt", std::ios::in);
 	while (LIST_game >> NAME_file)
 		File.push_back(NAME_file);
 	LIST_game.close();
@@ -175,7 +175,7 @@ int YESNO_CHOOSE(Menu menu[COL][MAX_ROW])
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == arrow_up)
 			MoveUp1(menu, 2);
-		else if ( _COMMAND == arrow_down)
+		else if (_COMMAND == arrow_down)
 			MoveDown1(menu, 2);
 		if (_COMMAND == enter_char)
 		{
