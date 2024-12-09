@@ -8,6 +8,7 @@ This repository is contributed by 4 members of Group Six - 23TNT1:
 ## DESCRIPTION
 - This game based Console Window.
 - We test this game by Visual Studio.
+- Bot / Computer Player is powerful. 
 - No special library, everything from scratch.
 
 ## HOW TO RUN IT 
