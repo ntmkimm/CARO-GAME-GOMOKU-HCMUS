@@ -1,17 +1,18 @@
 ## GOMOKU-PROJECT
-This repository is contributed by 4 members of Group Six - 23TNT1:
+This repository is developed by four members of Group Six - 23TNT1:
 - Nguyen Van Linh
 - Tran Hoang Gia Bao
 - Tran Chan Hiep
 - Nguyen Thi My Kim
 
 ## DESCRIPTION
-- This game based Console Window.
-- We test this game by Visual Studio.
-- No special library, everything from scratch.
-
+- This is a console-based Gomoku game.
+- The game was tested using Visual Studio.
+- No external libraries were used — everything was built from scratch.
+- The BOT is using MINIMAX, ALPHA BETA PRUNING Algorithm.
+  
 ## HOW TO RUN IT 
 
-Run main.cpp
+Simply execute main.cpp to start the game.
 
 
