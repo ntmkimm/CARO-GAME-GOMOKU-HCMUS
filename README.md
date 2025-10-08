@@ -1,9 +1,9 @@
 ## GOMOKU-PROJECT
-This repository is developed by four members of Group Six - 23TNT1:
-- Nguyen Van Linh
-- Tran Hoang Gia Bao
-- Tran Chan Hiep
-- Nguyen Thi My Kim
+This project is contributed by:
+- 23122003 Nguyen Van Linh
+- 23122022 Tran Chan Hiep
+- 23122026 Tran Hoang Gia Bao
+- 23122040 Nguyen Thi My Kim
 
 ## DESCRIPTION
 - This is a console-based Gomoku game.
